@@ -21,3 +21,110 @@ code {
 .mb-20 {
   margin-bottom: 20px;
 }
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mb-50 {
+  margin-bottom: 50px;
+}
+
+/* Container có chiều rộng cố định theo từng breakpoint */
+.container {
+  width: 100%;
+  padding-right: var(--bs-gutter-x, 1rem);
+  padding-left: var(--bs-gutter-x, 1rem);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1320px;
+  }
+}
+
+/* Container luôn full width */
+.container-fluid {
+  width: 100%;
+  padding-right: var(--bs-gutter-x, 1rem);
+  padding-left: var(--bs-gutter-x, 1rem);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Container responsive theo breakpoint */
+.container-sm {
+  width: 100%;
+}
+
+@media (min-width: 576px) {
+  .container-sm {
+    max-width: 540px;
+  }
+}
+
+.container-md {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .container-md {
+    max-width: 720px;
+  }
+}
+
+.container-lg {
+  width: 100%;
+}
+
+@media (min-width: 992px) {
+  .container-lg {
+    max-width: 960px;
+  }
+}
+
+.container-xl {
+  width: 100%;
+}
+
+@media (min-width: 1200px) {
+  .container-xl {
+    max-width: 1140px;
+  }
+}
+
+.container-xxl {
+  width: 100%;
+}
+
+@media (min-width: 1400px) {
+  .container-xxl {
+    max-width: 1320px;
+  }
+}

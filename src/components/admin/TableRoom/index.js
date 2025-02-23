@@ -132,9 +132,7 @@ function TableRoom() {
       align: "center",
       render: (_, record) => (
         <div className="button__wrap">
-          <Link to={`/admin/rooms/detail/${record.slug}`}>
-            <ButtonViewRoom />
-          </Link>
+          <ButtonViewRoom record={record} />
           <ButtonEditRoom record={record} />
           <ButtonDeleteRoom onReload={onReload} record={record} />
         </div>
@@ -145,7 +143,7 @@ function TableRoom() {
   return (
     <div>
       {/* Phần điều khiển */}
-      <div className="mb-20">
+      <div className="mb-50 mt-20">
         <Row gutter={[20, 20]}>
           <Col xs={24} sm={12} md={12} lg={6} xl={6} xxl={6}>
             <Input.Search

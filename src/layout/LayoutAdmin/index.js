@@ -10,7 +10,7 @@ import MenuSider from "../../components/admin/MenuSider";
 const { Sider, Content } = Layout;
 
 function LayoutAdmin() {
-  const [collapsed, setCollapsed] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [drawerVisible, setDrawerVisible] = useState(false);
 

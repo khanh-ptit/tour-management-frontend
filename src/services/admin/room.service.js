@@ -17,3 +17,8 @@ export const createRoom = async (options) => {
   const result = await post(`${prefixAdmin}rooms/create`, options);
   return result;
 };
+
+export const getRoomDetail = async (slug) => {
+  const result = await get(`${prefixAdmin}rooms/detail/${slug}`);
+  return result;
+};

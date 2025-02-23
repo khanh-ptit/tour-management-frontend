@@ -63,3 +63,9 @@
     margin-right: 8px;
   }
 }
+
+:where(.ant-table-thead) th {
+  background-color: #71aafa !important;
+  color: #fff !important;
+  text-align: center; // Căn giữa chữ nếu muốn
+}

@@ -3,6 +3,7 @@ import LayoutAdmin from "../layout/LayoutAdmin";
 import Dashboard from "../pages/admin/Dashboard";
 import Rooms from "../pages/admin/Room";
 import CreateRoom from "../pages/admin/Room/create";
+import RoomDetail from "../pages/admin/Room/detail";
 
 export const routes = [
   {
@@ -24,6 +25,10 @@ export const routes = [
       {
         path: "rooms/create",
         element: <CreateRoom />,
+      },
+      {
+        path: "rooms/detail/:slug",
+        element: <RoomDetail />,
       },
     ],
   },
