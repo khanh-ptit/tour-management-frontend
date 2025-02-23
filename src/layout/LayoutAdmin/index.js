@@ -26,14 +26,14 @@ function LayoutAdmin() {
     <Layout className="layout-admin">
       <header className="header">
         <Link
-          className={!collapsed ? "header__logo" : "header__logo--collapsed"}
+          to="/admin/dashboard"
+          className={
+            isMobile || collapsed ? "header__logo--collapsed" : "header__logo"
+          }
         >
-          {!collapsed ? (
-            <img src={logo} alt="Logo" />
-          ) : (
-            <img src={logoFold} alt="Logo" />
-          )}
+          <img src={isMobile || collapsed ? logoFold : logo} alt="Logo" />
         </Link>
+
         <div className="header__nav">
           <div className="header__nav--left">
             <Button
