@@ -1,4 +1,4 @@
-import { Layout, Button, Badge } from "antd";
+import { Layout, Button, Badge, Drawer } from "antd";
 import "./LayoutAdmin.scss";
 import logo from "../../images/logo.png";
 import logoFold from "../../images/logo-fold.png";
@@ -11,28 +11,24 @@ const { Sider, Content } = Layout;
 
 function LayoutAdmin() {
   const [collapsed, setCollapsed] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [drawerVisible, setDrawerVisible] = useState(false);
 
   useEffect(() => {
-    // Cập nhật favicon
-    const favicon = document.querySelector("link[rel='icon']");
-    if (favicon) {
-      favicon.href = logoFold;
-    } else {
-      const newFavicon = document.createElement("link");
-      newFavicon.rel = "icon";
-      newFavicon.type = "image/png";
-      newFavicon.href = logoFold;
-      document.head.appendChild(newFavicon);
-    }
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
     <Layout className="layout-admin">
       <header className="header">
         <Link
-          className={collapsed ? "header__logo" : "header__logo--collapsed"}
+          className={!collapsed ? "header__logo" : "header__logo--collapsed"}
         >
-          {collapsed ? (
+          {!collapsed ? (
             <img src={logo} alt="Logo" />
           ) : (
             <img src={logoFold} alt="Logo" />
@@ -43,24 +39,42 @@ function LayoutAdmin() {
             <Button
               type="text"
               className="header__collapse"
-              onClick={() => setCollapsed(!collapsed)}
+              onClick={() => {
+                if (isMobile) {
+                  setDrawerVisible(true); // Mở menu trên mobile
+                } else {
+                  setCollapsed(!collapsed); // Toggle trên PC
+                }
+              }}
               icon={<MenuFoldOutlined />}
-            ></Button>
+            />
             <Button
               type="text"
               className="header__search"
               icon={<SearchOutlined />}
-            ></Button>
+            />
           </div>
           <div className="header__nav--right">
             <Badge dot>{/* <Notification /> */}</Badge>
           </div>
         </div>
       </header>
+
       <Layout>
-        <Sider theme={"light"} collapsed={!collapsed} className="sider">
-          <MenuSider />
-        </Sider>
+        {!isMobile ? (
+          <Sider theme={"light"} collapsed={collapsed} className="sider">
+            <MenuSider />
+          </Sider>
+        ) : (
+          <Drawer
+            title="Menu"
+            placement="left"
+            onClose={() => setDrawerVisible(false)}
+            open={drawerVisible}
+          >
+            <MenuSider />
+          </Drawer>
+        )}
         <Content className="content">
           <Outlet />
         </Content>
