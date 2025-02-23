@@ -7,6 +7,7 @@ import {
   RadiusSettingOutlined,
 } from "@ant-design/icons";
 import { Link, useLocation } from "react-router-dom";
+import "./MenuSider.scss";
 
 function MenuSider() {
   const location = useLocation(); // Lấy URL hiện tại

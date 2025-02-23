@@ -17,3 +17,7 @@ code {
 *::after {
   box-sizing: border-box;
 }
+
+.mb-20 {
+  margin-bottom: 20px;
+}

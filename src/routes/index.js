@@ -2,6 +2,7 @@ import { Navigate } from "react-router-dom";
 import LayoutAdmin from "../layout/LayoutAdmin";
 import Dashboard from "../pages/admin/Dashboard";
 import Rooms from "../pages/admin/Room";
+import CreateRoom from "../pages/admin/Room/create";
 
 export const routes = [
   {
@@ -18,8 +19,12 @@ export const routes = [
       },
       {
         path: "rooms",
-        element: <Rooms />
-      }
+        element: <Rooms />,
+      },
+      {
+        path: "rooms/create",
+        element: <CreateRoom />,
+      },
     ],
   },
 ];

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { getRoomList } from "../../../services/admin/room.service";
-import { Table, Tag, Button, Input, Select, Spin } from "antd";
+import { Table, Tag, Button, Input, Select, Spin, Row, Col } from "antd";
 import "./TableRoom.scss";
 import ButtonDeleteRoom from "../ButtonDeleteRoom";
 import ButtonEditRoom from "../ButtonEditRoom";
 import ButtonViewRoom from "../ButtonViewRoom";
 import { PlusOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 function TableRoom() {
   const [rooms, setRooms] = useState([]);
@@ -131,7 +132,9 @@ function TableRoom() {
       align: "center",
       render: (_, record) => (
         <div className="button__wrap">
-          <ButtonViewRoom />
+          <Link to={`/admin/rooms/detail/${record.slug}`}>
+            <ButtonViewRoom />
+          </Link>
           <ButtonEditRoom record={record} />
           <ButtonDeleteRoom onReload={onReload} record={record} />
         </div>
@@ -142,35 +145,51 @@ function TableRoom() {
   return (
     <div>
       {/* Phần điều khiển */}
-      <div className="table__controls">
-        <Button type="primary" icon={<PlusOutlined />} className="add-room-btn">
-          Thêm phòng
-        </Button>
-        <Input.Search
-          placeholder="Tìm kiếm theo tên phòng"
-          allowClear
-          onSearch={handleSearch}
-          style={{ width: 250 }}
-        />
-        <Select
-          placeholder="Sắp xếp theo giá"
-          allowClear
-          onChange={handleSortPrice}
-          style={{ width: 200 }}
-        >
-          <Select.Option value="price-asc">Giá tăng dần</Select.Option>
-          <Select.Option value="price-desc">Giá giảm dần</Select.Option>
-        </Select>
-        <Select
-          placeholder="Lọc trạng thái"
-          allowClear
-          onChange={handleFilterStatus}
-          style={{ width: 200 }}
-        >
-          <Select.Option value="available">Còn phòng</Select.Option>
-          <Select.Option value="booked">Hết phòng</Select.Option>
-          <Select.Option value="maintenance">Đang bảo trì</Select.Option>
-        </Select>
+      <div className="mb-20">
+        <Row gutter={[20, 20]}>
+          <Col xs={24} sm={12} md={12} lg={6} xl={6} xxl={6}>
+            <Input.Search
+              placeholder="Tìm kiếm theo tên phòng"
+              allowClear
+              onSearch={handleSearch}
+              style={{ width: "100%" }}
+            />
+          </Col>
+          <Col xs={24} sm={12} md={12} lg={6} xl={6} xxl={6}>
+            <Select
+              placeholder="Sắp xếp theo giá"
+              allowClear
+              onChange={handleSortPrice}
+              style={{ width: "100%" }}
+            >
+              <Select.Option value="price-asc">Giá tăng dần</Select.Option>
+              <Select.Option value="price-desc">Giá giảm dần</Select.Option>
+            </Select>
+          </Col>
+          <Col xs={24} sm={12} md={12} lg={6} xl={6} xxl={6}>
+            <Select
+              placeholder="Lọc trạng thái"
+              allowClear
+              onChange={handleFilterStatus}
+              style={{ width: "100%" }}
+            >
+              <Select.Option value="available">Còn phòng</Select.Option>
+              <Select.Option value="booked">Hết phòng</Select.Option>
+              <Select.Option value="maintenance">Đang bảo trì</Select.Option>
+            </Select>
+          </Col>
+          <Col xs={24} sm={12} md={12} lg={6} xl={6} xxl={6}>
+            <Link to="/admin/rooms/create">
+              <Button
+                type="primary"
+                icon={<PlusOutlined />}
+                className="add-room-btn"
+              >
+                Thêm phòng
+              </Button>
+            </Link>
+          </Col>
+        </Row>
       </div>
 
       {/* Bảng dữ liệu */}
