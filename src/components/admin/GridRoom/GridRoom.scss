@@ -1,0 +1,24 @@
+.card {
+  &__price {
+    color: red;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  &__amenities {
+    display: flex;
+    flex-wrap: wrap;
+    // gap: 5px;
+    align-items: center;
+    margin-bottom: 16px;
+    div {
+      margin-right: 8px;
+    }
+  }
+
+  &__action {
+    button {
+      margin-right: 5px;
+    }
+  }
+}

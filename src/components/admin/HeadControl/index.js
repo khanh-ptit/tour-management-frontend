@@ -16,7 +16,8 @@ function HeadControl({
           <div className="control-header">
             <Link className="control-header__item" to="/admin/rooms/create">
               <Button
-                type="primary"
+                color="primary"
+                variant="outlined"
                 icon={<PlusOutlined />}
                 className="add-room-btn"
               >

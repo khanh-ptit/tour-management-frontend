@@ -102,7 +102,7 @@ function RoomDetail() {
                 </p>
 
                 <div className="room-detail__amenities">
-                  <h4>Tiện ích:</h4>
+                  <div>Tiện ích:</div>
                   {room.amenities.map((item, index) => (
                     <Tag key={index} color="blue">
                       {item}

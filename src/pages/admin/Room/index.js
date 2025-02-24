@@ -8,7 +8,7 @@ function Rooms() {
   const [searchText, setSearchText] = useState("");
   const [sortOrder, setSortOrder] = useState(null);
   const [filterStatus, setFilterStatus] = useState(null);
-  const [isGrid, setIsGrid] = useState(true);
+  const [isGrid, setIsGrid] = useState(false);
   const [rooms, setRooms] = useState([]);
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(false);

@@ -5,9 +5,6 @@ import ButtonViewRoom from "../ButtonViewRoom";
 import "./TableRoom.scss";
 
 function TableRoom({ rooms, loading, pagination, handlePagination, onReload }) {
-  // console.log(handlePagination);
-  // console.log(pagination);
-
   const columns = [
     { title: "STT", key: "index", render: (_, __, index) => index + 1 },
     { title: "Tên phòng", dataIndex: "name", key: "name" },
@@ -17,7 +14,9 @@ function TableRoom({ rooms, loading, pagination, handlePagination, onReload }) {
       key: "images",
       render: (images) =>
         images?.length ? (
-          <img src={images[0]} alt="Room" className="table__image" />
+          <div className="table__image">
+            <img src={images[0]} alt="Room" className="table__image" />
+          </div>
         ) : (
           "N/A"
         ),
