@@ -33,13 +33,6 @@
     max-width: 150px; /* Giới hạn chiều rộng để không làm giãn bảng */
   }
 
-  &__amenity {
-    white-space: nowrap;
-    padding: 4px 8px;
-    font-size: 12px;
-    border-radius: 4px;
-  }
-
   /* Căn chỉnh bảng cho đẹp hơn */
   .ant-table {
     border-radius: 8px;

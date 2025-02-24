@@ -225,7 +225,12 @@ function ButtonEditRoom(props) {
           </Form.Item>
         </Form>
       </Modal>
-      <Button onClick={showModal} icon={<EditOutlined />} />
+      <Button
+        onClick={showModal}
+        color="primary"
+        variant="outlined"
+        icon={<EditOutlined />}
+      />
     </>
   );
 }
