@@ -133,7 +133,7 @@ function TableRoom() {
       render: (_, record) => (
         <div className="button__wrap">
           <ButtonViewRoom record={record} />
-          <ButtonEditRoom record={record} />
+          <ButtonEditRoom onReload={onReload} record={record} />
           <ButtonDeleteRoom onReload={onReload} record={record} />
         </div>
       ),

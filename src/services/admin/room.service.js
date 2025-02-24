@@ -1,4 +1,4 @@
-import { del, get, post } from "../../utils/request";
+import { del, get, patch, post } from "../../utils/request";
 const prefixAdmin = "api/v1/admin/";
 
 export const getRoomList = async (params = {}) => {
@@ -20,5 +20,10 @@ export const createRoom = async (options) => {
 
 export const getRoomDetail = async (slug) => {
   const result = await get(`${prefixAdmin}rooms/detail/${slug}`);
+  return result;
+};
+
+export const updateRoom = async (slug, options) => {
+  const result = await patch(`${prefixAdmin}rooms/edit/${slug}`, options);
   return result;
 };

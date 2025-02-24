@@ -19,8 +19,8 @@ export const post = async (path, options) => {
   return result;
 };
 
-export const patch = async (path, item, options) => {
-  const response = await fetch(`${API_DOMAIN}${path}/${item.id}`, {
+export const patch = async (path, options) => {
+  const response = await fetch(`${API_DOMAIN}${path}`, {
     method: "PATCH",
     headers: {
       Accept: "application/json",

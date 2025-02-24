@@ -18,8 +18,6 @@ function RoomDetail() {
   useEffect(() => {
     if (room) {
       document.title = `Chi tiết phòng | ${room.name}`;
-    } else {
-      document.title = `Chi tiết phòng`;
     }
   }, [room]);
 
