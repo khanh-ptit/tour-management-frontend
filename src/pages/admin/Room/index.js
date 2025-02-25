@@ -18,6 +18,10 @@ function Rooms() {
     total: 0,
   });
 
+  useEffect(() => {
+    isGrid ? (pagination.pageSize = 6) : (pagination.pageSize = 4);
+  }, [isGrid]);
+
   const onReload = () => {
     setReload(!reload);
   };
@@ -53,7 +57,7 @@ function Rooms() {
       console.error("Lỗi khi fetch dữ liệu:", error);
     }
     setLoading(false);
-  }, [searchText, sortOrder, filterStatus, pagination.current, reload]);
+  }, [searchText, sortOrder, filterStatus, pagination.current, reload, isGrid]);
 
   useEffect(() => {
     fetchRooms();
@@ -68,7 +72,11 @@ function Rooms() {
   }, []);
 
   const handleChangeView = () => {
-    setIsGrid(!isGrid);
+    setIsGrid((prev) => !prev);
+    setPagination((prev) => ({
+      ...prev,
+      current: 1, // Cập nhật current về 1 mỗi khi đổi chế độ
+    }));
   };
 
   return (
@@ -84,7 +92,7 @@ function Rooms() {
           rooms={rooms}
           loading={loading}
           pagination={pagination}
-          onPaginate={handlePagination}
+          handlePagination={handlePagination}
           onReload={onReload}
         />
       ) : (

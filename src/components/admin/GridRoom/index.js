@@ -1,4 +1,4 @@
-import { Badge, Card, Col, Row, Tag } from "antd";
+import { Badge, Card, Col, Pagination, Row, Spin, Tag } from "antd";
 import "./GridRoom.scss";
 import ButtonViewRoom from "../ButtonViewRoom";
 import ButtonEditRoom from "../ButtonEditRoom";
@@ -10,12 +10,14 @@ const STATUS_CONFIG = {
   maintenance: { text: "Đang bảo trì", color: "orange" },
 };
 
-function GridRoom(props) {
-  const { loading, onPaginate, onReload, pagination, rooms } = props;
+function GridRoom({ loading, handlePagination, onReload, pagination, rooms }) {
+  const handlePaginationChange = (page, pageSize) => {
+    handlePagination(page, pageSize);
+  };
 
   return (
     <>
-      {rooms.length > 0 && (
+      <Spin spinning={loading} tip="Đang tải dữ liệu...">
         <Row gutter={[20, 20]}>
           {rooms.map((item) => {
             const status = STATUS_CONFIG[item.status] || {
@@ -42,9 +44,7 @@ function GridRoom(props) {
                       <strong>Sức chứa:</strong> {item.capacity} người
                     </p>
                     <div className="card__amenities">
-                      <div>
-                        <strong>Tiện ích:</strong>{" "}
-                      </div>
+                      <strong>Tiện ích:</strong>
                       {item.amenities.map((itemAmen, index) => (
                         <Tag key={index} color="blue">
                           {itemAmen}
@@ -62,7 +62,17 @@ function GridRoom(props) {
             );
           })}
         </Row>
-      )}
+
+        {/* Pagination */}
+        <Pagination
+          align="center"
+          style={{ marginTop: "20px" }}
+          current={pagination.current} // Cập nhật trang hiện tại
+          pageSize={pagination.pageSize} // Số phần tử trên mỗi trang
+          total={pagination.total} // Tổng số phần tử
+          onChange={handlePaginationChange} // Gọi lại API khi đổi trang
+        />
+      </Spin>
     </>
   );
 }
