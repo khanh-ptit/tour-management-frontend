@@ -5,3 +5,8 @@ export const checkLogin = async (options) => {
   const result = await post(`${prefixAdmin}auth/login`, options);
   return result;
 };
+
+export const checkAuth = async () => {
+  const result = await post(`${prefixAdmin}auth/me`);
+  return result;
+};

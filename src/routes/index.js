@@ -5,6 +5,7 @@ import Rooms from "../pages/admin/Room";
 import CreateRoom from "../pages/admin/Room/create";
 import RoomDetail from "../pages/admin/Room/detail";
 import LoginAdmin from "../pages/admin/Auth/LoginAdmin";
+import PrivateRoutesAdmin from "../components/admin/PrivateRoutesAdmin";
 
 export const routes = [
   {
@@ -12,28 +13,33 @@ export const routes = [
     element: <LoginAdmin />,
   },
   {
-    path: "admin",
-    element: <LayoutAdmin />,
+    element: <PrivateRoutesAdmin />,
     children: [
       {
-        index: true,
-        element: <Navigate to="dashboard" replace />,
-      },
-      {
-        path: "dashboard",
-        element: <Dashboard />,
-      },
-      {
-        path: "rooms",
-        element: <Rooms />,
-      },
-      {
-        path: "rooms/create",
-        element: <CreateRoom />,
-      },
-      {
-        path: "rooms/detail/:slug",
-        element: <RoomDetail />,
+        path: "admin",
+        element: <LayoutAdmin />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="dashboard" replace />,
+          },
+          {
+            path: "dashboard",
+            element: <Dashboard />,
+          },
+          {
+            path: "rooms",
+            element: <Rooms />,
+          },
+          {
+            path: "rooms/create",
+            element: <CreateRoom />,
+          },
+          {
+            path: "rooms/detail/:slug",
+            element: <RoomDetail />,
+          },
+        ],
       },
     ],
   },
