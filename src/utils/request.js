@@ -1,4 +1,4 @@
-const API_DOMAIN = "http://localhost:5000/";
+const API_DOMAIN = "https://tour-management-backend-six.vercel.app/";
 
 export const get = async (path) => {
   const response = await fetch(API_DOMAIN + path);

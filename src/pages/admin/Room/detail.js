@@ -10,6 +10,12 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import "./RoomDetail.scss";
 
+const STATUS_CONFIG = {
+  available: { text: "Còn phòng", color: "green" },
+  booked: { text: "Hết phòng", color: "red" },
+  maintenance: { text: "Đang bảo trì", color: "orange" },
+};
+
 function RoomDetail() {
   const { slug } = useParams();
   const [room, setRoom] = useState(null);
@@ -95,9 +101,9 @@ function RoomDetail() {
                   <b>Sức chứa:</b> {room.capacity} người
                 </p>
                 <p className="room-detail__status">
-                  <b>Trạng thái: </b>
-                  <Tag color={room.status === "available" ? "green" : "red"}>
-                    {room.status === "available" ? "Còn phòng" : "Hết phòng"}
+                  <b>Trạng thái:</b>{" "}
+                  <Tag color={STATUS_CONFIG[room.status]?.color || "default"}>
+                    {STATUS_CONFIG[room.status]?.text || "Không xác định"}
                   </Tag>
                 </p>
 
