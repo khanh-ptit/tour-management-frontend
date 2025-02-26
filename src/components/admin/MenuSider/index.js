@@ -5,12 +5,27 @@ import {
   PicLeftOutlined,
   AppstoreAddOutlined,
   RadiusSettingOutlined,
+  LaptopOutlined,
+  InfoCircleOutlined,
+  SwapOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./MenuSider.scss";
+import { logout } from "../../../services/admin/auth.service";
 
 function MenuSider() {
   const location = useLocation(); // Lấy URL hiện tại
+  const navigate = useNavigate();
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    const result = await logout();
+    if (result) {
+      localStorage.setItem("logoutSuccessMessage", result.message);
+      navigate("/admin/auth/login");
+    }
+  };
 
   const items = [
     {
@@ -37,6 +52,33 @@ function MenuSider() {
       label: <Link to="/list-room">List Room</Link>,
       icon: <RadiusSettingOutlined />,
       key: "/list-room",
+    },
+    {
+      label: "Tài khoản",
+      icon: <LaptopOutlined />,
+      key: "my-account",
+      children: [
+        {
+          label: <Link to="/admin/my-account/info">Thông tin cá nhân</Link>,
+          icon: <InfoCircleOutlined />,
+          key: "/admin/my-account/info",
+        },
+        {
+          label: (
+            <Link to="/admin/my-account/change-password">Đổi mật khẩu</Link>
+          ),
+          icon: <SwapOutlined />,
+          key: "/admin/my-account/change-password",
+        },
+        {
+          label: (
+            <Link onClick={handleLogout} to="/admin/auth/logout">
+              Đăng xuất
+            </Link>
+          ),
+          icon: <LogoutOutlined />,
+        },
+      ],
     },
   ];
 

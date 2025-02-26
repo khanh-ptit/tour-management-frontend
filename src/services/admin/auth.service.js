@@ -10,3 +10,8 @@ export const checkAuth = async () => {
   const result = await post(`${prefixAdmin}auth/me`);
   return result;
 };
+
+export const logout = async () => {
+  const result = await post(`${prefixAdmin}auth/logout`);
+  return result;
+};

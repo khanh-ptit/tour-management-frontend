@@ -25,6 +25,15 @@ const LoginAdmin = () => {
       }
     };
 
+    const logoutSuccessMessage = localStorage.getItem("logoutSuccessMessage");
+    if (logoutSuccessMessage) {
+      messageApi.open({
+        type: "success",
+        content: logoutSuccessMessage,
+      });
+      localStorage.removeItem("logoutSuccessMessage");
+    }
+
     check();
   }, [navigate]);
 

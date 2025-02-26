@@ -9,7 +9,7 @@ const PrivateRoutesAdmin = () => {
     const fetchApi = async () => {
       try {
         const response = await checkAuth();
-        console.log(response);
+        // console.log(response);
         if (response.user) {
           setIsAuthenticated(true);
         } else {
