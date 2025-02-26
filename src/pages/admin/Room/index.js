@@ -68,7 +68,7 @@ function Rooms() {
   };
 
   useEffect(() => {
-    document.title = "Quản lý phòng";
+    document.title = "Quản lý phòng | Admin";
   }, []);
 
   const handleChangeView = () => {

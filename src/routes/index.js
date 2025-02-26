@@ -4,14 +4,19 @@ import Dashboard from "../pages/admin/Dashboard";
 import Rooms from "../pages/admin/Room";
 import CreateRoom from "../pages/admin/Room/create";
 import RoomDetail from "../pages/admin/Room/detail";
+import LoginAdmin from "../pages/admin/Auth/LoginAdmin";
 
 export const routes = [
+  {
+    path: "admin/auth/login",
+    element: <LoginAdmin />,
+  },
   {
     path: "admin",
     element: <LayoutAdmin />,
     children: [
       {
-        index: true, // Khi vào "/admin", tự động chuyển đến "dashboard"
+        index: true,
         element: <Navigate to="dashboard" replace />,
       },
       {

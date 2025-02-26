@@ -1,4 +1,4 @@
-const API_DOMAIN = "https://tour-management-backend-six.vercel.app/";
+const API_DOMAIN = "http://localhost:5000/";
 
 export const get = async (path) => {
   const response = await fetch(API_DOMAIN + path);
@@ -9,6 +9,7 @@ export const get = async (path) => {
 export const post = async (path, options) => {
   const response = await fetch(`${API_DOMAIN}${path}`, {
     method: "POST",
+    credentials: "include", // Cần có để lưu cookie
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",

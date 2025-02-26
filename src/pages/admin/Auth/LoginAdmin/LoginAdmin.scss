@@ -1,0 +1,51 @@
+.login {
+  &-card {
+    width: 500px;
+    margin: auto;
+    background: #ffffff1a;
+  }
+
+  &-container {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    background-image: url("https://bootstrapmade.com/content/demo/OnePage/assets/img/hero-bg-abstract.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+.card-header {
+  text-align: center;
+
+  &__title {
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+}
+
+.form-login {
+  &__email {
+    input {
+      height: 32px; // Tăng chiều cao input
+      font-size: 16px; // Tăng kích thước chữ để cân đối hơn
+      padding: 10px; // Tăng padding giúp input nhìn thoáng hơn
+    }
+
+    .ant-input-password {
+      input {
+        height: 32px;
+      }
+    }
+  }
+
+  &__button {
+    text-transform: uppercase;
+    height: 32px; // Tăng chiều cao input
+    font-size: 16px; // Tăng kích thước chữ để cân đối hơn
+    padding: 10px; // Tăng padding giúp input nhìn thoáng hơn
+    font-weight: 600;
+  }
+}
