@@ -4,7 +4,7 @@ import {
   BorderOuterOutlined,
   PicLeftOutlined,
   AppstoreAddOutlined,
-  RadiusSettingOutlined,
+  CustomerServiceOutlined,
   LaptopOutlined,
   InfoCircleOutlined,
   SwapOutlined,
@@ -49,9 +49,12 @@ function MenuSider() {
       key: "/admin/tour-categories",
     },
     {
-      label: <Link to="/list-room">List Room</Link>,
-      icon: <RadiusSettingOutlined />,
-      key: "/list-room",
+      label: <Link to="/admin/services">Dịch vụ</Link>,
+      icon: <CustomerServiceOutlined />,
+      key: "/admin/services",
+    },
+    {
+      type: "divider",
     },
     {
       label: "Tài khoản",

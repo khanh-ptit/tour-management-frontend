@@ -6,6 +6,7 @@ import CreateRoom from "../pages/admin/Room/create";
 import RoomDetail from "../pages/admin/Room/detail";
 import LoginAdmin from "../pages/admin/Auth/LoginAdmin";
 import PrivateRoutesAdmin from "../components/admin/PrivateRoutesAdmin";
+import Tours from "../pages/admin/Tour";
 
 export const routes = [
   {
@@ -38,6 +39,10 @@ export const routes = [
           {
             path: "rooms/detail/:slug",
             element: <RoomDetail />,
+          },
+          {
+            path: "tours",
+            element: <Tours />,
           },
         ],
       },

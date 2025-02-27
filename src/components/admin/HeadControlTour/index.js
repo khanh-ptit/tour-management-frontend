@@ -1,9 +1,9 @@
 import { Button, Col, Input, Row, Select, Switch } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import "./HeadControl.scss";
+import "./HeadControlTour.scss";
 
-function HeadControl({
+function HeadControlTour({
   setSearchText,
   setSortOrder,
   setFilterStatus,
@@ -20,21 +20,21 @@ function HeadControl({
               checkedChildren="Lưới"
               unCheckedChildren="Bảng"
             />
-            <Link className="control-header__item" to="/admin/rooms/create">
+            <Link className="control-header__item" to="/admin/tours/create">
               <Button
                 color="primary"
                 variant="outlined"
                 icon={<PlusOutlined />}
                 className="add-room-btn"
               >
-                Thêm phòng
+                Thêm tour
               </Button>
             </Link>
           </div>
         </Col>
         <Col xs={24} sm={12} md={6} lg={6} xl={6} xxl={6}>
           <Input.Search
-            placeholder="Tìm kiếm theo tên phòng"
+            placeholder="Tìm kiếm theo tên tour"
             allowClear
             onSearch={setSearchText}
             style={{ width: "100%" }}
@@ -58,9 +58,8 @@ function HeadControl({
             onChange={setFilterStatus}
             style={{ width: "100%" }}
           >
-            <Select.Option value="available">Còn phòng</Select.Option>
-            <Select.Option value="booked">Hết phòng</Select.Option>
-            <Select.Option value="maintenance">Đang bảo trì</Select.Option>
+            <Select.Option value="active">Hoạt động</Select.Option>
+            <Select.Option value="inactive">Dừng hoạt động</Select.Option>
           </Select>
         </Col>
       </Row>
@@ -68,4 +67,4 @@ function HeadControl({
   );
 }
 
-export default HeadControl;
+export default HeadControlTour;
