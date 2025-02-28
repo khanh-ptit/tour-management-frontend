@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { checkAuth } from "../../../services/admin/auth.service";
+import { Spin } from "antd";
 
 const PrivateRoutesAdmin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -9,7 +10,6 @@ const PrivateRoutesAdmin = () => {
     const fetchApi = async () => {
       try {
         const response = await checkAuth();
-        // console.log(response);
         if (response.user) {
           setIsAuthenticated(true);
         } else {
@@ -23,7 +23,14 @@ const PrivateRoutesAdmin = () => {
     fetchApi();
   }, []);
 
-  if (isAuthenticated === null) return <p>Loading...</p>;
+  if (isAuthenticated === null)
+    return (
+      <>
+        <Spin tip="Đang tải dữ liệu...">
+          <div style={{ width: "100vh", height: "100vh" }}></div>
+        </Spin>
+      </>
+    );
   return isAuthenticated ? (
     <Outlet />
   ) : (

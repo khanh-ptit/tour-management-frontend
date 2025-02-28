@@ -23,7 +23,15 @@ function TableTour(props) {
         ),
     },
     {
-      title: "Giá",
+      title: "Danh mục",
+      key: "categoryId",
+      dataIndex: "categoryId",
+      render: (record) => {
+        return record.name;
+      },
+    },
+    {
+      title: "Giá (VNĐ)",
       dataIndex: "price",
       key: "price",
       render: (price) => price.toLocaleString() + " VNĐ",

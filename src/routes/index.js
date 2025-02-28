@@ -7,6 +7,7 @@ import RoomDetail from "../pages/admin/Room/detail";
 import LoginAdmin from "../pages/admin/Auth/LoginAdmin";
 import PrivateRoutesAdmin from "../components/admin/PrivateRoutesAdmin";
 import Tours from "../pages/admin/Tour";
+import CreateTour from "../pages/admin/Tour/create";
 
 export const routes = [
   {
@@ -43,6 +44,10 @@ export const routes = [
           {
             path: "tours",
             element: <Tours />,
+          },
+          {
+            path: "tours/create",
+            element: <CreateTour />,
           },
         ],
       },

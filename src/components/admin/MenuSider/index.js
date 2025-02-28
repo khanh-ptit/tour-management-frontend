@@ -39,7 +39,11 @@ function MenuSider() {
       key: "/admin/rooms",
     },
     {
-      label: <Link to="/admin/tours">Quản lý tour du lịch</Link>,
+      label: (
+        <Link to="/admin/tours">
+          Quản lý tour du lịch
+        </Link>
+      ),
       icon: <PicLeftOutlined />,
       key: "/admin/tours",
     },
