@@ -26,6 +26,7 @@ function CreateTour() {
   const [services, setServices] = useState([]);
   const [tourCategories, setTourCategories] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [servicesPrice, setServicesPrice] = useState(0);
 
   useEffect(() => {
     document.title = "Thêm mới tour | Admin";
@@ -90,21 +91,16 @@ function CreateTour() {
   };
 
   const handleServiceChange = (selectedServiceIds) => {
-    let totalServicePrice = selectedServiceIds.reduce((acc, id) => {
+    const totalServicePrice = selectedServiceIds.reduce((acc, id) => {
       const service = services.find((s) => s._id === id);
       return acc + (service ? service.price : 0);
     }, 0);
-    const basePrice = form.getFieldValue("price") || 0;
-    setTotalPrice(basePrice + totalServicePrice);
+    setServicesPrice(totalServicePrice);
+    setTotalPrice(form.getFieldValue("price") + totalServicePrice);
   };
 
   const handlePriceChange = (value) => {
-    const selectedServices = form.getFieldValue("services") || [];
-    let totalServicePrice = selectedServices.reduce((acc, id) => {
-      const service = services.find((s) => s._id === id);
-      return acc + (service ? service.price : 0);
-    }, 0);
-    setTotalPrice(value + totalServicePrice);
+    setTotalPrice(value + servicesPrice);
   };
 
   const onFinish = async (values) => {
@@ -119,7 +115,8 @@ function CreateTour() {
       departureDate: departureDate ? departureDate.toISOString() : null,
       returnDate: returnDate ? returnDate.toISOString() : null,
       images: imageUrls,
-      price: totalPrice,
+      servicesPrice,
+      totalPrice,
     };
 
     console.log("Tour Data:", tourData);
@@ -306,7 +303,7 @@ function CreateTour() {
 
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            Tạo phòng
+            Tạo tour
           </Button>
         </Form.Item>
       </Form>

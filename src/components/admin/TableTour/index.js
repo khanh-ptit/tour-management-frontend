@@ -32,7 +32,7 @@ function TableTour(props) {
     },
     {
       title: "Giá (VNĐ)",
-      dataIndex: "price",
+      dataIndex: "totalPrice",
       key: "price",
       render: (price) => price.toLocaleString() + " VNĐ",
     },

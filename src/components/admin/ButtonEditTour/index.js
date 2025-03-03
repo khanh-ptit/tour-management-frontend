@@ -9,6 +9,7 @@ import {
   Row,
   Select,
   Upload,
+  DatePicker,
 } from "antd";
 import {
   CloseCircleOutlined,
@@ -16,11 +17,19 @@ import {
   UploadOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
+import dayjs from "dayjs";
 import { uploadToCloudinary } from "../../../services/uploadToCloudinary.service";
-// import { updateTour } from "../../../services/admin/Tour.service";
+import { updateTour } from "../../../services/admin/tour.service";
+import { getServiceList } from "../../../services/admin/service.service";
+import { getTourCategoryList } from "../../../services/admin/tour-category.service";
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 function ButtonEditTour(props) {
+  const [services, setServices] = useState([]);
+  const [tourCategories, setTourCategories] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [servicesPrice, setServicesPrice] = useState(0);
   const { record, onReload } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
@@ -30,9 +39,35 @@ function ButtonEditTour(props) {
 
   useEffect(() => {
     if (isModalOpen) {
-      form.setFieldsValue(record);
+      form.setFieldsValue({
+        name: record.name,
+        categoryId: record.categoryId?._id, // Chỉ lấy _id, không truyền object
+        description: record.description,
+        dates: [dayjs(record.departureDate), dayjs(record.returnDate)], // Chuyển đổi sang dayjs
+        price: record.price,
+        duration: record.duration,
+        status: record.status,
+        services: record.services?.map((s) => s._id), // Chỉ lấy danh sách _id của dịch vụ
+      });
       setImageUrls(record.images || []);
       setPreviewUrls(record.images || []);
+      setTotalPrice(record.totalPrice);
+      const fetchServices = async () => {
+        const result = await getServiceList();
+        if (result) {
+          // console.log(result);
+          setServices(result);
+        }
+      };
+      fetchServices();
+      const fetchTourCategories = async () => {
+        const result = await getTourCategoryList();
+        if (result) {
+          // console.log(result);
+          setTourCategories(result.tourCategories);
+        }
+      };
+      fetchTourCategories();
     }
   }, [isModalOpen, record]);
 
@@ -79,17 +114,40 @@ function ButtonEditTour(props) {
   };
 
   const onFinish = async (values) => {
-    const updatedTourData = { ...values, images: imageUrls };
-    // const result = await updateTour(record.slug, updatedTourData);
-    const result = undefined;
+    const [departureDate, returnDate] = values.dates || [];
+    delete values.dates;
+    const updatedTourData = {
+      ...values,
+      images: imageUrls,
+      departureDate: departureDate ? departureDate.toISOString() : null,
+      returnDate: returnDate ? returnDate.toISOString() : null,
+      servicesPrice,
+      totalPrice,
+    };
+    console.log(updatedTourData);
+    const result = await updateTour(record.slug, updatedTourData);
+    // const result = undefined; // Gọi API cập nhật ở đây
     if (result) {
       messageApi.open({
         type: "success",
-        content: "Cập nhật phòng thành công!",
+        content: "Cập nhật tour thành công!",
       });
       onReload();
       hideModal();
     }
+  };
+
+  const handleServiceChange = (selectedServiceIds) => {
+    const totalServicePrice = selectedServiceIds.reduce((acc, id) => {
+      const service = services.find((s) => s._id === id);
+      return acc + (service ? service.price : 0);
+    }, 0);
+    setServicesPrice(totalServicePrice);
+    setTotalPrice(form.getFieldValue("price") + totalServicePrice);
+  };
+
+  const handlePriceChange = (value) => {
+    setTotalPrice(value + servicesPrice);
   };
 
   return (
@@ -99,7 +157,7 @@ function ButtonEditTour(props) {
         footer={null}
         onCancel={hideModal}
         open={isModalOpen}
-        title="Chỉnh sửa phòng"
+        title="Chỉnh sửa tour"
         width={800}
         style={{ maxWidth: "90vw" }}
       >
@@ -113,10 +171,25 @@ function ButtonEditTour(props) {
             <Col span={24}>
               <Form.Item
                 name="name"
-                label="Tên phòng"
+                label="Tên tour"
                 rules={[{ required: true }]}
               >
                 <Input />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                name="categoryId"
+                label="Danh mục"
+                rules={[{ required: true, message: "Vui lòng chọn danh mục!" }]}
+              >
+                <Select placeholder="Chọn danh mục">
+                  {tourCategories.map((item) => (
+                    <Select.Option key={item._id} value={item._id}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Item>
             </Col>
             <Col span={24}>
@@ -128,59 +201,93 @@ function ButtonEditTour(props) {
                 <Input.TextArea rows={3} />
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col span={24}>
               <Form.Item
-                name="price"
-                label="Giá (VND)"
-                rules={[{ required: true }]}
+                name="dates"
+                label="Ngày xuất phát - Ngày trở về"
+                rules={[{ required: true, message: "Vui lòng chọn ngày!" }]}
               >
-                <InputNumber min={0} style={{ width: "100%" }} />
+                <RangePicker
+                  format={"DD/MM/YYYY"}
+                  placeholder={["Ngày đặt", "Ngày trả"]}
+                  style={{ width: "100%" }}
+                />
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
               <Form.Item
-                name="capacity"
-                label="Số người tối đa"
+                name="price"
+                label="Giá cơ bản (VND)"
                 rules={[{ required: true }]}
               >
-                <InputNumber min={1} max={10} style={{ width: "100%" }} />
+                <InputNumber
+                  min={0}
+                  style={{ width: "100%" }}
+                  onChange={handlePriceChange}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
+              <Form.Item
+                name="duration"
+                label="Thời gian"
+                rules={[{ required: true }]}
+              >
+                <Input name="duration" style={{ width: "100%" }} />
               </Form.Item>
             </Col>
           </Row>
+
           <Form.Item
             name="status"
             label="Trạng thái"
             rules={[{ required: true }]}
           >
             <Select>
-              <Option value="available">Còn phòng</Option>
-              <Option value="booked">Hết phòng</Option>
-              <Option value="maintenance">Đang bảo trì</Option>
+              <Option value="active">Hoạt động</Option>
+              <Option value="inactive">Dừng hoạt động</Option>
             </Select>
           </Form.Item>
-          <Form.Item
-            name="amenities"
-            label="Tiện ích"
-            rules={[{ required: true }]}
+
+          <Form.Item name="services" label="Dịch vụ">
+            <Select
+              mode="multiple"
+              placeholder="Chọn dịch vụ"
+              onChange={handleServiceChange}
+            >
+              {services.map((item) => (
+                <Option key={item._id} value={item._id}>
+                  {item.name} (+{item.price.toLocaleString()} VND)
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <div
+            style={{
+              fontSize: "16px",
+              color: "red",
+              fontWeight: "bold",
+              marginTop: 10,
+              marginBottom: 10,
+            }}
           >
-            <Select mode="multiple">
-              <Option value="WiFi">WiFi</Option>
-              <Option value="Máy lạnh">Máy lạnh</Option>
-              <Option value="Tivi">Tivi</Option>
-              <Option value="Minibar">Minibar</Option>
-            </Select>
-          </Form.Item>
+            Tổng giá: {totalPrice.toLocaleString()} VND
+          </div>
+
+          {/* Upload nhiều hình ảnh */}
           <Form.Item label="Hình ảnh">
             <Upload
               multiple
               beforeUpload={(file) => {
-                handleUpload([file]);
-                return false;
+                handleUpload([file]); // Gửi file dưới dạng mảng
+                return false; // Ngăn upload tự động của antd
               }}
               showUploadList={false}
             >
               <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
             </Upload>
+
+            {/* Hiển thị preview + nút xóa */}
             <div
               style={{
                 marginTop: 10,
@@ -190,7 +297,10 @@ function ButtonEditTour(props) {
               }}
             >
               {previewUrls.map((url, index) => (
-                <div key={index} style={{ position: "relative" }}>
+                <div
+                  key={index}
+                  style={{ position: "relative", display: "inline-block" }}
+                >
                   <img
                     src={url}
                     alt={`Preview ${index}`}
@@ -219,9 +329,10 @@ function ButtonEditTour(props) {
               ))}
             </div>
           </Form.Item>
+
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Lưu thay đổi
+              Cập nhật
             </Button>
           </Form.Item>
         </Form>

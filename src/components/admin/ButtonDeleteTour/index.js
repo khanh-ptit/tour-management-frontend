@@ -1,14 +1,13 @@
 import { Button, message, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
-// import { deleteRoom } from "../../../services/admin/room.service";
+import { deleteTour } from "../../../services/admin/tour.service";
 
 function ButtonDeleteTour(props) {
   const { record, onReload } = props;
   const [messageApi, contextHolder] = message.useMessage();
 
   const handleDelete = async (record) => {
-    // const result = await deleteTour(record.slug);
-    const result = undefined;
+    const result = await deleteTour(record.slug);
     if (result.code === 200) {
       messageApi.open({
         type: "success",

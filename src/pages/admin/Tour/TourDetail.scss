@@ -1,0 +1,87 @@
+.tour-detail__images {
+  position: relative;
+}
+
+.tour-detail__main-image {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.tour-detail__thumb-swiper {
+  margin-top: 10px;
+}
+
+.tour-detail__thumb {
+  width: 100%;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  transition: border 0.3s;
+}
+
+.tour-detail__thumb:hover {
+  border: 2px solid #1890ff;
+}
+
+.tour-detail {
+  margin-top: 20px;
+  &__main-swiper {
+    .swiper-slide {
+      width: 100%;
+      aspect-ratio: 4/3;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  &__thumb-swiper {
+    .swiper-slide {
+      width: 100%;
+      aspect-ratio: 5/3;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  &__info {
+    // background-color: #1890ff;
+    padding: 20px;
+  }
+
+  &__title {
+    margin-top: 0;
+    font-size: 28px;
+  }
+
+  &__price {
+    font-weight: 600;
+    font-size: 20px;
+    color: red;
+  }
+
+  &__duration,
+  &__status,
+  &__services,
+  &__category,
+  &__departure,
+  &__return {
+    font-size: 16px;
+  }
+
+  &__services {
+    display: flex;
+    align-items: center;
+    div {
+      font-weight: 700;
+      margin-right: 10px;
+    }
+  }
+}
