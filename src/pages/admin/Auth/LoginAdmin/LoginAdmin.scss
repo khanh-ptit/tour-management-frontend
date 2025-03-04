@@ -1,21 +1,19 @@
 .login {
   &-card {
-    width: 500px;
+    width: 90%; // Cho phép form co giãn trên màn hình nhỏ
+    max-width: 500px; // Giữ nguyên kích thước tối đa
     margin: auto;
     background: #ffffff1a;
     position: absolute;
     top: 10%;
     left: 50%;
     transform: translateX(-50%);
+    padding: 20px; // Thêm padding để tránh sát lề
   }
 
   &-container {
     display: flex;
     height: 100vh;
-    // align-items: center;
-    background-image: url("https://cdn1.matadornetwork.com/blogs/1/2013/09/blue-hour-Matador-SEO.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
     position: relative;
   }
 }
@@ -41,7 +39,7 @@
 
   &__button {
     text-transform: uppercase;
-    background-color: #0ba7acce;
+    background-color: #3b65e2;
     height: 32px; // Tăng chiều cao input
     font-size: 16px; // Tăng kích thước chữ để cân đối hơn
     padding: 10px; // Tăng padding giúp input nhìn thoáng hơn

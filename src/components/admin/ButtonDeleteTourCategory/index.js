@@ -1,17 +1,17 @@
 import { Button, message, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
-import { deleteTour } from "../../../services/admin/tour.service";
+import { deleteTourCategory } from "../../../services/admin/tour-category.service";
 
-function ButtonDeleteTour(props) {
+function ButtonDeleteTourCategory(props) {
   const { record, onReload } = props;
   const [messageApi, contextHolder] = message.useMessage();
 
   const handleDelete = async (record) => {
-    const result = await deleteTour(record.slug);
+    const result = await deleteTourCategory(record.slug);
     if (result.code === 200) {
       messageApi.open({
         type: "success",
-        content: "Xóa tour thành công!",
+        content: "Xóa danh mục thành công!",
         duration: 3, // Hiển thị 3 giây
       });
 
@@ -38,4 +38,4 @@ function ButtonDeleteTour(props) {
   );
 }
 
-export default ButtonDeleteTour;
+export default ButtonDeleteTourCategory;

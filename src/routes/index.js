@@ -9,6 +9,9 @@ import PrivateRoutesAdmin from "../components/admin/PrivateRoutesAdmin";
 import Tours from "../pages/admin/Tour";
 import CreateTour from "../pages/admin/Tour/create";
 import TourDetail from "../pages/admin/Tour/detail";
+import TourCategories from "../pages/admin/TourCategories";
+import TourCategoryDetail from "../pages/admin/TourCategories/detail";
+import CreateTourCategory from "../pages/admin/TourCategories/create";
 
 export const routes = [
   {
@@ -53,6 +56,18 @@ export const routes = [
           {
             path: "tours/detail/:slug",
             element: <TourDetail />,
+          },
+          {
+            path: "tour-categories",
+            element: <TourCategories />,
+          },
+          {
+            path: "tour-categories/detail/:slug",
+            element: <TourCategoryDetail />,
+          },
+          {
+            path: "tour-categories/create",
+            element: <CreateTourCategory />,
           },
         ],
       },
