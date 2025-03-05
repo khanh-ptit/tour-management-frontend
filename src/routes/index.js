@@ -12,8 +12,18 @@ import TourDetail from "../pages/admin/Tour/detail";
 import TourCategories from "../pages/admin/TourCategories";
 import TourCategoryDetail from "../pages/admin/TourCategories/detail";
 import CreateTourCategory from "../pages/admin/TourCategories/create";
+import LayoutClient from "../layout/LayoutClient";
 
 export const routes = [
+  {
+    path: "/",
+    children: [
+      {
+        path: "/",
+        element: <LayoutClient />,
+      },
+    ],
+  },
   {
     path: "admin/auth/login",
     element: <LoginAdmin />,

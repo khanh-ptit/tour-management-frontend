@@ -1,5 +1,5 @@
 import { Layout, Button, Badge, Drawer } from "antd";
-import "./LayoutAdmin.scss";
+import styles from "./LayoutAdmin.module.scss";
 import logo from "../../images/logo.png";
 import logoFold from "../../images/logo-fold.png";
 import { SearchOutlined, MenuFoldOutlined } from "@ant-design/icons";
@@ -23,22 +23,24 @@ function LayoutAdmin() {
   }, []);
 
   return (
-    <Layout className="layout-admin">
-      <header className="header">
+    <Layout className={styles["layout-admin"]}>
+      <header className={styles["header"]}>
         <Link
           to="/admin/dashboard"
           className={
-            isMobile || collapsed ? "header__logo--collapsed" : "header__logo"
+            isMobile || collapsed
+              ? styles["header__logo--collapsed"]
+              : styles["header__logo"]
           }
         >
           <img src={isMobile || collapsed ? logoFold : logo} alt="Logo" />
         </Link>
 
-        <div className="header__nav">
-          <div className="header__nav--left">
+        <div className={styles["header__nav"]}>
+          <div className={styles["header__nav--left"]}>
             <Button
               type="text"
-              className="header__collapse"
+              className={styles["header__collapse"]}
               onClick={() => {
                 if (isMobile) {
                   setDrawerVisible(true); // Mở menu trên mobile
@@ -50,11 +52,11 @@ function LayoutAdmin() {
             />
             <Button
               type="text"
-              className="header__search"
+              className={styles["header__search"]}
               icon={<SearchOutlined />}
             />
           </div>
-          <div className="header__nav--right">
+          <div className={styles["header__nav--right"]}>
             <Badge dot>{/* <Notification /> */}</Badge>
           </div>
         </div>
@@ -75,7 +77,7 @@ function LayoutAdmin() {
             <MenuSider />
           </Drawer>
         )}
-        <Content className="content">
+        <Content className={styles["content"]}>
           <Outlet />
         </Content>
       </Layout>

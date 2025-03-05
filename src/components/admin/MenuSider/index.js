@@ -9,6 +9,8 @@ import {
   InfoCircleOutlined,
   SwapOutlined,
   LogoutOutlined,
+  ContactsOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./MenuSider.scss";
@@ -39,11 +41,7 @@ function MenuSider() {
       key: "/admin/rooms",
     },
     {
-      label: (
-        <Link to="/admin/tours">
-          Quản lý tour du lịch
-        </Link>
-      ),
+      label: <Link to="/admin/tours">Quản lý tour du lịch</Link>,
       icon: <PicLeftOutlined />,
       key: "/admin/tours",
     },
@@ -56,6 +54,16 @@ function MenuSider() {
       label: <Link to="/admin/services">Dịch vụ</Link>,
       icon: <CustomerServiceOutlined />,
       key: "/admin/services",
+    },
+    {
+      label: <Link to="/admin/accounts">Tài khoản admin</Link>,
+      icon: <ContactsOutlined />,
+      key: "/admin/accounts",
+    },
+    {
+      label: <Link to="/admin/users">Tài khoản client</Link>,
+      icon: <UserOutlined />,
+      key: "/admin/users",
     },
     {
       type: "divider",
