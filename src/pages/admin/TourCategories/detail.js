@@ -4,18 +4,19 @@ import { Button, Col, Row, Spin, Tag } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs } from "swiper/modules";
-import moment from "moment";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
-// import "./TourDetail.scss";
-import { getTourCategoryDetail } from "../../../services/admin/tour-category.service";
+import {
+  getTourCategoryDetail,
+  getTourCategoryList,
+} from "../../../services/admin/tour-category.service";
 
 function TourCategoryDetail() {
   const { slug } = useParams();
   const [tourCategory, setTourCategory] = useState(null);
+  const [tourCategoryList, setTourCategoryList] = useState([]);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  // const [spinning, setSpinning] = useState(true);
 
   useEffect(() => {
     if (tourCategory) {
@@ -24,19 +25,25 @@ function TourCategoryDetail() {
   }, [tourCategory]);
 
   useEffect(() => {
-    async function fetchTour() {
-      // setSpinning(true);
+    async function fetchTourCategoryDetail() {
       try {
-        // const result = await get(slug);
         const result = await getTourCategoryDetail(slug);
-        console.log(result);
         setTourCategory(result.tourCategory);
-        // setSpinning(false);
       } catch (error) {
-        console.error("Lỗi khi lấy dữ liệu phòng:", error);
+        console.error("Lỗi khi lấy dữ liệu danh mục:", error);
       }
     }
-    fetchTour();
+    fetchTourCategoryDetail();
+
+    const fetchTourCategoryList = async () => {
+      try {
+        const result = await getTourCategoryList();
+        setTourCategoryList(result.tourCategories);
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu danh mục", error);
+      }
+    };
+    fetchTourCategoryList();
   }, [slug]);
 
   return (
@@ -90,9 +97,12 @@ function TourCategoryDetail() {
             <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
               <div className="tour-detail__info">
                 <h2 className="tour-detail__title">{tourCategory.name}</h2>
-                {/* <p className="tour-detail__price">
-                  Giá: <strong>{tour.totalPrice.toLocaleString()} VNĐ</strong>
-                </p> */}
+                <p className="tour-detail__return">
+                  <b>Danh mục cha: </b>
+                  {tourCategoryList.find(
+                    (cat) => cat._id === tourCategory.categoryParentId
+                  )?.name || "Không có"}
+                </p>
 
                 <Button
                   color="primary"

@@ -11,6 +11,18 @@ function TableTourCategories(props) {
     { title: "STT", key: "index", render: (_, __, index) => index + 1 },
     { title: "Tên danh mục", key: "name", dataIndex: "name" },
     {
+      title: "Danh mục cha",
+      key: "categoryParentId",
+      dataIndex: "categoryParentId",
+      render: (categoryParentId) => {
+        const parentCategory = tourCategories.find(
+          (cat) => cat._id === categoryParentId
+        );
+        return parentCategory ? parentCategory.name : "--------";
+      },
+    },
+
+    {
       title: "Ảnh",
       dataIndex: "thumbnail",
       key: "thumbnail",
@@ -38,7 +50,11 @@ function TableTourCategories(props) {
       render: (_, record) => (
         <div className="button__wrap">
           <ButtonViewTourCategories record={record} />
-          <ButtonEditTourCategory record={record} onReload={onReload} />
+          <ButtonEditTourCategory
+            tourCategories={tourCategories}
+            record={record}
+            onReload={onReload}
+          />
           <ButtonDeleteTourCategory record={record} onReload={onReload} />
         </div>
       ),

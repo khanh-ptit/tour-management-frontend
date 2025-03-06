@@ -15,6 +15,18 @@ import {
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./MenuSider.scss";
 import { logout } from "../../../services/admin/auth.service";
+import { matchPath } from "react-router-dom";
+
+const getSelectedKey = (pathname) => {
+  if (matchPath("/admin/rooms/*", pathname)) return "/admin/rooms";
+  if (matchPath("/admin/tours/*", pathname)) return "/admin/tours";
+  if (matchPath("/admin/tour-categories/*", pathname))
+    return "/admin/tour-categories";
+  if (matchPath("/admin/services/*", pathname)) return "/admin/services";
+  if (matchPath("/admin/accounts/*", pathname)) return "/admin/accounts";
+  if (matchPath("/admin/users/*", pathname)) return "/admin/users";
+  return pathname;
+};
 
 function MenuSider() {
   const location = useLocation(); // Lấy URL hiện tại
@@ -99,9 +111,7 @@ function MenuSider() {
 
   return (
     <Menu
-      selectedKeys={[location.pathname]}
-      // Dùng selectedKeys + useLocation cũng được
-      // defaultSelectedKeys={["/"]} //  Cập nhật active theo URL
+      selectedKeys={[getSelectedKey(location.pathname)]}
       defaultOpenKeys={["menu-3"]}
       mode="inline"
       items={items}

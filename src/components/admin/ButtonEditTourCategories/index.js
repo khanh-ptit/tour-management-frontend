@@ -1,4 +1,14 @@
-import { Button, Col, Form, Input, message, Modal, Row, Upload } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  message,
+  Modal,
+  Row,
+  Select,
+  Upload,
+} from "antd";
 import {
   CloseCircleOutlined,
   EditOutlined,
@@ -9,7 +19,7 @@ import { uploadToCloudinary } from "../../../services/uploadToCloudinary.service
 import { updateTourCategory } from "../../../services/admin/tour-category.service";
 
 function ButtonEditTourCategory(props) {
-  const { record, onReload } = props;
+  const { record, onReload, tourCategories } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
   const [thumbnail, setThumbnail] = useState("");
@@ -21,6 +31,7 @@ function ButtonEditTourCategory(props) {
       form.setFieldsValue({
         name: record.name,
         description: record.description,
+        categoryParentId: record.categoryParentId || "", // Đảm bảo không bị lỗi undefined
       });
       setThumbnail(record.thumbnail || "");
       setPreviewUrl(record.thumbnail || "");
@@ -103,6 +114,24 @@ function ButtonEditTourCategory(props) {
                 rules={[{ required: true }]}
               >
                 <Input />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                name="categoryParentId"
+                label="Danh mục cha"
+                rules={[{ required: false }]} // Không bắt buộc nếu không có danh mục cha
+              >
+                <Select allowClear placeholder="Chọn danh mục cha">
+                  <Select.Option key="no-parent" value="">
+                    Không có
+                  </Select.Option>
+                  {tourCategories.map((item) => (
+                    <Select.Option key={item._id} value={item._id}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Item>
             </Col>
             <Col span={24}>

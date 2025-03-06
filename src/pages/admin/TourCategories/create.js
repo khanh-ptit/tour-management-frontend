@@ -1,61 +1,52 @@
 import { useEffect, useState } from "react";
-import { Form, Input, Upload, Button, message, Row, Col } from "antd";
+import { Form, Input, Upload, Button, message, Row, Col, Select } from "antd";
 import { UploadOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { uploadToCloudinary } from "../../../services/uploadToCloudinary.service";
 import { useNavigate } from "react-router-dom";
-import { getServiceList } from "../../../services/admin/service.service";
-import { createTour } from "../../../services/admin/tour.service";
 import {
   createTourCategory,
   getTourCategoryList,
 } from "../../../services/admin/tour-category.service";
-// import "./CreateRoom.scss";
 
 function CreateTourCategory() {
+  const [tourCategoryList, setTourCategoryList] = useState([]);
+
   useEffect(() => {
     document.title = "Thêm mới tour | Admin";
+    const fetchTourCategory = async () => {
+      const result = await getTourCategoryList();
+      setTourCategoryList(result.tourCategories);
+    };
+    fetchTourCategory();
   }, []);
 
+  // console.log(tourCategoryList);
+
   const [form] = Form.useForm();
-  const [imageUrls, setImageUrls] = useState([]); // Danh sách URL ảnh sau khi upload
-  const [previewUrls, setPreviewUrls] = useState([]); // Danh sách preview ảnh
+  const [thumbnail, setThumbnail] = useState("");
+  const [previewUrl, setPreviewUrl] = useState("");
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
 
   // Xử lý upload nhiều ảnh
-  const handleUpload = async (files) => {
-    const uploadedUrls = [...imageUrls];
-    const previews = [...previewUrls];
+  const handleUpload = async (file) => {
+    const objectUrl = URL.createObjectURL(file);
+    setPreviewUrl(objectUrl); // Hiển thị preview trước khi upload
 
-    for (const file of files) {
-      const objectUrl = URL.createObjectURL(file);
-      previews.push(objectUrl); // Lưu URL preview tạm thời
-
-      try {
-        const uploadedImageUrl = await uploadToCloudinary(file);
-        // const uploadedImageUrl = undefined;
-        if (uploadedImageUrl) {
-          uploadedUrls.push(uploadedImageUrl);
-        }
-      } catch (error) {
-        console.error("Upload error:", error);
+    try {
+      const uploadedImageUrl = await uploadToCloudinary(file);
+      if (uploadedImageUrl) {
+        setThumbnail(uploadedImageUrl);
       }
+    } catch (error) {
+      console.error("Upload error:", error);
     }
-
-    setPreviewUrls(previews);
-    setImageUrls(uploadedUrls);
+    return false; // Ngăn antd upload tự động
   };
 
-  // Xóa ảnh khỏi danh sách
   const handleRemoveImage = (index) => {
-    const newPreviewUrls = [...previewUrls];
-    const newImageUrls = [...imageUrls];
-
-    newPreviewUrls.splice(index, 1);
-    newImageUrls.splice(index, 1);
-
-    setPreviewUrls(newPreviewUrls);
-    setImageUrls(newImageUrls);
+    setThumbnail("");
+    setPreviewUrl("");
   };
 
   const onFinish = async (values) => {
@@ -64,7 +55,7 @@ function CreateTourCategory() {
     // Tạo object chứa dữ liệu tour
     const tourCategoryData = {
       ...values,
-      images: imageUrls,
+      thumbnail,
     };
 
     console.log("Tour Category Data:", tourCategoryData);
@@ -97,6 +88,17 @@ function CreateTourCategory() {
             >
               <Input />
             </Form.Item>
+            <Form.Item name="categoryParentId" label="Danh mục cha">
+              <Select allowClear placeholder="Chọn danh mục cha">
+                <Select.Option value={null}>Không có</Select.Option>{" "}
+                {/* Cho phép tạo danh mục gốc */}
+                {tourCategoryList.map((item) => (
+                  <Select.Option key={item._id} value={item._id}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
           </Col>
           <Col span={24}>
             <Form.Item
@@ -109,39 +111,28 @@ function CreateTourCategory() {
           </Col>
         </Row>
 
-        {/* Upload nhiều hình ảnh */}
-        <Form.Item label="Hình ảnh">
-          <Upload
-            multiple
-            beforeUpload={(file) => {
-              handleUpload([file]); // Gửi file dưới dạng mảng
-              return false; // Ngăn upload tự động của antd
-            }}
-            showUploadList={false}
-          >
+        {/* Upload Thumbnail */}
+        <Form.Item label="Ảnh Thumbnail">
+          <Upload beforeUpload={handleUpload} showUploadList={false}>
             <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
           </Upload>
 
-          {/* Hiển thị preview + nút xóa */}
-          <div
-            style={{
-              marginTop: 10,
-              display: "flex",
-              gap: 10,
-              flexWrap: "wrap",
-            }}
-          >
-            {previewUrls.map((url, index) => (
+          {/* Hiển thị preview nếu có ảnh */}
+          <div>
+            {previewUrl && (
               <div
-                key={index}
-                style={{ position: "relative", display: "inline-block" }}
+                style={{
+                  marginTop: 10,
+                  position: "relative",
+                  display: "inline-block",
+                }}
               >
                 <img
-                  src={url}
-                  alt={`Preview ${index}`}
+                  src={previewUrl}
+                  alt="Thumbnail Preview"
                   style={{
-                    width: 100,
-                    height: 100,
+                    width: 120,
+                    height: 120,
                     objectFit: "cover",
                     borderRadius: 10,
                     border: "1px solid #ddd",
@@ -158,10 +149,10 @@ function CreateTourCategory() {
                     background: "white",
                     borderRadius: "50%",
                   }}
-                  onClick={() => handleRemoveImage(index)}
+                  onClick={handleRemoveImage}
                 />
               </div>
-            ))}
+            )}
           </div>
         </Form.Item>
 
