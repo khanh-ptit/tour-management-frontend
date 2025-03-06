@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import Header from "../../components/client/Header";
 import favicon from "../../images/client/favTopTenTravel.png";
+import Footer from "../../components/client/Footer";
+import "./LayoutClient.scss";
 
 function LayoutClient() {
   useEffect(() => {
@@ -19,7 +21,11 @@ function LayoutClient() {
 
   return (
     <>
-      <Header />
+      <div className="layout-client">
+        <Header />
+        <div className="layout-main"></div>
+        <Footer />
+      </div>
     </>
   );
 }

@@ -22,6 +22,8 @@
 }
 
 .header {
+  border-bottom: 1px solid #ddd;
+
   &__top {
     background-color: $primary-color;
     padding: 10px 0;

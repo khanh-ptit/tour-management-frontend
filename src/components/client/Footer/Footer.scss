@@ -1,0 +1,72 @@
+@import "../../../styles/theme";
+
+.footer {
+  color: #fff;
+  padding-top: 24px;
+  background-color: $primary-color;
+
+  .box-title {
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .inner-wrap-box {
+    margin-bottom: 24px;
+
+    .footer-image img {
+      max-width: 300px;
+      height: auto;
+    }
+
+    .contact-list {
+      .contact-item {
+        display: flex;
+        align-items: center;
+
+        svg {
+          font-size: 24px;
+          margin-right: 8px;
+        }
+
+        span {
+          color: $secondary-color;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  .box-list {
+    .box-item {
+      font-size: 13.5px;
+    }
+  }
+
+  .box-desc {
+    font-size: 13.5px;
+  }
+
+  .box-input-email {
+    button {
+      background-color: red;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+  }
+
+  .box-social {
+    display: flex;
+    gap: 12px; // Khoảng cách giữa các icon
+
+    svg {
+      cursor: pointer;
+      font-size: 20px;
+      transition: color 0.3s ease-in-out, transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.2);
+      }
+    }
+  }
+}
