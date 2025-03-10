@@ -13,6 +13,8 @@ import TourCategories from "../pages/admin/TourCategories";
 import TourCategoryDetail from "../pages/admin/TourCategories/detail";
 import CreateTourCategory from "../pages/admin/TourCategories/create";
 import LayoutClient from "../layout/LayoutClient";
+import Login from "../pages/client/Login";
+import Home from "../pages/client/Home";
 
 export const routes = [
   {
@@ -21,6 +23,13 @@ export const routes = [
       {
         path: "/",
         element: <LayoutClient />,
+        children: [
+          { path: "/", element: <Home /> },
+          {
+            path: "/user/login",
+            element: <Login />,
+          },
+        ],
       },
     ],
   },

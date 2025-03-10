@@ -58,12 +58,18 @@
 
   &__title {
     margin-top: 0;
-    font-size: 28px;
+    font-size: 36px;
   }
 
   &__price {
     font-size: 20px;
     color: red;
+    text-decoration: line-through;
+  }
+
+  &__new-price {
+    font-size: 24px;
+    color: green;
   }
 
   &__duration,

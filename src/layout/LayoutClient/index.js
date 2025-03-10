@@ -3,6 +3,7 @@ import Header from "../../components/client/Header";
 import favicon from "../../images/client/favTopTenTravel.png";
 import Footer from "../../components/client/Footer";
 import "./LayoutClient.scss";
+import { Outlet } from "react-router-dom";
 
 function LayoutClient() {
   useEffect(() => {
@@ -23,7 +24,9 @@ function LayoutClient() {
     <>
       <div className="layout-client">
         <Header />
-        <div className="layout-main"></div>
+        <main className="layout-main">
+          <Outlet />
+        </main>
         <Footer />
       </div>
     </>

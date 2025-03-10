@@ -1,0 +1,58 @@
+@import "../../../styles/theme";
+
+.layout-main {
+  .banner {
+    height: 70vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .search-tour {
+    max-width: 600px;
+    width: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffffffe6;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+    .ant-input-prefix,
+    .ant-picker {
+      color: $primary-color; // Áp dụng màu cho icon
+    }
+
+    .ant-input {
+      padding: 6px;
+    }
+
+    .ant-picker-range {
+      padding: 10px;
+    }
+  }
+
+  @media screen and (max-width: 992px) {
+    .banner {
+      height: 50vh;
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    .banner {
+      height: 40vh;
+    }
+    .search-tour {
+      padding: 20px;
+    }
+  }
+}

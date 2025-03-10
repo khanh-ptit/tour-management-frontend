@@ -93,7 +93,9 @@ function Header() {
           <div className="row align-items-center text-center text-lg-start">
             {/* Logo */}
             <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 header__logo">
-              <img src={logoTopTenTravel} alt="Logo" />
+              <Link to="/">
+                <img src={logoTopTenTravel} alt="Logo" />
+              </Link>
             </div>
 
             {/* Search Box */}

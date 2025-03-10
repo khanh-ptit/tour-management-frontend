@@ -1,0 +1,13 @@
+.table-tour {
+  &__old-price {
+    font-weight: 500;
+    text-decoration: line-through;
+    color: red;
+  }
+
+  &__new-price {
+    font-weight: 600;
+    color: green;
+    font-size: 16px;
+  }
+}

@@ -2,6 +2,7 @@ import { Spin, Table, Tag } from "antd";
 import ButtonDeleteTour from "../ButtonDeleteTour";
 import ButtonViewTour from "../ButtonViewTour";
 import ButtonEditTour from "../ButtonEditTour";
+import "./TableTour.scss";
 
 function TableTour(props) {
   const { tours, onReload, loading, pagination, handlePagination } = props;
@@ -32,9 +33,17 @@ function TableTour(props) {
     },
     {
       title: "Giá (VNĐ)",
-      dataIndex: "totalPrice",
       key: "price",
-      render: (price) => price.toLocaleString() + " VNĐ",
+      render: (_, record) => (
+        <>
+          <p className="table-tour__old-price">
+            {record.totalPrice.toLocaleString()} VNĐ
+          </p>
+          <p className="table-tour__new-price">
+            {record.newPrice.toLocaleString()} VNĐ
+          </p>
+        </>
+      ),
     },
     {
       title: "Trạng thái",

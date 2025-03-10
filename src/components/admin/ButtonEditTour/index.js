@@ -47,6 +47,7 @@ function ButtonEditTour(props) {
         price: record.price,
         duration: record.duration,
         status: record.status,
+        discountPercentage: record.discountPercentage,
         services: record.services?.map((s) => s._id), // Chỉ lấy danh sách _id của dịch vụ
       });
       setImageUrls(record.images || []);
@@ -229,6 +230,22 @@ function ButtonEditTour(props) {
             </Col>
             <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
               <Form.Item
+                name="discountPercentage"
+                label="Giảm giá"
+                rules={[{ required: true }]}
+              >
+                <Input
+                  name="discountPercentage"
+                  type="number"
+                  min={0}
+                  max={100}
+                  style={{ width: "100%" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col span={24}>
+              <Form.Item
                 name="duration"
                 label="Thời gian"
                 rules={[{ required: true }]}
@@ -236,32 +253,37 @@ function ButtonEditTour(props) {
                 <Input name="duration" style={{ width: "100%" }} />
               </Form.Item>
             </Col>
+
+            <Col span={24}>
+              <Form.Item
+                name="status"
+                label="Trạng thái"
+                rules={[{ required: true }]}
+              >
+                <Select>
+                  <Option value="active">Hoạt động</Option>
+                  <Option value="inactive">Dừng hoạt động</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+
+            <Col span={24}>
+              <Form.Item name="services" label="Dịch vụ">
+                <Select
+                  mode="multiple"
+                  placeholder="Chọn dịch vụ"
+                  onChange={handleServiceChange}
+                >
+                  {services.map((item) => (
+                    <Option key={item._id} value={item._id}>
+                      {item.name} (+{item.price.toLocaleString()} VND)
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
           </Row>
 
-          <Form.Item
-            name="status"
-            label="Trạng thái"
-            rules={[{ required: true }]}
-          >
-            <Select>
-              <Option value="active">Hoạt động</Option>
-              <Option value="inactive">Dừng hoạt động</Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item name="services" label="Dịch vụ">
-            <Select
-              mode="multiple"
-              placeholder="Chọn dịch vụ"
-              onChange={handleServiceChange}
-            >
-              {services.map((item) => (
-                <Option key={item._id} value={item._id}>
-                  {item.name} (+{item.price.toLocaleString()} VND)
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
           <div
             style={{
               fontSize: "16px",

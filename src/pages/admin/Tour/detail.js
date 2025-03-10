@@ -91,8 +91,14 @@ function TourDetail() {
               <div className="tour-detail__info">
                 <h2 className="tour-detail__title">{tour.name}</h2>
                 <p className="tour-detail__price">
-                  Giá: <strong>{tour.totalPrice.toLocaleString()} VNĐ</strong>
+                  Giá niêm yết:{" "}
+                  <strong>{tour.totalPrice.toLocaleString()} VNĐ</strong>
                 </p>
+                <p className="tour-detail__new-price">
+                  Giá ưu đãi:{" "}
+                  <strong>{tour.newPrice.toLocaleString()} VNĐ</strong>
+                </p>
+
                 <p className="tour-detail__category">
                   <strong>Danh mục:</strong> {tour.categoryId.name}
                 </p>
