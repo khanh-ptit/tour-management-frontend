@@ -23,5 +23,69 @@
     &:hover {
       background-color: darken($primary-color, 10%);
     }
+
+    &--outlined {
+      background-color: #fff;
+      border: 2px solid $primary-color;
+      color: $primary-color;
+
+      &:hover {
+        background-color: darken(#fff, 10%);
+      }
+    }
+  }
+
+  &__secondary {
+    background-color: $secondary-color;
+    color: #000;
+
+    &:hover {
+      background-color: darken($secondary-color, 10%);
+    }
+
+    &--outlined {
+      background-color: #fff;
+      border: 2px solid $secondary-color;
+      color: $secondary-color;
+
+      &:hover {
+        background-color: darken(#fff, 10%);
+      }
+    }
+  }
+}
+
+.box-head {
+  // margin-bottom: 20px;
+  &__title {
+    text-align: center;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: $primary-color;
+    position: relative;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 160px;
+      height: 1px;
+      background-color: #d1d1d1;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: $primary-color;
+    }
   }
 }

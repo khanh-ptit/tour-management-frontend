@@ -1,0 +1,36 @@
+@import "../../../styles/theme";
+
+.sponsor-swiper {
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  position: relative; // Đảm bảo pagination có thể nhận khoảng cách
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sponsor-img {
+  width: 130px; // Điều chỉnh theo nhu cầu
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  border-radius: 8px;
+  filter: grayscale(100%); // Chuyển logo thành đen trắng
+  transition: filter 0.3s ease-in-out; // Hiệu ứng mượt mà khi hover
+
+  &:hover {
+    cursor: pointer;
+    filter: grayscale(0%); // Khi hover, logo sẽ hiện màu thật
+  }
+}
+
+.swiper-pagination {
+  bottom: -4px !important; // Đẩy pagination xuống dưới
+
+  span {
+    background-color: $primary-color;
+  }
+}

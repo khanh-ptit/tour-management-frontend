@@ -3,32 +3,37 @@ import { Col, DatePicker, Form, Input, Row } from "antd";
 import { FaSearch, FaCalendarAlt } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import banner from "../../../images/client/banner.jpg";
+import Sponsor from "../../../components/client/Sponsor";
+import TourDomesticHome from "../../../components/client/TourDomesticHome";
 
 const { RangePicker } = DatePicker;
 
 function Home() {
+  const handleFinish = (e) => {
+    console.log(e);
+  };
+
   return (
     <>
       <div className="container-fluid">
         <section className="banner">
           <img src={banner} alt="Banner" className="banner-img" />
           <div className="search-tour">
-            <Form>
+            <Form onFinish={handleFinish}>
               <Row>
                 <Col span={24}>
                   <Form.Item name="name">
                     <Input
-                      prefix={<FaLocationDot  />}
+                      prefix={<FaLocationDot />}
                       placeholder="Nhập tên địa điểm"
                     />
                   </Form.Item>
                 </Col>
                 <Col xxl={16} xl={16} lg={16} md={16} sm={24} xs={24}>
-                  <Form.Item>
+                  <Form.Item name="dates">
                     <RangePicker
-                      style={{ width: "100%" }}
                       prefix={<FaCalendarAlt style={{ marginRight: "7px" }} />}
-                      name="dates"
+                      style={{ width: "100%" }}
                       format="DD/MM/YYYY"
                       placeholder={["Ngày đi", "Ngày về"]}
                     />
@@ -46,6 +51,20 @@ function Home() {
           </div>
         </section>
       </div>
+
+      <section className="box-head section">
+        <div className="container">
+          <div className="box-head__title">Đối tác của chúng tôi</div>
+          <Sponsor />
+        </div>
+      </section>
+
+      <section className="box-head section tour-domestic-section">
+        <div className="container">
+          <div className="box-head__title">Tour trong nước</div>
+          <TourDomesticHome />
+        </div>
+      </section>
     </>
   );
 }
