@@ -15,6 +15,8 @@ import CreateTourCategory from "../pages/admin/TourCategories/create";
 import LayoutClient from "../layout/LayoutClient";
 import Login from "../pages/client/Login";
 import Home from "../pages/client/Home";
+import Destinations from "../pages/admin/Destination";
+import CreateDestination from "../pages/admin/Destination/create";
 
 export const routes = [
   {
@@ -87,6 +89,14 @@ export const routes = [
           {
             path: "tour-categories/create",
             element: <CreateTourCategory />,
+          },
+          {
+            path: "destinations",
+            element: <Destinations />,
+          },
+          {
+            path: "destinations/create",
+            element: <CreateDestination />,
           },
         ],
       },

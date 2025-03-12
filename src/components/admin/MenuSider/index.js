@@ -12,6 +12,7 @@ import {
   ContactsOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { IoLocationOutline } from "react-icons/io5";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./MenuSider.scss";
 import { logout } from "../../../services/admin/auth.service";
@@ -56,6 +57,11 @@ function MenuSider() {
       label: <Link to="/admin/tours">Quản lý tour du lịch</Link>,
       icon: <PicLeftOutlined />,
       key: "/admin/tours",
+    },
+    {
+      label: <Link to="/admin/destinations">Điểm du lịch</Link>,
+      icon: <IoLocationOutline />,
+      key: "/admin/destinations",
     },
     {
       label: <Link to="/admin/tour-categories">Danh mục tour</Link>,

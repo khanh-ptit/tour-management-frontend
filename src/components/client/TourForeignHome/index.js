@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { getToursByCategory } from "../../../services/client/home.service";
-import styles from "./TourDomesticHome.module.scss";
+import styles from "./TourForeignHome.module.scss";
 import { Link } from "react-router-dom";
 import { Spin } from "antd";
 
-function TourDomesticHome() {
+function TourForeignHome() {
   const [tours, setTour] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchTours = async () => {
-    const result = await getToursByCategory("tour-trong-nuoc");
+    const result = await getToursByCategory("tour-nuoc-ngoai");
     if (result.code === 200) {
       setTour(result.tours);
       setLoading(false);
@@ -61,7 +61,7 @@ function TourDomesticHome() {
           ))}
         </div>
         <div className="text-center my-2">
-          <Link to="/tour-categories/tour-trong-nuoc">
+          <Link to="/tour-categories/tour-nuoc-ngoai">
             <button className="button button__primary button__primary--outlined">
               Xem thêm
             </button>
@@ -72,4 +72,4 @@ function TourDomesticHome() {
   );
 }
 
-export default TourDomesticHome;
+export default TourForeignHome;

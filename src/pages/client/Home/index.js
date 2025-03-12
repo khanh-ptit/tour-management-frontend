@@ -5,6 +5,8 @@ import { FaLocationDot } from "react-icons/fa6";
 import banner from "../../../images/client/banner.jpg";
 import Sponsor from "../../../components/client/Sponsor";
 import TourDomesticHome from "../../../components/client/TourDomesticHome";
+import TourForeignHome from "../../../components/client/TourForeignHome";
+import DestinationDomestic from "../../../components/client/DestinationDomestic";
 
 const { RangePicker } = DatePicker;
 
@@ -63,6 +65,20 @@ function Home() {
         <div className="container">
           <div className="box-head__title">Tour trong nước</div>
           <TourDomesticHome />
+        </div>
+      </section>
+
+      <section className="box-head section tour-foreign-section">
+        <div className="container">
+          <div className="box-head__title">Tour nước ngoài</div>
+          <TourForeignHome />
+        </div>
+      </section>
+
+      <section className="box-head section destination-section">
+        <div className="container">
+          <div className="box-head__title">Điểm đến trong nước</div>
+          <DestinationDomestic />
         </div>
       </section>
     </>
