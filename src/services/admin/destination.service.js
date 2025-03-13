@@ -1,8 +1,9 @@
 import { del, get, patch, post } from "../../utils/request";
 const prefixAdmin = "api/v1/admin/";
 
-export const getDestinationList = async () => {
-  const result = await get(`${prefixAdmin}destinations`);
+export const getDestinationList = async (params = {}) => {
+  const queryString = new URLSearchParams(params).toString();
+  const result = await get(`${prefixAdmin}destinations?${queryString}`);
   return result;
 };
 

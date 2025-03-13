@@ -22,12 +22,14 @@ import { uploadToCloudinary } from "../../../services/uploadToCloudinary.service
 import { updateTour } from "../../../services/admin/tour.service";
 import { getServiceList } from "../../../services/admin/service.service";
 import { getTourCategoryList } from "../../../services/admin/tour-category.service";
+import { getDestinationList } from "../../../services/admin/destination.service";
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 function ButtonEditTour(props) {
   const [services, setServices] = useState([]);
   const [tourCategories, setTourCategories] = useState([]);
+  const [destinations, setDestinations] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [servicesPrice, setServicesPrice] = useState(0);
   const { record, onReload } = props;
@@ -41,34 +43,32 @@ function ButtonEditTour(props) {
     if (isModalOpen) {
       form.setFieldsValue({
         name: record.name,
-        categoryId: record.categoryId?._id, // Chỉ lấy _id, không truyền object
+        categoryId: record.categoryId?._id || undefined,
+        destinationId: record.destinationId || undefined,
         description: record.description,
-        dates: [dayjs(record.departureDate), dayjs(record.returnDate)], // Chuyển đổi sang dayjs
+        dates: [dayjs(record.departureDate), dayjs(record.returnDate)],
         price: record.price,
         duration: record.duration,
         status: record.status,
         discountPercentage: record.discountPercentage,
-        services: record.services?.map((s) => s._id), // Chỉ lấy danh sách _id của dịch vụ
+        services: record.services?.map((s) => s._id),
       });
+
       setImageUrls(record.images || []);
       setPreviewUrls(record.images || []);
       setTotalPrice(record.totalPrice);
-      const fetchServices = async () => {
-        const result = await getServiceList();
-        if (result) {
-          // console.log(result);
-          setServices(result);
-        }
+
+      const fetchData = async () => {
+        const [servicesRes, categoriesRes, destinationsRes] = await Promise.all(
+          [getServiceList(), getTourCategoryList(), getDestinationList()]
+        );
+
+        setServices(servicesRes);
+        setTourCategories(categoriesRes.tourCategories);
+        setDestinations(destinationsRes.destinations);
       };
-      fetchServices();
-      const fetchTourCategories = async () => {
-        const result = await getTourCategoryList();
-        if (result) {
-          // console.log(result);
-          setTourCategories(result.tourCategories);
-        }
-      };
-      fetchTourCategories();
+
+      fetchData();
     }
   }, [isModalOpen, record]);
 
@@ -189,6 +189,21 @@ function ButtonEditTour(props) {
                     <Select.Option key={item._id} value={item._id}>
                       {item.name}
                     </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                name="destinationId"
+                label="Điểm đến"
+                rules={[{ required: true, message: "Vui lòng chọn điểm đến!" }]}
+              >
+                <Select placeholder="Chọn điểm đến">
+                  {destinations.map((item) => (
+                    <Option key={item._id} value={item._id}>
+                      {item.name}
+                    </Option>
                   ))}
                 </Select>
               </Form.Item>

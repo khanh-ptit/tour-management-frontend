@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { getServiceList } from "../../../services/admin/service.service";
 import { createTour } from "../../../services/admin/tour.service";
 import { getTourCategoryList } from "../../../services/admin/tour-category.service";
+import { getDestinationList } from "../../../services/admin/destination.service";
 // import "./CreateRoom.scss";
 
 const { RangePicker } = DatePicker;
@@ -25,6 +26,7 @@ const { Option } = Select;
 function CreateTour() {
   const [services, setServices] = useState([]);
   const [tourCategories, setTourCategories] = useState([]);
+  const [destinations, setDestinations] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [servicesPrice, setServicesPrice] = useState(0);
 
@@ -46,6 +48,12 @@ function CreateTour() {
       }
     };
     fetchTourCategories();
+    const fetchDestinations = async () => {
+      const result = await getDestinationList();
+      // console.log(result);
+      setDestinations(result.destinations);
+    };
+    fetchDestinations();
   }, []);
 
   const [form] = Form.useForm();
@@ -158,6 +166,19 @@ function CreateTour() {
             >
               <Select>
                 {tourCategories.map((item) => (
+                  <Option value={item._id}>{item.name}</Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item
+              name="destinationId"
+              label="Điểm đến"
+              rules={[{ required: true }]}
+            >
+              <Select>
+                {destinations.map((item) => (
                   <Option value={item._id}>{item.name}</Option>
                 ))}
               </Select>
