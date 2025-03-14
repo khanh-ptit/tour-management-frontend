@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { getTourByCategory } from "../../../services/client/tour.service";
 import { Link, useParams } from "react-router-dom";
-import { Pagination, Select, Spin } from "antd";
+import { Breadcrumb, Pagination, Select, Spin } from "antd";
 import styles from "./Tour.module.scss";
 
 function Tour() {
@@ -22,7 +22,9 @@ function Tour() {
   const [sortOrder, setSortOrder] = useState(null);
 
   useEffect(() => {
-    document.title = `Danh mục | ${title}`;
+    if (title !== "") {
+      document.title = `Danh mục | ${title}`;
+    }
   });
 
   const fetchTours = useCallback(async () => {
@@ -94,6 +96,12 @@ function Tour() {
   return (
     <>
       <div className="container">
+        <Breadcrumb style={{ margin: "16px 0" }}>
+          <Breadcrumb.Item>
+            <Link to="/">Trang chủ</Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>{title}</Breadcrumb.Item>
+        </Breadcrumb>
         <div className={styles["head-control"]}>
           <span className={styles["head-control__title"]}>Sắp xếp theo: </span>
           <span className={styles["select"]}>

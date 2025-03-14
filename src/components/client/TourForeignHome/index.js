@@ -64,7 +64,7 @@ function TourForeignHome() {
           ))}
         </div>
         <div className="text-center my-2">
-          <Link to="/tour-categories/tour-trong-nuoc">
+          <Link to="/tour-categories/tour-nuoc-ngoai">
             <button className="button button__primary button__primary--outlined">
               Xem thêm
             </button>
