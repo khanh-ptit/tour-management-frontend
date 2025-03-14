@@ -83,7 +83,7 @@ function Footer() {
               <div className="box-title mb-2">Hỗ trợ khách hàng:</div>
               <div className="row box-list">
                 <div className="box-item col-12 mb-2">
-                  Khách hàng khởi hành từ:{" "}
+                  Khách hàng khởi hành từ:
                 </div>
                 <div className="contact-list">
                   <div className="contact-item">
@@ -102,7 +102,7 @@ function Footer() {
               </div>
             </div>
             <div className="inner-wrap-box col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
-              <div className="box-title mb-2">Tour nước ngoài</div>
+              <div className="box-title mb-2">Bản đồ</div>
               <div className="row box-list">
                 <div className="box-item col-12">
                   <iframe

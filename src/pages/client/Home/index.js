@@ -75,7 +75,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="box-head section destination-section">
+      <section className="box-head section destination-domestic-section">
         <div className="container">
           <div className="box-head__title">Điểm đến trong nước</div>
           <DestinationDomestic />
