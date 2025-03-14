@@ -17,6 +17,7 @@ import Login from "../pages/client/Login";
 import Home from "../pages/client/Home";
 import Destinations from "../pages/admin/Destination";
 import CreateDestination from "../pages/admin/Destination/create";
+import Tour from "../pages/client/Tour";
 
 export const routes = [
   {
@@ -30,6 +31,10 @@ export const routes = [
           {
             path: "/user/login",
             element: <Login />,
+          },
+          {
+            path: "/tour-categories/:slug",
+            element: <Tour />,
           },
         ],
       },

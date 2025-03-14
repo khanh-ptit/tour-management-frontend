@@ -8,6 +8,7 @@ import TourDomesticHome from "../../../components/client/TourDomesticHome";
 import TourForeignHome from "../../../components/client/TourForeignHome";
 import DestinationDomestic from "../../../components/client/DestinationDomestic";
 import DestinationForeign from "../../../components/client/DestinationForeign";
+import { useEffect } from "react";
 
 const { RangePicker } = DatePicker;
 
@@ -15,6 +16,10 @@ function Home() {
   const handleFinish = (e) => {
     console.log(e);
   };
+
+  useEffect(() => {
+    document.title = "Top Ten Travel - Vòng quanh thế giới";
+  }, []);
 
   return (
     <>

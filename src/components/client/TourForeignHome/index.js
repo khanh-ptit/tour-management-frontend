@@ -31,6 +31,9 @@ function TourForeignHome() {
             >
               <div className={styles["tour__image"]}>
                 <img src={item.images[0]} alt={item.name} />
+                <div className={styles["tour__discountPercentage"]}>
+                  -{item.discountPercentage}%
+                </div>
                 <div className={styles["tour__overlay"]}>
                   <Link to={`tours/detail/${item.slug}`}>
                     <button
@@ -61,7 +64,7 @@ function TourForeignHome() {
           ))}
         </div>
         <div className="text-center my-2">
-          <Link to="/tour-categories/tour-nuoc-ngoai">
+          <Link to="/tour-categories/tour-trong-nuoc">
             <button className="button button__primary button__primary--outlined">
               Xem thêm
             </button>

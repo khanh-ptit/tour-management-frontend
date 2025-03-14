@@ -31,6 +31,9 @@ function TourDomesticHome() {
             >
               <div className={styles["tour__image"]}>
                 <img src={item.images[0]} alt={item.name} />
+                <div className={styles["tour__discountPercentage"]}>
+                  -{item.discountPercentage}%
+                </div>
                 <div className={styles["tour__overlay"]}>
                   <Link to={`tours/detail/${item.slug}`}>
                     <button
