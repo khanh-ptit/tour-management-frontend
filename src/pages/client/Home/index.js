@@ -7,6 +7,7 @@ import Sponsor from "../../../components/client/Sponsor";
 import TourDomesticHome from "../../../components/client/TourDomesticHome";
 import TourForeignHome from "../../../components/client/TourForeignHome";
 import DestinationDomestic from "../../../components/client/DestinationDomestic";
+import DestinationForeign from "../../../components/client/DestinationForeign";
 
 const { RangePicker } = DatePicker;
 
@@ -79,6 +80,13 @@ function Home() {
         <div className="container">
           <div className="box-head__title">Điểm đến trong nước</div>
           <DestinationDomestic />
+        </div>
+      </section>
+
+      <section className="box-head section destination-foreign-section">
+        <div className="container">
+          <div className="box-head__title">Điểm đến nước ngoài</div>
+          <DestinationForeign />
         </div>
       </section>
     </>
