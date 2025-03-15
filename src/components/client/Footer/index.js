@@ -9,8 +9,15 @@ import {
 import { MdWifiCalling3 } from "react-icons/md";
 import "./Footer.scss";
 import logoFooter from "../../../images/client/logo-2.png";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 function Footer() {
+  const domesticTour = useSelector(
+    (state) => state.destinationReducer.domestic
+  );
+  const foreignTour = useSelector((state) => state.destinationReducer.foreign);
+
   return (
     <>
       <footer className="footer">
@@ -19,47 +26,46 @@ function Footer() {
             <div className="inner-wrap-box col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
               <div className="box-title mb-2">Tour trong nước</div>
               <div className="row box-list">
-                <div className="box-item col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                  Du lịch Hà Nội
-                </div>
-                <div className="box-item col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                  Du lịch Hạ Long
-                </div>
-                <div className="box-item col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                  Du lịch Thái Bình
-                </div>
-                <div className="box-item col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                  Du lịch Hà Giang
-                </div>
-                <div className="box-item col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                  Du lịch Đà Lạt
-                </div>
-                <div className="box-item col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                  Du lịch Đà Nẵng
-                </div>
-                <div className="box-item col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                  Du lịch Côn Đảo
-                </div>
-                <div className="box-item col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                  Du lịch Sài Gòn
-                </div>
+                {domesticTour.length > 0 &&
+                  domesticTour.map((item) => (
+                    <div
+                      key={item._id}
+                      className="box-item col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12"
+                    >
+                      <Link
+                        to={`/destinations/${item.slug}`}
+                        style={{
+                          color: "inherit",
+                          textDecoration: "none",
+                        }}
+                      >
+                        Du lịch {item.name}
+                      </Link>
+                    </div>
+                  ))}
               </div>
             </div>
+
             <div className="inner-wrap-box col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
               <div className="box-title mb-2">Tour nước ngoài</div>
               <div className="row box-list">
-                <div className="box-item col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                  Du lịch Hàn Quốc
-                </div>
-                <div className="box-item col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                  Du lịch Nhật Bản
-                </div>
-                <div className="box-item col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                  Du lịch Châu Âu
-                </div>
-                <div className="box-item col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                  Du lịch Châu Phi
-                </div>
+                {foreignTour.length > 0 &&
+                  foreignTour.map((item) => (
+                    <div
+                      key={item._id}
+                      className="box-item col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12"
+                    >
+                      <Link
+                        to={`/destinations/${item.slug}`}
+                        style={{
+                          color: "inherit",
+                          textDecoration: "none",
+                        }}
+                      >
+                        Du lịch {item.name}
+                      </Link>
+                    </div>
+                  ))}
               </div>
             </div>
             <div className="inner-wrap-box col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">

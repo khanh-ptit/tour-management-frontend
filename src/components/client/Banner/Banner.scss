@@ -1,0 +1,73 @@
+@import "../../../styles/theme";
+
+.layout-main {
+  .banner {
+    height: 70vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; // Đảm bảo ảnh không bị tràn ra ngoài
+  }
+
+  .banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block; // Loại bỏ khoảng trắng thừa
+    position: absolute; // Đặt ảnh nền toàn màn hình
+    top: 0;
+    left: 0;
+  }
+
+  .search-tour {
+    max-width: 600px;
+    width: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffffffe6;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10; // Đảm bảo form tìm kiếm hiển thị trên ảnh nền
+  }
+
+  .ant-input-prefix,
+  .ant-picker {
+    color: $primary-color; // Áp dụng màu cho icon
+  }
+
+  .ant-input {
+    padding: 6px !important;
+  }
+
+  .ant-picker-range {
+    padding: 10px;
+  }
+
+  .search__button {
+    height: 40px;
+    // background-color: red;
+  }
+
+  @media screen and (max-width: 992px) {
+    .banner {
+      height: 50vh;
+    }
+
+    .search__button {
+      width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    .banner {
+      height: 40vh;
+    }
+    .search-tour {
+      padding: 20px;
+    }
+  }
+}

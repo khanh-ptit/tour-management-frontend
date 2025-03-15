@@ -38,6 +38,15 @@
   }
 
   .box-list {
+    a {
+      color: inherit; // Giữ màu chữ như ban đầu
+      text-decoration: none; // Xóa gạch chân mặc định
+      display: block !important; // Đảm bảo Link hoạt động như một block để giữ layout của col-*
+
+      &:hover {
+        color: $secondary-color !important;
+      }
+    }
     .box-item {
       font-size: 13.5px;
     }

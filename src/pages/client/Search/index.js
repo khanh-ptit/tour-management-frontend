@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Breadcrumb, Pagination, Select, Spin } from "antd";
+import { getTourByName } from "../../../services/client/tour.service";
+import { Link, useSearchParams } from "react-router-dom";
+import { Pagination, Select, Spin } from "antd";
 import styles from "./Tour.module.scss";
-import { getToursByDestination } from "../../../services/client/destination.service";
 
-function Destination() {
+function Search() {
+  const [searchParams] = useSearchParams(); // Lấy tham số từ URL
+  const tourName = searchParams.get("name") || ""; // Lấy giá trị 'name'
+  const departureDate = searchParams.get("departureDate") || "";
+  const returnDate = searchParams.get("returnDate") || "";
   const [tours, setTours] = useState([]);
-  const { slug } = useParams();
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
 
@@ -23,7 +26,7 @@ function Destination() {
 
   useEffect(() => {
     if (title !== "") {
-      document.title = `Danh sách tour | ${title}`;
+      document.title = `Kết quả tìm kiếm | ${title}`;
     }
   });
 
@@ -39,14 +42,26 @@ function Destination() {
       params.sortKey = sortKey;
       params.sortValue = sortValue;
     }
-    const response = await getToursByDestination(slug, params);
+
+    if (tourName) {
+      params.name = tourName;
+    }
+
+    if (departureDate) {
+      params.departureDate = departureDate;
+    }
+
+    if (returnDate) {
+      params.returnDate = returnDate;
+    }
+    const response = await getTourByName(params);
     if (response.code === 200) {
       setTours(response.tours);
       setObjectPagination((prev) => ({ ...prev, total: response.total }));
       setLoading(false);
       setTitle(response.title);
     }
-  }, [objectPagination.currentPage, sortOrder, slug]);
+  }, [objectPagination.currentPage, sortOrder, tourName]);
 
   useEffect(() => {
     fetchTours();
@@ -96,14 +111,10 @@ function Destination() {
   return (
     <>
       <div className="container">
-        <Breadcrumb className={styles["bread-crumb"]}>
-          <Breadcrumb.Item className={styles["bread-crumb__item"]}>
-            <Link to="/">Trang chủ</Link>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item className={styles["bread-crumb__item"]}>
-            {title}
-          </Breadcrumb.Item>
-        </Breadcrumb>
+        <div className={styles["total-tour"]}>
+          Đã tìm thấy: {objectPagination.total} kết quả phù hợp cho từ khóa{" "}
+          <span>"{tourName}"</span>
+        </div>
         <div className={styles["head-control"]}>
           <span className={styles["head-control__title"]}>Sắp xếp theo: </span>
           <span className={styles["select"]}>
@@ -187,18 +198,20 @@ function Destination() {
                 </div>
               ))}
           </div>
-          <Pagination
-            style={{ marginBottom: "20px" }}
-            align="center"
-            current={objectPagination.currentPage}
-            pageSize={parseInt(objectPagination.pageSize)}
-            total={parseInt(objectPagination.total)}
-            onChange={handlePagination}
-          />
+          {tours.length > 0 && (
+            <Pagination
+              style={{ marginBottom: "20px" }}
+              align="center"
+              current={objectPagination.currentPage}
+              pageSize={parseInt(objectPagination.pageSize)}
+              total={parseInt(objectPagination.total)}
+              onChange={handlePagination}
+            />
+          )}
         </Spin>
       </div>
     </>
   );
 }
 
-export default Destination;
+export default Search;

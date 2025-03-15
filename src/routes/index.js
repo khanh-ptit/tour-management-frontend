@@ -19,6 +19,7 @@ import Destinations from "../pages/admin/Destination";
 import CreateDestination from "../pages/admin/Destination/create";
 import Tour from "../pages/client/Tour";
 import Destination from "../pages/client/Destination";
+import Search from "../pages/client/Search";
 
 export const routes = [
   {
@@ -40,6 +41,10 @@ export const routes = [
           {
             path: "/destinations/:slug",
             element: <Destination />,
+          },
+          {
+            path: "/search",
+            element: <Search />,
           },
         ],
       },

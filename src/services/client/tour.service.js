@@ -7,3 +7,9 @@ export const getTourByCategory = async (slug, params = {}) => {
   const result = await get(`${version}/tour-categories/${slug}?${queryString}`);
   return result;
 };
+
+export const getTourByName = async (params = {}) => {
+  const queryString = new URLSearchParams(params).toString();
+  const result = await get(`${version}/tours?${queryString}`);
+  return result;
+};

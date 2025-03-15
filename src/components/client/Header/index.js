@@ -1,19 +1,99 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import removeAccents from "../../../utils/removeAccents";
 import logoTopTenTravel from "../../../images/client/logoTopTenTravel.png";
-import "./Header.scss";
-import { Badge, Button, Dropdown, Input, Menu, Popover } from "antd";
+import { Badge, Button, Dropdown, Input, List, Menu, Popover } from "antd";
 import {
   ShoppingCartOutlined,
   MenuOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import "./Header.scss";
 
 const { Search } = Input;
 
 function Header() {
+  const destinationsData = useSelector((state) => state.destinationReducer);
+
+  // Chuyển đổi dữ liệu thành mảng
+  const destinations = Array.isArray(destinationsData)
+    ? destinationsData
+    : Object.values(destinationsData).flat();
+
+  const navigate = useNavigate();
+  const suggestionsRef = useRef(null);
+  const inputSearchRef = useRef(null);
+  const [isSuggestionsVisible, setIsSuggestionsVisible] = useState(false);
+  const [keyword, setKeyword] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
   const [bookingCode, setBookingCode] = useState("");
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setKeyword(value);
+
+    // Chuyển đổi chuỗi nhập vào thành dạng không dấu, thay khoảng trắng thành '-'
+    const normalizedValue = removeAccents(value)
+      .toLowerCase()
+      .replace(/\s+/g, "-");
+
+    if (normalizedValue.trim()) {
+      const filtered = destinations.filter((item) => {
+        const normalizedName = removeAccents(item.name).toLowerCase();
+        const normalizedSlug = item.slug.toLowerCase();
+        return (
+          normalizedName.includes(value.toLowerCase()) ||
+          normalizedSlug.includes(normalizedValue)
+        );
+      });
+
+      setSuggestions(filtered);
+      setIsSuggestionsVisible(true);
+    } else {
+      setIsSuggestionsVisible(false);
+      setSuggestions([]);
+    }
+  };
+
+  // Hàm xử lý click bên ngoài
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        suggestionsRef.current &&
+        !suggestionsRef.current.contains(event.target)
+      ) {
+        setIsSuggestionsVisible(false); // Ẩn khối suggestions
+      }
+    };
+
+    // Thêm sự kiện lắng nghe click trên document
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Dọn dẹp sự kiện khi component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleClickTour = () => {
+    setIsSuggestionsVisible(false);
+    setKeyword("");
+  };
+
+  // Hàm xử lý khi nhấn Enter
+  const handleSubmit = () => {
+    if (keyword.trim()) {
+      setIsSuggestionsVisible(false);
+      navigate(`/search?name=${encodeURIComponent(keyword)}`);
+    }
+
+    // Loại bỏ focus khỏi ô input
+    if (inputSearchRef.current) {
+      inputSearchRef.current.input.blur(); // Gọi blur() để loại bỏ focus
+    }
+  };
 
   // Toggle popover
   const togglePopover = () => {
@@ -52,14 +132,6 @@ function Header() {
       />
     </div>
   );
-
-  const handleChange = (e) => {
-    console.log(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    console.log("--------------", e);
-  };
 
   return (
     <header className="header">
@@ -107,13 +179,37 @@ function Header() {
             </div>
 
             {/* Search Box */}
-            <div className="col-xl-6 col-lg-6 col-md-5 col-sm-8 col-7 header__search mt-md-3">
+            <div className="col-xl-6 col-lg-6 col-md-5 col-sm-8 col-7 header__search mt-md-3 position-relative">
               <Search
+                value={keyword}
                 onChange={handleChange}
-                onSubmit={handleSubmit}
+                onSearch={handleSubmit}
                 placeholder="Hôm nay bạn muốn du lịch ở đâu?"
                 enterButton
+                ref={inputSearchRef}
               />
+              {isSuggestionsVisible && suggestions.length > 0 && (
+                <div className="search-suggestions" ref={suggestionsRef}>
+                  {suggestions.map((item, index) => (
+                    <Link
+                      onClick={handleClickTour}
+                      to={`/destinations/${item.slug}`}
+                    >
+                      <div key={index} className="search-suggestions__tour">
+                        <div className="tour__image">
+                          <img src={item.thumbnail} />
+                        </div>
+                        <div className="tour__detail">
+                          <div className="tour__name">{item.name}</div>
+                          <div className="tour__quantity">
+                            {item.quantity} tour
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Booking & Cart */}

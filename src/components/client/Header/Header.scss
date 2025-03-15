@@ -1,5 +1,13 @@
 @import "../../../styles/theme";
 
+// Variables
+$header-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+$header-bg-color: $primary-color;
+$header-text-color: #fff;
+$header-hover-color: #ffffffca;
+$header-border-radius: 8px;
+$header-transition: ease 0.3s;
+
 // Booking search popover
 .search-booking {
   display: flex;
@@ -22,10 +30,10 @@
 }
 
 .header {
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: $header-shadow;
 
   &__top {
-    background-color: $primary-color;
+    background-color: $header-bg-color;
     padding: 10px 0;
 
     .header__menu {
@@ -33,7 +41,7 @@
       padding: 0;
       margin: 0;
       list-style-type: none;
-      justify-content: right;
+      justify-content: flex-end;
       gap: 30px;
 
       .btn-menu {
@@ -43,10 +51,11 @@
       li {
         a {
           text-transform: capitalize;
-          color: #fff;
-          transition: color ease 0.3s;
+          color: $header-text-color;
+          transition: color $header-transition;
+
           &:hover {
-            color: #ffffffca;
+            color: $header-hover-color;
           }
         }
       }
@@ -65,24 +74,30 @@
     .header__search {
       flex: 1;
       display: flex;
+      position: relative;
       align-items: center;
+      padding: 0; // Loại bỏ padding
+      margin: 0; // Loại bỏ margin
 
       .ant-input-wrapper {
         width: 100%;
+        margin: 0; // Loại bỏ margin
+        padding: 0; // Loại bỏ padding
+
         .ant-input {
           height: 40px;
           font-size: 16px;
-          border-radius: 8px;
+          border-radius: $header-border-radius;
         }
 
         .ant-btn {
-          background-color: $primary-color;
-          color: white;
-          border-radius: 8px;
+          background-color: $header-bg-color;
+          color: $header-text-color;
+          border-radius: $header-border-radius;
           height: 40px;
 
           &:hover {
-            background-color: darken($primary-color, 10%);
+            background-color: darken($header-bg-color, 10%);
           }
         }
       }
@@ -90,7 +105,7 @@
 
     .header__cart-icon {
       font-size: 28px;
-      color: $primary-color;
+      color: $header-bg-color;
     }
   }
 }
@@ -112,26 +127,84 @@
   }
 }
 
+.search-suggestions {
+  position: absolute;
+  width: 100%; // Chiều rộng bằng ô tìm kiếm
+  top: 100%; // Đặt ngay dưới ô tìm kiếm
+  left: 0; // Căn chỉnh lại nếu cần
+  transform: translateX(0); // Đảm bảo không bị lệch
+  max-height: 200px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+
+  &__tour {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+
+    .tour__image {
+      width: 100px;
+      aspect-ratio: 16/10;
+      overflow: hidden;
+      margin-right: 20px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+    }
+
+    .tour__detail {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      // flex-direction: column;
+    }
+
+    .tour__name {
+      color: $header-bg-color;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .tour__quantity {
+      color: #000;
+      font-size: 0.85rem;
+    }
+
+    &:hover {
+      background-color: #ddd;
+    }
+  }
+}
+
 /* Dropdown Styles */
 .header__dropdown {
-  border-radius: 8px;
+  border-radius: $header-border-radius;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   min-width: 180px;
   overflow: hidden;
 
   .ant-dropdown-menu {
-    background-color: $primary-color;
-    border-radius: 8px;
+    background-color: $header-bg-color;
+    border-radius: $header-border-radius;
     padding: 5px 0;
 
     .ant-dropdown-menu-item {
-      color: white;
+      color: $header-text-color;
       font-size: 16px;
       padding: 6px 16px;
-      transition: background-color 0.3s ease;
+      transition: background-color $header-transition;
 
       &:hover {
-        background-color: darken($primary-color, 10%);
+        background-color: darken($header-bg-color, 10%);
       }
     }
 
@@ -150,23 +223,23 @@
     }
 
     .btn-menu {
-      background-color: $primary-color !important; // Màu chính của theme
-      color: white !important;
+      background-color: $header-bg-color !important;
+      color: $header-text-color !important;
       border: none !important;
-      border-radius: 8px;
+      border-radius: $header-border-radius;
       padding: 8px 12px;
       font-size: 18px;
       display: flex !important;
       align-items: center;
       justify-content: center;
-      transition: background-color 0.3s ease;
+      transition: background-color $header-transition;
 
       &:hover {
-        background-color: darken($primary-color, 10%) !important;
+        background-color: darken($header-bg-color, 10%) !important;
       }
 
       &:active {
-        background-color: darken($primary-color, 20%) !important;
+        background-color: darken($header-bg-color, 20%) !important;
       }
     }
   }
@@ -177,7 +250,7 @@
     text-align: center;
 
     .header__search {
-      margin: 10px 0px;
+      margin: 10px 0;
     }
 
     .header__booking {
