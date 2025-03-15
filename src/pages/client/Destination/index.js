@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import { getTourByCategory } from "../../../services/client/tour.service";
 import { Link, useParams } from "react-router-dom";
 import { Breadcrumb, Pagination, Select, Spin } from "antd";
 import styles from "./Tour.module.scss";
+import { getToursByDestination } from "../../../services/client/destination.service";
 
-function Tour() {
+function Destination() {
   const [tours, setTours] = useState([]);
   const { slug } = useParams();
   const [loading, setLoading] = useState(true);
@@ -23,7 +23,7 @@ function Tour() {
 
   useEffect(() => {
     if (title !== "") {
-      document.title = `Danh mục | ${title}`;
+      document.title = `Danh sách tour | ${title}`;
     }
   });
 
@@ -39,7 +39,7 @@ function Tour() {
       params.sortKey = sortKey;
       params.sortValue = sortValue;
     }
-    const response = await getTourByCategory(slug, params);
+    const response = await getToursByDestination(slug, params);
     if (response.code === 200) {
       setTours(response.tours);
       setObjectPagination((prev) => ({ ...prev, total: response.total }));
@@ -201,4 +201,4 @@ function Tour() {
   );
 }
 
-export default Tour;
+export default Destination;

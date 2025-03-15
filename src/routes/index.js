@@ -18,6 +18,7 @@ import Home from "../pages/client/Home";
 import Destinations from "../pages/admin/Destination";
 import CreateDestination from "../pages/admin/Destination/create";
 import Tour from "../pages/client/Tour";
+import Destination from "../pages/client/Destination";
 
 export const routes = [
   {
@@ -35,6 +36,10 @@ export const routes = [
           {
             path: "/tour-categories/:slug",
             element: <Tour />,
+          },
+          {
+            path: "/destinations/:slug",
+            element: <Destination />,
           },
         ],
       },
