@@ -53,6 +53,14 @@ function Header() {
     </div>
   );
 
+  const handleChange = (e) => {
+    console.log(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    console.log("--------------", e);
+  };
+
   return (
     <header className="header">
       {/* Top Menu */}
@@ -101,6 +109,8 @@ function Header() {
             {/* Search Box */}
             <div className="col-xl-6 col-lg-6 col-md-5 col-sm-8 col-7 header__search mt-md-3">
               <Search
+                onChange={handleChange}
+                onSubmit={handleSubmit}
                 placeholder="Hôm nay bạn muốn du lịch ở đâu?"
                 enterButton
               />
