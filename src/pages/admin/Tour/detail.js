@@ -104,11 +104,11 @@ function TourDetail() {
                 </p>
                 <p className="tour-detail__departure">
                   <b>Ngày xuất phát:</b>{" "}
-                  {moment(tour.dapartureDate).format("DD/MM/YYYY")}
+                  {moment(tour.departureDate).format("DD/MM/YYYY")}
                 </p>
                 <p className="tour-detail__return">
                   <b>Ngày trở về:</b>{" "}
-                  {moment(tour.departureDate).format("DD/MM/YYYY")}
+                  {moment(tour.returnDate).format("DD/MM/YYYY")}
                 </p>
                 <p className="tour-detail__duration">
                   <b>Thời gian:</b> {tour.duration}

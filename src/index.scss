@@ -29,3 +29,26 @@ code {
 .mb-50 {
   margin-bottom: 50px;
 }
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Ẩn nút up/down trên Firefox */
+  appearance: textfield; /* Ẩn nút up/down trên Chrome, Edge */
+  border: none;
+  outline: none; /* Ẩn hiệu ứng focus */
+  text-align: center;
+  width: 60px;
+  font-size: 16px;
+}
+
+/* Ẩn nút tăng/giảm trên Chrome, Safari, Edge */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Khi input được focus, không hiển thị viền xanh */
+input[type="number"]:focus {
+  outline: none;
+  box-shadow: none;
+}

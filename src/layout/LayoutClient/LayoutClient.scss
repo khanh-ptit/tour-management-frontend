@@ -53,6 +53,25 @@
       }
     }
   }
+
+  &__danger {
+    background-color: red;
+    color: #fff;
+
+    &:hover {
+      background-color: darken(red, 10%);
+    }
+
+    &--outlined {
+      background-color: #fff;
+      border: 2px solid red;
+      color: red;
+
+      &:hover {
+        background-color: darken(#fff, 10%);
+      }
+    }
+  }
 }
 
 .box-head {

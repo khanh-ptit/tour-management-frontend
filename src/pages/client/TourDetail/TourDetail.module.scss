@@ -1,0 +1,145 @@
+@import "../../../styles/theme";
+
+.bread-crumb {
+  margin-top: 1rem;
+
+  &__item {
+    color: $primary-color;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+}
+
+.tour-detail {
+  padding: 20px 0px;
+}
+
+.tour-detail__main-image {
+  width: 100%;
+  aspect-ratio: 16/10;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.tour-detail__thumb-swiper {
+  margin-top: 10px;
+}
+
+.tour-detail__thumb {
+  width: 100%;
+  aspect-ratio: 5/3;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  transition: border 0.3s;
+}
+
+.tour-detail__thumb:hover {
+  border: 2px solid #1890ff;
+}
+
+.tour__content {
+  padding-top: 20px;
+  padding-left: 50px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  .tour__name {
+    color: $primary-color;
+    font-size: 2.2rem;
+    font-weight: 700;
+  }
+
+  .tour__price {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .tour__old-price {
+    text-decoration: line-through;
+    color: #545454;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  .tour__new-price {
+    color: green;
+    font-weight: 600;
+    font-size: 1.5rem;
+  }
+
+  .tour__duration,
+  .tour__departure-date,
+  .tour__return-date {
+    font-size: 1rem;
+    color: #545454;
+  }
+
+  .tour__services {
+    color: #545454;
+  }
+
+  .tour__button {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    &--wrap {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  span {
+    font-weight: 600;
+  }
+}
+
+.tour__description {
+  padding-top: 30px;
+  padding-left: 0;
+  font-size: 1.12rem;
+  span {
+    font-weight: 600;
+  }
+}
+
+.tour__new-price {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .tour__content {
+    padding-left: 10px;
+
+    .tour__name {
+      font-size: 1.8rem;
+    }
+
+    .tour__old-price {
+      font-size: 1rem;
+    }
+
+    .tour__new-price {
+      font-size: 1.3rem;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .tour__content {
+    box-shadow: none;
+  }
+}

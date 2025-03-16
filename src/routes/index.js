@@ -20,6 +20,7 @@ import CreateDestination from "../pages/admin/Destination/create";
 import Tour from "../pages/client/Tour";
 import Destination from "../pages/client/Destination";
 import Search from "../pages/client/Search";
+import TourDetailClient from "../pages/client/TourDetail";
 
 export const routes = [
   {
@@ -45,6 +46,10 @@ export const routes = [
           {
             path: "/search",
             element: <Search />,
+          },
+          {
+            path: "/tours/detail/:slug",
+            element: <TourDetailClient />,
           },
         ],
       },

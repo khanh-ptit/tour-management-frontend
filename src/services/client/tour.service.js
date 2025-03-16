@@ -13,3 +13,8 @@ export const getTourByName = async (params = {}) => {
   const result = await get(`${version}/tours?${queryString}`);
   return result;
 };
+
+export const getTourDetail = async (slug) => {
+  const result = await get(`${version}/tours/detail/${slug}`);
+  return result;
+};
