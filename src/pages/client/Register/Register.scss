@@ -1,32 +1,25 @@
 @import "../../../styles/theme";
 
-.login-client-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-image: url("../../../images/client/banner.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-position: top;
-  min-height: 60vh;
-}
-
-.form-login-client {
+.form-register-client {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 40px;
-  background-color: #ffffffc7;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: #ffffffef;
   border-radius: 8px; /* Bo góc cho form */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
-  width: 100%;
-  max-width: 420px; /* Giới hạn chiều rộng */
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  // max-width: 420px; /* Giới hạn chiều rộng */
 
   &__content {
     width: 100%;
-    max-width: 370px;
+    max-width: 600px;
     margin-left: auto; // Đảm bảo nội dung form cũng được đẩy phải
+    margin-right: auto; // Đảm bảo nội dung form cũng được đẩy phải
 
     h2 {
       text-align: center;

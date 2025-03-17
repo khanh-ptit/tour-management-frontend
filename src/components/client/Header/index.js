@@ -1,20 +1,22 @@
 import { Link, useNavigate } from "react-router-dom";
 import removeAccents from "../../../utils/removeAccents";
 import logoTopTenTravel from "../../../images/client/logoTopTenTravel.png";
-import { Badge, Button, Dropdown, Input, List, Menu, Popover } from "antd";
+import { Badge, Button, Dropdown, Input, Menu, message, Popover } from "antd";
 import {
   ShoppingCartOutlined,
   MenuOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./Header.scss";
+import { logout } from "../../../actions/auth";
 
 const { Search } = Input;
 
 function Header() {
   const destinationsData = useSelector((state) => state.destinationReducer);
+  const dispatch = useDispatch();
 
   // Chuyển đổi dữ liệu thành mảng
   const destinations = Array.isArray(destinationsData)
@@ -29,6 +31,8 @@ function Header() {
   const [suggestions, setSuggestions] = useState([]);
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
   const [bookingCode, setBookingCode] = useState("");
+  const [messageApi, contextHolder] = message.useMessage();
+  const { isAuthenticated } = useSelector((state) => state.authReducer);
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -100,6 +104,16 @@ function Header() {
     setIsPopoverVisible(!isPopoverVisible);
   };
 
+  const handleLogout = () => {
+    if (localStorage.getItem("user") && localStorage.getItem("token")) {
+      dispatch(logout());
+      localStorage.removeItem("user");
+      localStorage.removeItem("token"); // Xóa token
+      messageApi.success("Đăng xuất thành công!"); // Hiển thị thông báo
+      navigate("/"); // Điều hướng về trang chủ
+    }
+  };
+
   // Menu Dropdown
   const menuItems = (
     <Menu className="header__dropdown">
@@ -118,6 +132,11 @@ function Header() {
       <Menu.Item key="5">
         <Link to="/user/login">Đăng nhập</Link>
       </Menu.Item>
+      <Menu.Item key="6">
+        <span onClick={handleLogout} style={{ cursor: "pointer" }}>
+          Đăng xuất
+        </span>
+      </Menu.Item>
     </Menu>
   );
 
@@ -134,114 +153,133 @@ function Header() {
   );
 
   return (
-    <header className="header">
-      {/* Top Menu */}
-      <div className="header__top">
-        <div className="container">
-          <ul className="header__menu">
-            <li>
-              <Link to="/about">Giới thiệu</Link>
-            </li>
-            <li>
-              <Link to="/news">Tin tức</Link>
-            </li>
-            <li>
-              <Link to="/contact">Liên hệ</Link>
-            </li>
-            <li>
-              <Link to="/user/register">Đăng ký</Link>
-            </li>
-            <li>
-              <Link to="/user/login">Đăng nhập</Link>
-            </li>
-            {/* Dropdown menu cho mobile */}
-            <Dropdown
-              overlay={menuItems}
-              trigger={["click"]}
-              placement="bottomRight"
-              overlayClassName="header__dropdown"
-            >
-              <Button className="btn-menu" icon={<MenuOutlined />} />
-            </Dropdown>
-          </ul>
+    <>
+      {contextHolder}
+      <header className="header">
+        {/* Top Menu */}
+        <div className="header__top">
+          <div className="container">
+            <ul className="header__menu">
+              <li>
+                <Link to="/about">Giới thiệu</Link>
+              </li>
+              <li>
+                <Link to="/news">Tin tức</Link>
+              </li>
+              <li>
+                <Link to="/contact">Liên hệ</Link>
+              </li>
+              {!isAuthenticated ? (
+                <>
+                  <li>
+                    <Link to="/user/register">Đăng ký</Link>
+                  </li>
+                  <li>
+                    <Link to="/user/login">Đăng nhập</Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <Link to="/user/profile">Cá nhân</Link>
+                  </li>
+                  <li>
+                    <span onClick={handleLogout} style={{ cursor: "pointer" }}>
+                      Đăng xuất
+                    </span>
+                  </li>
+                </>
+              )}
+
+              {/* Dropdown menu cho mobile */}
+              <Dropdown
+                overlay={menuItems}
+                trigger={["click"]}
+                placement="bottomRight"
+                overlayClassName="header__dropdown"
+              >
+                <Button className="btn-menu" icon={<MenuOutlined />} />
+              </Dropdown>
+            </ul>
+          </div>
         </div>
-      </div>
 
-      {/* Main Header */}
-      <div className="container">
-        <div className="header__main">
-          <div className="row align-items-center text-center text-lg-start">
-            {/* Logo */}
-            <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 header__logo">
-              <Link to="/">
-                <img src={logoTopTenTravel} alt="Logo" />
-              </Link>
-            </div>
+        {/* Main Header */}
+        <div className="container">
+          <div className="header__main">
+            <div className="row align-items-center text-center text-lg-start">
+              {/* Logo */}
+              <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 header__logo">
+                <Link to="/">
+                  <img src={logoTopTenTravel} alt="Logo" />
+                </Link>
+              </div>
 
-            {/* Search Box */}
-            <div className="col-xl-6 col-lg-6 col-md-5 col-sm-8 col-7 header__search mt-md-3 position-relative">
-              <Search
-                value={keyword}
-                onChange={handleChange}
-                onSearch={handleSubmit}
-                placeholder="Hôm nay bạn muốn du lịch ở đâu?"
-                enterButton
-                ref={inputSearchRef}
-              />
-              {isSuggestionsVisible && suggestions.length > 0 && (
-                <div className="search-suggestions" ref={suggestionsRef}>
-                  {suggestions.map((item, index) => (
-                    <Link
-                      onClick={handleClickTour}
-                      to={`/destinations/${item.slug}`}
-                    >
-                      <div key={index} className="search-suggestions__tour">
-                        <div className="tour__image">
-                          <img src={item.thumbnail} />
-                        </div>
-                        <div className="tour__detail">
-                          <div className="tour__name">{item.name}</div>
-                          <div className="tour__quantity">
-                            {item.quantity} tour
+              {/* Search Box */}
+              <div className="col-xl-6 col-lg-6 col-md-5 col-sm-8 col-7 header__search mt-md-3 position-relative">
+                <Search
+                  value={keyword}
+                  onChange={handleChange}
+                  onSearch={handleSubmit}
+                  placeholder="Hôm nay bạn muốn du lịch ở đâu?"
+                  enterButton
+                  ref={inputSearchRef}
+                />
+                {isSuggestionsVisible && suggestions.length > 0 && (
+                  <div className="search-suggestions" ref={suggestionsRef}>
+                    {suggestions.map((item, index) => (
+                      <Link
+                        onClick={handleClickTour}
+                        to={`/destinations/${item.slug}`}
+                      >
+                        <div key={index} className="search-suggestions__tour">
+                          <div className="tour__image">
+                            <img src={item.thumbnail} alt={item.name} />
+                          </div>
+                          <div className="tour__detail">
+                            <div className="tour__name">{item.name}</div>
+                            <div className="tour__quantity">
+                              {item.quantity} tour
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-            {/* Booking & Cart */}
-            <div className="col-xl-3 col-lg-3 col-md-3 col-sm-4 col-5 d-flex justify-content-center align-items-center mt-md-3">
-              {/* Button với Popover */}
-              <Popover
-                content={popoverContent}
-                title="Tra cứu Booking"
-                trigger="click"
-                visible={isPopoverVisible}
-                onVisibleChange={setIsPopoverVisible}
-                placement="bottom"
-              >
-                <button
-                  className="header__booking button button__primary me-3"
-                  onClick={togglePopover}
+              {/* Booking & Cart */}
+              <div className="col-xl-3 col-lg-3 col-md-3 col-sm-4 col-5 d-flex justify-content-center align-items-center mt-md-3">
+                {/* Button với Popover */}
+                <Popover
+                  content={popoverContent}
+                  title="Tra cứu Booking"
+                  trigger="click"
+                  visible={isPopoverVisible}
+                  onVisibleChange={setIsPopoverVisible}
+                  placement="bottom"
                 >
-                  Tra cứu Booking
-                </button>
-              </Popover>
+                  <button
+                    className="header__booking button button__primary me-3"
+                    onClick={togglePopover}
+                  >
+                    Tra cứu Booking
+                  </button>
+                </Popover>
 
-              {/* Giỏ hàng */}
-              <Link to="/carts">
-                <Badge count={5}>
-                  <ShoppingCartOutlined className="header__cart-icon" />
-                </Badge>
-              </Link>
+                {/* Giỏ hàng */}
+                <Link to="/carts">
+                  <Badge count={5}>
+                    <ShoppingCartOutlined className="header__cart-icon" />
+                  </Badge>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 }
 

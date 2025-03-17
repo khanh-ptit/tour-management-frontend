@@ -58,6 +58,16 @@ $header-transition: ease 0.3s;
             color: $header-hover-color;
           }
         }
+
+        span {
+          text-transform: capitalize;
+          color: $header-text-color;
+          transition: color $header-transition;
+
+          &:hover {
+            color: $header-hover-color;
+          }
+        }
       }
     }
   }

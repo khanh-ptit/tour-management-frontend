@@ -3,17 +3,45 @@ import TourDomesticHome from "../../../components/client/TourDomesticHome";
 import TourForeignHome from "../../../components/client/TourForeignHome";
 import DestinationDomestic from "../../../components/client/DestinationDomestic";
 import DestinationForeign from "../../../components/client/DestinationForeign";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Banner from "../../../components/client/Banner";
 import "./Home.scss";
+import { message } from "antd";
 
 function Home() {
+  const [messageApi, contextHolder] = message.useMessage();
+  const [successMessage, setSuccessMessage] = useState("");
+
   useEffect(() => {
     document.title = "Top Ten Travel - Vòng quanh thế giới";
+    const storedMessage = localStorage.getItem("loginClientSuccessMessage");
+
+    if (storedMessage) {
+      setSuccessMessage(storedMessage);
+      localStorage.removeItem("loginClientSuccessMessage");
+    }
+
+    const redirectErrorMessage = localStorage.getItem("redirectErrorMessage");
+    if (redirectErrorMessage) {
+      messageApi.open({
+        type: "error",
+        content: redirectErrorMessage,
+      });
+    }
   }, []);
+
+  useEffect(() => {
+    if (successMessage) {
+      messageApi.open({
+        type: "success",
+        content: successMessage,
+      });
+    }
+  }, [successMessage, messageApi]);
 
   return (
     <>
+      {contextHolder}
       <section className="banner">
         <Banner />
       </section>

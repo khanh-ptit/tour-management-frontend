@@ -59,6 +59,8 @@ function TourDetailClient() {
           foreignTour.some((dest) => dest.name === fetchedDestinationName)
         ) {
           setReferenceSlug("tour-nuoc-ngoai");
+        } else {
+          setLoading(false);
         }
         const fetchReferenceTours = async () => {
           const result = await getTourByCategory(referenceSlug);
@@ -85,8 +87,6 @@ function TourDetailClient() {
     }
     setQuantity((prev) => prev - 1);
   };
-
-  console.log(referenceTours);
 
   return (
     <div className="container">

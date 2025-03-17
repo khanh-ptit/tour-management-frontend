@@ -21,6 +21,9 @@ import Tour from "../pages/client/Tour";
 import Destination from "../pages/client/Destination";
 import Search from "../pages/client/Search";
 import TourDetailClient from "../pages/client/TourDetail";
+import Register from "../pages/client/Register";
+import Profile from "../pages/client/Profile";
+import PrivateRoutesClient from "../components/client/PrivateRoutesClient";
 
 export const routes = [
   {
@@ -34,6 +37,19 @@ export const routes = [
           {
             path: "/user/login",
             element: <Login />,
+          },
+          {
+            path: "/user/register",
+            element: <Register />,
+          },
+          {
+            element: <PrivateRoutesClient />,
+            children: [
+              {
+                path: "/user/profile",
+                element: <Profile />,
+              },
+            ],
           },
           {
             path: "/tour-categories/:slug",
