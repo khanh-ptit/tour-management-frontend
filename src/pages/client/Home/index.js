@@ -15,18 +15,17 @@ function Home() {
   useEffect(() => {
     document.title = "Top Ten Travel - Vòng quanh thế giới";
     const storedMessage = localStorage.getItem("loginClientSuccessMessage");
+    const redirectErrorMessage = localStorage.getItem("redirectErrorMessage");
 
     if (storedMessage) {
       setSuccessMessage(storedMessage);
       localStorage.removeItem("loginClientSuccessMessage");
-    }
-
-    const redirectErrorMessage = localStorage.getItem("redirectErrorMessage");
-    if (redirectErrorMessage) {
+    } else if (redirectErrorMessage) {
       messageApi.open({
         type: "error",
         content: redirectErrorMessage,
       });
+      localStorage.removeItem("redirectErrorMessage");
     }
   }, []);
 

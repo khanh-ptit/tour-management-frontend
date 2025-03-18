@@ -124,9 +124,10 @@ function Register() {
                     </div>
                   </div>
 
-                  <div className="form-register-client__link d-flex justify-content-between flex-wrap mb-2">
-                    <Link to="/user/password/forgot">Quên mật khẩu?</Link>
-                    <Link to="/user/login">Đã có tài khoản?</Link>
+                  <div className="form-register-client__link text-end mb-2">
+                    <Link to="/user/login">
+                      Đã có tài khoản? Đăng nhập tại đây
+                    </Link>
                   </div>
 
                   <Form.Item>

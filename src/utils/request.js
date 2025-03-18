@@ -1,4 +1,9 @@
-const API_DOMAIN = "http://localhost:5000/"; 
+const API_DOMAIN = "http://localhost:5000/";
+
+// Hàm lấy token từ localStorage
+const getToken = () => {
+  return localStorage.getItem("token"); // Lấy token từ localStorage
+};
 
 // Hàm xử lý response & lỗi
 const handleResponse = async (response) => {
@@ -12,22 +17,38 @@ const handleResponse = async (response) => {
 
 // Hàm GET request
 export const get = async (path) => {
+  const token = getToken(); // Lấy token
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`; // Thêm token vào header nếu tồn tại
+  }
+
   const response = await fetch(`${API_DOMAIN}${path}`, {
     method: "GET",
-    credentials: "include", 
+    credentials: "include",
+    headers,
   });
   return handleResponse(response);
 };
 
 // Hàm POST request
 export const post = async (path, options) => {
+  const token = getToken(); // Lấy token
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`; // Thêm token vào header nếu tồn tại
+  }
+
   const response = await fetch(`${API_DOMAIN}${path}`, {
     method: "POST",
-    credentials: "include", // 🚀 Gửi kèm cookies
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
+    credentials: "include",
+    headers,
     body: JSON.stringify(options),
   });
   return handleResponse(response);
@@ -35,13 +56,19 @@ export const post = async (path, options) => {
 
 // Hàm PATCH request
 export const patch = async (path, options) => {
+  const token = getToken(); // Lấy token
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`; // Thêm token vào header nếu tồn tại
+  }
+
   const response = await fetch(`${API_DOMAIN}${path}`, {
     method: "PATCH",
     credentials: "include",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
+    headers,
     body: JSON.stringify(options),
   });
   return handleResponse(response);
@@ -49,9 +76,19 @@ export const patch = async (path, options) => {
 
 // Hàm DELETE request
 export const del = async (path) => {
+  const token = getToken(); // Lấy token
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`; // Thêm token vào header nếu tồn tại
+  }
+
   const response = await fetch(`${API_DOMAIN}${path}`, {
     method: "DELETE",
     credentials: "include",
+    headers,
   });
   return handleResponse(response);
 };

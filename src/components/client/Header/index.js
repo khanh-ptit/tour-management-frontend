@@ -114,9 +114,16 @@ function Header() {
     }
   };
 
+  const handleMenuClick = (e) => {
+    if (e.key === "6") {
+      // Key của Menu.Item đăng xuất
+      handleLogout();
+    }
+  };
+
   // Menu Dropdown
   const menuItems = (
-    <Menu className="header__dropdown">
+    <Menu className="header__dropdown" onClick={handleMenuClick}>
       <Menu.Item key="1">
         <Link to="/about">Giới thiệu</Link>
       </Menu.Item>
@@ -126,17 +133,20 @@ function Header() {
       <Menu.Item key="3">
         <Link to="/contact">Liên hệ</Link>
       </Menu.Item>
-      <Menu.Item key="4">
-        <Link to="/user/register">Đăng ký</Link>
-      </Menu.Item>
-      <Menu.Item key="5">
-        <Link to="/user/login">Đăng nhập</Link>
-      </Menu.Item>
-      <Menu.Item key="6">
-        <span onClick={handleLogout} style={{ cursor: "pointer" }}>
-          Đăng xuất
-        </span>
-      </Menu.Item>
+      {isAuthenticated ? (
+        <Menu.Item key="6">
+          <span style={{ cursor: "pointer" }}>Đăng xuất</span>
+        </Menu.Item>
+      ) : (
+        <>
+          <Menu.Item key="4">
+            <Link to="/user/register">Đăng ký</Link>
+          </Menu.Item>
+          <Menu.Item key="5">
+            <Link to="/user/login">Đăng nhập</Link>
+          </Menu.Item>
+        </>
+      )}
     </Menu>
   );
 
