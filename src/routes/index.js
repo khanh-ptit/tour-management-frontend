@@ -25,6 +25,7 @@ import Register from "../pages/client/Register";
 import Profile from "../pages/client/Profile";
 import PrivateRoutesClient from "../components/client/PrivateRoutesClient";
 import PasswordReset from "../pages/client/PasswordReset";
+import Cart from "../pages/client/Cart";
 
 export const routes = [
   {
@@ -43,7 +44,10 @@ export const routes = [
             path: "/user/register",
             element: <Register />,
           },
-
+          {
+            path: "/cart",
+            element: <Cart />,
+          },
           {
             element: <PrivateRoutesClient />,
             children: [
@@ -51,6 +55,7 @@ export const routes = [
                 path: "/user/profile",
                 element: <Profile />,
               },
+
               {
                 path: "/user/password/reset",
                 element: <PasswordReset />,

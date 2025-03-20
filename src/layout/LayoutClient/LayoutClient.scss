@@ -72,6 +72,25 @@
       }
     }
   }
+
+  &__green {
+    background-color: greenyellow;
+    color: #000;
+
+    &:hover {
+      background-color: darken(greenyellow, 10%);
+    }
+
+    &--outlined {
+      background-color: #fff;
+      border: 2px solid greenyellow;
+      color: greenyellow;
+
+      &:hover {
+        background-color: darken(#fff, 10%);
+      }
+    }
+  }
 }
 
 .box-head {

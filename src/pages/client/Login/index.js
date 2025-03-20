@@ -28,12 +28,12 @@ function Login() {
   const [otpValue, setOtpValue] = useState("");
   const [isOtpVerified, setIsOtpVerified] = useState(false);
 
-  useEffect(() => {
-    if (isAuthenticated === true && !isOtpVerified) {
-      localStorage.setItem("redirectErrorMessage", "Bạn đã đăng nhập rồi!");
-      navigate("/");
-    }
-  }, [isAuthenticated, navigate, isOtpVerified]);
+  // useEffect(() => {
+  //   if (isAuthenticated === true && !isOtpVerified) {
+  //     localStorage.setItem("redirectErrorMessage", "Bạn đã đăng nhập rồi!");
+  //     navigate("/");
+  //   }
+  // }, [isAuthenticated, navigate, isOtpVerified]);
 
   useEffect(() => {
     let timer;
@@ -96,6 +96,7 @@ function Login() {
         form.resetFields();
         localStorage.setItem("loginClientSuccessMessage", response.message);
         dispatch(loginSuccess(response.user));
+        localStorage.setItem("cartId", response.cart._id);
         localStorage.setItem("token", response.token); // Lưu token vào localStorage
         localStorage.setItem("user", JSON.stringify(response.user)); // Lưu user vào localStorage
         messageApi.open({

@@ -11,6 +11,8 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./Header.scss";
 import { logout } from "../../../actions/auth";
+import { getCart } from "../../../services/client/cart.service";
+import { updateCartQuantity } from "../../../actions/cart";
 
 const { Search } = Input;
 
@@ -33,6 +35,27 @@ function Header() {
   const [bookingCode, setBookingCode] = useState("");
   const [messageApi, contextHolder] = message.useMessage();
   const { isAuthenticated } = useSelector((state) => state.authReducer);
+  const { cartQuantity } = useSelector((state) => state.cartReducer);
+  // const [cartQuantity, setCartQuantity] = useState(0);
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const response = await getCart();
+        if (response.code === 200) {
+          dispatch(updateCartQuantity(response.cart.tours.length));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (isAuthenticated) {
+      fetchCart();
+    } else {
+      dispatch(updateCartQuantity(0)); // Reset giỏ hàng khi đăng xuất
+    }
+  }, [isAuthenticated, dispatch]);
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -79,7 +102,7 @@ function Header() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [isAuthenticated]);
 
   const handleClickTour = () => {
     setIsSuggestionsVisible(false);
@@ -107,10 +130,11 @@ function Header() {
   const handleLogout = () => {
     if (localStorage.getItem("user") && localStorage.getItem("token")) {
       dispatch(logout());
+      dispatch(updateCartQuantity(0)); // Reset giỏ hàng về 0
       localStorage.removeItem("user");
-      localStorage.removeItem("token"); // Xóa token
-      messageApi.success("Đăng xuất thành công!"); // Hiển thị thông báo
-      navigate("/"); // Điều hướng về trang chủ
+      localStorage.removeItem("token");
+      messageApi.success("Đăng xuất thành công!");
+      navigate("/");
     }
   };
 
@@ -279,8 +303,8 @@ function Header() {
                 </Popover>
 
                 {/* Giỏ hàng */}
-                <Link to="/carts">
-                  <Badge count={5}>
+                <Link to="/cart">
+                  <Badge count={cartQuantity}>
                     <ShoppingCartOutlined className="header__cart-icon" />
                   </Badge>
                 </Link>
