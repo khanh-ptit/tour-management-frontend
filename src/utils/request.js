@@ -1,4 +1,4 @@
-const API_DOMAIN = "http://localhost:5000/";
+const API_DOMAIN = "https://tour-management-backend-six.vercel.app/";
 
 // Hàm lấy token từ localStorage
 const getToken = () => {
