@@ -8,7 +8,7 @@ import {
   login,
   otpPassword,
 } from "../../../services/client/user.service";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../../actions/auth";
 
 function Login() {
@@ -17,7 +17,7 @@ function Login() {
   const [forgotForm] = Form.useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.authReducer);
+  // const { isAuthenticated } = useSelector((state) => state.authReducer);
 
   // State quản lý Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,7 +26,7 @@ function Login() {
   const [countdown, setCountdown] = useState(180); // 3 phút
   const [isCounting, setIsCounting] = useState(false);
   const [otpValue, setOtpValue] = useState("");
-  const [isOtpVerified, setIsOtpVerified] = useState(false);
+  // const [isOtpVerified, setIsOtpVerified] = useState(false);
 
   // useEffect(() => {
   //   if (isAuthenticated === true && !isOtpVerified) {
@@ -153,7 +153,7 @@ function Login() {
       const response = await otpPassword(data);
       if (response.code === 200) {
         console.log(response);
-        setIsOtpVerified(true);
+        // setIsOtpVerified(true);
         dispatch(loginSuccess(response.user));
         localStorage.setItem("token", response.token); // Lưu token vào localStorage
         localStorage.setItem("user", JSON.stringify(response.user)); // Lưu user vào localStorage

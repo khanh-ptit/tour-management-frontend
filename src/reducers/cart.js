@@ -3,6 +3,8 @@ const cartReducer = (state = 0, action) => {
   switch (action.type) {
     case "UPDATE_CART_QUANTITY":
       return { cartQuantity: action.payload }; // Ghi đè dữ liệu trong nước
+    case "ADD_TOUR_ORDER":
+      return { toursOrder: action.payload }; // Ghi đè dữ liệu trong nước
 
     default:
       return state;

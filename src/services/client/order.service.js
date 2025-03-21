@@ -1,0 +1,12 @@
+import { get, post } from "../../utils/request";
+const version = "api/v1";
+
+export const createOrder = async (options) => {
+  const result = await post(`${version}/orders/create`, options);
+  return result;
+};
+
+export const getOrderDetail = async (id) => {
+  const result = await get(`${version}/orders/detail/${id}`);
+  return result;
+};

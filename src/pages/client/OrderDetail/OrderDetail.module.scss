@@ -1,52 +1,23 @@
 @import "../../../styles/theme";
 
-.bread-crumb {
-  margin-top: 1rem;
-
-  &__item {
-    color: $primary-color;
-    text-transform: uppercase;
-    font-size: 0.8rem;
+.order {
+  &__bold {
     font-weight: 600;
   }
-}
 
-.ant-modal-root {
-  display: block !important;
-}
-
-.page__blank {
-  // background-color: #007bff;
-  width: 100%;
-  height: 50vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  p {
-    font-size: 1.5rem;
-  }
-}
-
-.payment__button {
-  max-width: 80%;
-  display: block;
-  width: 100%;
-  padding: 12px 0px;
-  font-size: 1.1rem;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.cart {
-  &__list {
+  &__wrap {
     // padding:  0;
     max-width: 80%;
     width: 100%;
     margin: auto;
-    overflow-x: auto;
+    // overflow-x: auto;
     white-space: nowrap;
+  }
+
+  &__address {
+    word-wrap: break-word;
+    overflow-wrap: break-word; /* Hỗ trợ thêm */
+    white-space: normal; /* Đảm bảo xuống hàng tự nhiên */
   }
 
   &__head {
@@ -68,14 +39,8 @@
     margin-bottom: 30px;
 
     .tour {
-      &__checkbox {
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-      }
-
       &__image {
-        width: 240px;
+        width: 300px;
         aspect-ratio: 16/10;
 
         img {
@@ -95,43 +60,6 @@
         font-size: 1.6rem;
         color: $primary-color;
         font-weight: 700;
-      }
-
-      .tour__quantity {
-        display: flex;
-        align-items: center;
-        gap: 5px; // Khoảng cách giữa các phần tử
-
-        button {
-          width: 36px; // Đảm bảo nút có kích thước phù hợp
-          height: 36px; // Cùng chiều cao với input
-          background-color: #f8f9fa;
-          border: 1px solid #ddd;
-          cursor: pointer;
-          font-size: 18px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          &:hover {
-            background-color: #e9ecef;
-          }
-        }
-
-        input {
-          width: 50px; // Không quá nhỏ
-          height: 36px; // Cùng chiều cao với button
-          border: 1px solid #ddd;
-          text-align: center;
-          font-size: 16px;
-          border-left: none;
-          border-right: none;
-
-          &:focus {
-            outline: none;
-            border-color: #007bff;
-          }
-        }
       }
 
       &__totalPrice {
@@ -156,16 +84,16 @@
 }
 
 @media screen and (max-width: 1200px) {
-  .cart {
-    &__list {
+  .order {
+    &__wrap {
       max-width: 100%;
     }
   }
 }
 
 @media screen and (max-width: 992px) {
-  .cart {
-    &__list {
+  .order {
+    &__wrap {
       max-width: 100%;
     }
 
@@ -174,12 +102,6 @@
       margin-bottom: 30px;
 
       .tour {
-        &__checkbox {
-          width: 14px;
-          height: 14px;
-          cursor: pointer;
-        }
-
         &__image {
           width: 150px;
         }
@@ -212,8 +134,8 @@
 }
 
 @media screen and (max-width: 768px) {
-  .cart {
-    &__list {
+  .order {
+    &__wrap {
       max-width: 100%;
     }
 
@@ -222,12 +144,6 @@
       margin-bottom: 30px;
 
       .tour {
-        &__checkbox {
-          width: 14px;
-          height: 14px;
-          cursor: pointer;
-        }
-
         &__image {
           width: 100px;
         }
@@ -256,8 +172,8 @@
 }
 
 @media screen and (max-width: 576px) {
-  .cart {
-    &__list {
+  .order {
+    &__wrap {
       max-width: 100%;
     }
 
@@ -266,12 +182,6 @@
       margin-bottom: 30px;
 
       .tour {
-        &__checkbox {
-          width: 14px;
-          height: 14px;
-          cursor: pointer;
-        }
-
         &__image {
           width: 100px;
         }
