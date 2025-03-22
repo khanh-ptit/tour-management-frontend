@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Header from "../../components/client/Header";
 import favicon from "../../images/client/favTopTenTravel.png";
 import Footer from "../../components/client/Footer";
@@ -10,8 +10,14 @@ import {
   setDestinationsDispatch,
   setForeginDestinationsDispatch,
 } from "../../actions/destination";
+import { IoChatbubblesOutline } from "react-icons/io5";
+import ChatPopup from "../../components/client/ChatPopup";
+import { MessageOutlined } from "@ant-design/icons";
+import { FloatButton, Popover } from "antd";
 
 function LayoutClient() {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
   useEffect(() => {
     document.title = "Top Ten Travel - Vòng quanh thế giới";
 
@@ -38,14 +44,33 @@ function LayoutClient() {
     fetchDestinations();
   }, []);
 
+  console.log(isChatOpen);
+
   return (
     <>
       <div className="layout-client">
         <Header />
         <main className="layout-main">
-          <Outlet />
+          <Outlet context={{ setIsChatOpen }} />
         </main>
         <Footer />
+        {/* Nút mở chat */}
+        {/* Popover chứa nội dung chat */}
+        <Popover
+          content={<ChatPopup />}
+          title="Chat Hỗ Trợ"
+          trigger="click"
+          open={isChatOpen}
+          onOpenChange={(open) => setIsChatOpen(open)}
+          placement="top"
+        >
+          {/* FloatButton mở Popover */}
+          <FloatButton
+            icon={<MessageOutlined />}
+            type="primary"
+            style={{ right: 24, bottom: 24, height: "50px", width: "50px" }}
+          />
+        </Popover>
       </div>
     </>
   );

@@ -10,3 +10,8 @@ export const getOrderDetail = async (id) => {
   const result = await get(`${version}/orders/detail/${id}`);
   return result;
 };
+
+export const checkPaymentStatus = async (id) => {
+  const result = await get(`${version}/orders/check-payment/${id}`);
+  return result;
+};

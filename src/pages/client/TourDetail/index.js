@@ -19,6 +19,7 @@ import customStyles from "./Tour.module.scss";
 import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
 import { addToCart, getCart } from "../../../services/client/cart.service";
 import { updateCartQuantity } from "../../../actions/cart";
+import { useOutletContext } from "react-router-dom";
 
 function TourDetailClient() {
   const { slug } = useParams();
@@ -31,6 +32,7 @@ function TourDetailClient() {
   const [loading, setLoading] = useState(false);
   const { isAuthenticated } = useSelector((state) => state.authReducer);
   const [messageApi, contextHolder] = message.useMessage();
+  const { setIsChatOpen } = useOutletContext();
   const dispatch = useDispatch();
 
   const domesticTour = useSelector(
@@ -331,7 +333,10 @@ function TourDetailClient() {
                         </div>
                       </div>
                       <div className={`col-12 mt-2 mb-4`}>
-                        <button className="button button__green w-100">
+                        <button
+                          className="button button__green w-100"
+                          onClick={() => setIsChatOpen(true)}
+                        >
                           <IoChatbubbleEllipsesSharp
                             style={{ fontSize: "24px", marginRight: "5px" }}
                           />
