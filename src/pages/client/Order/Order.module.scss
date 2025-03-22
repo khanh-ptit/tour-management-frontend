@@ -1,0 +1,79 @@
+@import "../../../styles/theme";
+
+.bread-crumb {
+  margin-top: 1rem;
+
+  &__item {
+    color: $primary-color;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+}
+
+.head-control {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+
+  &__title {
+    text-transform: uppercase;
+    font-size: 1rem;
+    color: $primary-color;
+    font-weight: 700;
+  }
+  margin: 20px 0px;
+
+  .select {
+    width: 20%;
+  }
+
+  @media screen and (max-width: 768px) {
+    .select {
+      width: 20%;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .head-control__title {
+    width: 100%;
+  }
+  .head-control {
+    gap: 10px;
+
+    .select {
+      width: 30%;
+    }
+  }
+}
+
+.order {
+  &__bold {
+    font-weight: 600;
+  }
+
+  &__item {
+    max-width: 80%;
+    width: 100%;
+    margin: auto;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    // box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  }
+
+  &__totalPrice {
+    color: red;
+    font-weight: 600;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .order {
+    &__item {
+      max-width: 100%;
+    }
+  }
+}

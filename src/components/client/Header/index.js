@@ -2,11 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import removeAccents from "../../../utils/removeAccents";
 import logoTopTenTravel from "../../../images/client/logoTopTenTravel.png";
 import { Badge, Button, Dropdown, Input, Menu, message, Popover } from "antd";
-import {
-  ShoppingCartOutlined,
-  MenuOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
+import { ShoppingCartOutlined, MenuOutlined } from "@ant-design/icons";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./Header.scss";
@@ -31,12 +27,9 @@ function Header() {
   const [isSuggestionsVisible, setIsSuggestionsVisible] = useState(false);
   const [keyword, setKeyword] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const [isPopoverVisible, setIsPopoverVisible] = useState(false);
-  const [bookingCode, setBookingCode] = useState("");
   const [messageApi, contextHolder] = message.useMessage();
   const { isAuthenticated } = useSelector((state) => state.authReducer);
   const { cartQuantity } = useSelector((state) => state.cartReducer);
-  // const [cartQuantity, setCartQuantity] = useState(0);
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -122,11 +115,6 @@ function Header() {
     }
   };
 
-  // Toggle popover
-  const togglePopover = () => {
-    setIsPopoverVisible(!isPopoverVisible);
-  };
-
   const handleLogout = () => {
     if (localStorage.getItem("user") && localStorage.getItem("token")) {
       dispatch(logout());
@@ -172,18 +160,6 @@ function Header() {
         </>
       )}
     </Menu>
-  );
-
-  // Nội dung popover (input nhập mã booking)
-  const popoverContent = (
-    <div className="search-booking">
-      <Input
-        placeholder="Nhập mã booking"
-        value={bookingCode}
-        onChange={(e) => setBookingCode(e.target.value)}
-        suffix={<SearchOutlined style={{ cursor: "pointer" }} />}
-      />
-    </div>
   );
 
   return (
@@ -286,21 +262,13 @@ function Header() {
               {/* Booking & Cart */}
               <div className="col-xl-3 col-lg-3 col-md-3 col-sm-4 col-5 d-flex justify-content-center align-items-center mt-md-3">
                 {/* Button với Popover */}
-                <Popover
-                  content={popoverContent}
-                  title="Tra cứu Booking"
-                  trigger="click"
-                  visible={isPopoverVisible}
-                  onVisibleChange={setIsPopoverVisible}
-                  placement="bottom"
+
+                <Link
+                  className="header__booking button button__primary me-3"
+                  to={"/orders"}
                 >
-                  <button
-                    className="header__booking button button__primary me-3"
-                    onClick={togglePopover}
-                  >
-                    Tra cứu Booking
-                  </button>
-                </Popover>
+                  Tra cứu Booking
+                </Link>
 
                 {/* Giỏ hàng */}
                 <Link to="/cart">

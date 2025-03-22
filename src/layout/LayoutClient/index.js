@@ -10,7 +10,6 @@ import {
   setDestinationsDispatch,
   setForeginDestinationsDispatch,
 } from "../../actions/destination";
-import { IoChatbubblesOutline } from "react-icons/io5";
 import ChatPopup from "../../components/client/ChatPopup";
 import { MessageOutlined } from "@ant-design/icons";
 import { FloatButton, Popover } from "antd";
@@ -19,7 +18,9 @@ function LayoutClient() {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   useEffect(() => {
-    document.title = "Top Ten Travel - Vòng quanh thế giới";
+    if (document.title !== "Giỏ hàng") {
+      document.title = "Top Ten Travel - Vòng quanh thế giới";
+    }
 
     const link = document.querySelector("link[rel~='icon']");
     if (link) {
@@ -43,8 +44,6 @@ function LayoutClient() {
     };
     fetchDestinations();
   }, []);
-
-  console.log(isChatOpen);
 
   return (
     <>

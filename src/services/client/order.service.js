@@ -6,6 +6,12 @@ export const createOrder = async (options) => {
   return result;
 };
 
+export const getOrderList = async (params = {}) => {
+  const queryString = new URLSearchParams(params).toString();
+  const result = await get(`${version}/orders?${queryString}`);
+  return result;
+};
+
 export const getOrderDetail = async (id) => {
   const result = await get(`${version}/orders/detail/${id}`);
   return result;

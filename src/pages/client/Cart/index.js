@@ -18,7 +18,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import styles from "./Cart.module.scss";
-import { addToursOrder, updateCartQuantity } from "../../../actions/cart";
+import { updateCartQuantity } from "../../../actions/cart";
 import { createOrder } from "../../../services/client/order.service";
 const { Option } = Select;
 
@@ -41,6 +41,11 @@ function Cart() {
 
   const [selectedProvince, setSelectedProvince] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
+
+  useEffect(() => {
+    document.title = "Giỏ hàng";
+    console.log("Title sau khi đặt trong useEffect:", document.title);
+  }, []);
 
   // Fetch danh sách tỉnh/thành phố
   useEffect(() => {

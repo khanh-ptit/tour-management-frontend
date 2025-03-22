@@ -1,4 +1,4 @@
-import { message, Tag } from "antd";
+import { message, Spin, Tag } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -16,6 +16,7 @@ function OrderDetail() {
   const isPaidRef = useRef(null); // Lưu trạng thái thanh toán trước đó
 
   useEffect(() => {
+    document.title = "Thông tin đơn hàng";
     const createOrderSuccessMessage = localStorage.getItem(
       "createOrderSuccessMessage"
     );
@@ -38,7 +39,7 @@ function OrderDetail() {
     };
 
     fetchOrder();
-  }, [id]); // ❌ Xóa `order` khỏi dependency để tránh fetch liên tục
+  }, [id, messageApi]); // ❌ Xóa `order` khỏi dependency để tránh fetch liên tục
 
   useEffect(() => {
     if (!order || order.isPaid) return; // Dừng nếu order chưa có hoặc đã thanh toán
@@ -56,9 +57,9 @@ function OrderDetail() {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [id, order]); // ⚠️ Vẫn giữ `id` nhưng tránh phụ thuộc vào `order` để tránh re-fetch
+  }, [id, order, messageApi]); // ⚠️ Vẫn giữ `id` nhưng tránh phụ thuộc vào `order` để tránh re-fetch
 
-  if (!order) return <p>Đang tải...</p>;
+  if (!order) return <Spin spinning={!order} tip="Đang tải dữ liệu..."></Spin>;
 
   return (
     <>
@@ -72,7 +73,13 @@ function OrderDetail() {
               </div>
             </div>
             <div className={`row ${styles["order__info"]}`}>
-              <div className="col-8">
+              <div className="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+                <div className={`mb-1 ${styles["order__id"]}`}>
+                  <span className={`${styles["order__bold"]}`}>
+                    Mã đơn hàng:{" "}
+                  </span>
+                  {order._id}
+                </div>
                 <div className={`mb-1 ${styles["order__name"]}`}>
                   <span className={`${styles["order__bold"]}`}>
                     Họ và tên:{" "}
@@ -103,8 +110,14 @@ function OrderDetail() {
                     </Tag>
                   )}
                 </div>
+                <div className={`mb-1 ${styles["order__create"]}`}>
+                  <span className={`${styles["order__bold"]}`}>
+                    Thời gian tạo:{" "}
+                  </span>
+                  {moment(order.createdAt).format("HH:MM DD/MM/YYYY")}
+                </div>
               </div>
-              <div className="col-4">
+              <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                 {!order.isPaid && !!paymentUrl && (
                   <>
                     <img
