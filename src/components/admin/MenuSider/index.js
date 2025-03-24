@@ -12,7 +12,10 @@ import {
   ContactsOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { IoLocationOutline } from "react-icons/io5";
+import {
+  IoLocationOutline,
+  IoChatbubbleEllipsesOutline,
+} from "react-icons/io5";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./MenuSider.scss";
 import { logout } from "../../../services/admin/auth.service";
@@ -74,7 +77,12 @@ function MenuSider() {
       key: "/admin/services",
     },
     {
-      label: <Link to="/admin/accounts">Tài khoản admin</Link>,
+      label: <Link to="/admin/chats">CSKH (Chat) </Link>,
+      icon: <IoChatbubbleEllipsesOutline />,
+      key: "/admin/chats",
+    },
+    {
+      label: <Link to="/admin/accounts">Сhăm sóc khách hàng</Link>,
       icon: <ContactsOutlined />,
       key: "/admin/accounts",
     },

@@ -7,7 +7,7 @@ import { getRoomChatUserId } from "../../../services/client/room.service";
 import { getChatByRoom } from "../../../services/client/chat.service";
 
 function ChatPopup({ isChatOpen, setIsChatOpen }) {
-  const socket = useSocket();
+  const { socket } = useSocket();
   const [roomChatTitle, setRoomChatTitle] = useState(null);
   const [messageApi, contextHolder] = message.useMessage();
   const [chatMessages, setChatMessages] = useState([]);
@@ -62,12 +62,12 @@ function ChatPopup({ isChatOpen, setIsChatOpen }) {
   }, [socket, roomChatId]);
 
   const scrollToBottom = () => {
-    setTimeout(() => {
-      const chatContainer = document.querySelector(".chat-messages");
-      if (chatContainer) {
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-      }
-    }, 50);
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
   };
 
   useEffect(() => {
@@ -105,7 +105,6 @@ function ChatPopup({ isChatOpen, setIsChatOpen }) {
         open={isChatOpen}
         onOpenChange={(open) => setIsChatOpen(open)}
         placement="top"
-        // getPopupContainer={(triggerNode) => triggerNode.parentNode}
         content={
           <div className="chat-container">
             <div className="chat-messages">

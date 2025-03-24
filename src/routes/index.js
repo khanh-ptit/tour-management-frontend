@@ -28,6 +28,7 @@ import PasswordReset from "../pages/client/PasswordReset";
 import Cart from "../pages/client/Cart";
 import Order from "../pages/client/Order";
 import OrderDetail from "../pages/client/OrderDetail";
+import ChatAdmin from "../pages/admin/Chat";
 
 export const routes = [
   {
@@ -117,6 +118,10 @@ export const routes = [
           {
             path: "rooms/create",
             element: <CreateRoom />,
+          },
+          {
+            path: "chats",
+            element: <ChatAdmin />,
           },
           {
             path: "rooms/detail/:slug",
