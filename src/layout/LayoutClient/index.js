@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "../../components/client/Header";
 import favicon from "../../images/client/favTopTenTravel.png";
 import Footer from "../../components/client/Footer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 import "./LayoutClient.scss";
 import { getDestination } from "../../services/client/home.service";
@@ -11,11 +11,10 @@ import {
   setForeginDestinationsDispatch,
 } from "../../actions/destination";
 import ChatPopup from "../../components/client/ChatPopup";
-import { MessageOutlined } from "@ant-design/icons";
-import { FloatButton, Popover } from "antd";
 
 function LayoutClient() {
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const { isAuthenticated } = useSelector((state) => state.authReducer);
 
   useEffect(() => {
     if (document.title !== "Giỏ hàng") {
@@ -53,23 +52,9 @@ function LayoutClient() {
           <Outlet context={{ setIsChatOpen }} />
         </main>
         <Footer />
-        {/* Nút mở chat */}
-        {/* Popover chứa nội dung chat */}
-        <Popover
-          content={<ChatPopup />}
-          title="Chat Hỗ Trợ"
-          trigger="click"
-          open={isChatOpen}
-          onOpenChange={(open) => setIsChatOpen(open)}
-          placement="top"
-        >
-          {/* FloatButton mở Popover */}
-          <FloatButton
-            icon={<MessageOutlined />}
-            type="primary"
-            style={{ right: 24, bottom: 24, height: "50px", width: "50px" }}
-          />
-        </Popover>
+        {isAuthenticated && (
+          <ChatPopup isChatOpen={isChatOpen} setIsChatOpen={setIsChatOpen} />
+        )}
       </div>
     </>
   );

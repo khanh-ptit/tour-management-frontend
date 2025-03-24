@@ -8,6 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 import { createStore } from "redux";
 import allReducers from "./reducers";
 import { Provider } from "react-redux";
+import { SocketProvider } from "./context/SocketContext"; // Import SocketProvider
 
 // Lấy state từ localStorage (nếu có)
 const persistedState = localStorage.getItem("reduxState")
@@ -25,9 +26,11 @@ store.subscribe(() => {
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <SocketProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </SocketProvider>
   </Provider>
 );
 
