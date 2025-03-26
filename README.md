@@ -49,7 +49,7 @@ Tour Booking Website is a full-stack web application that allows users to browse
 
 - **Tour Browsing & Searching**: View available tours, filter by price, location, and category.
 - **Tour Booking**: Users can book tours online with real-time availability updates.
-- **Online Payment**: Secure payment via VNPay gateway.
+- **Online Payment**: Secure payment via SEPay gateway.
 - **Live Chat Support**: Integrated chat system allows users to communicate with admins before booking.
 - **Order Management**: View booking history and payment status.
 
@@ -67,7 +67,7 @@ Tour Booking Website is a full-stack web application that allows users to browse
 - Node.js (v16+)
 - MongoDB
 - Cloudinary account for image storage
-- VNPay account for payment integration
+- SEPay account for payment integration
 
 ### Installation
 

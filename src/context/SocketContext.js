@@ -9,7 +9,8 @@ export const SocketProvider = ({ children }) => {
   const [tokenUser, setTokenUser] = useState(null);
 
   useEffect(() => {
-    const SOCKET_URL = "http://localhost:5000"; // Thay bằng URL backend
+    const SOCKET_URL =
+      process.env.REACT_APP_SOCKET_URL || "http://localhost:5000";
 
     // Hàm lấy token từ cookie
     const getTokenFromCookie = (name) => {
@@ -30,15 +31,15 @@ export const SocketProvider = ({ children }) => {
     // Kết nối socket và gửi cả hai token cho backend
     const newSocket = io(SOCKET_URL, {
       auth: {
-        token: tokenFromLocalStorage, // Token của user (nếu có)
-        tokenAdmin: tokenFromCookie, // Token admin (nếu có)
+        token: tokenFromLocalStorage, // Token của user
+        tokenAdmin: tokenFromCookie, // Token admin
       },
     });
 
     setSocket(newSocket);
-    window.socket = newSocket; // Debug trên console
+    window.socket = newSocket;
 
-    return () => newSocket.disconnect(); // Ngắt kết nối khi unmount
+    return () => newSocket.disconnect();
   }, []);
 
   return (

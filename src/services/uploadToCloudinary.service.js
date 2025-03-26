@@ -4,13 +4,21 @@ export const uploadToCloudinary = async (file) => {
     return null;
   }
 
+  const CLOUD_NAME = process.env.REACT_APP_CLOUD_NAME;
+  const UPLOAD_PRESET = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
+
+  if (!CLOUD_NAME || !UPLOAD_PRESET) {
+    console.error("Missing Cloudinary environment variables.");
+    return null;
+  }
+
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("upload_preset", "quockhanhvhs"); // Đổi nếu cần
+  formData.append("upload_preset", UPLOAD_PRESET);
 
   try {
     const response = await fetch(
-      "https://api.cloudinary.com/v1_1/dk8jxr6be/image/upload",
+      `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
       {
         method: "POST",
         body: formData,
