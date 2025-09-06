@@ -94,15 +94,15 @@ function Footer() {
                 <div className="contact-list">
                   <div className="contact-item">
                     <MdWifiCalling3 />
-                    <span>Tour nước ngoài: 0989.633.678</span>
+                    <span>Tour nước ngoài: 0989.633.789</span>
                   </div>
                   <div className="contact-item">
                     <MdWifiCalling3 />
-                    <span>Tour trong nước: 0989.633.678</span>
+                    <span>Tour trong nước: 0989.633.123</span>
                   </div>
                   <div className="contact-item">
                     <MdWifiCalling3 />
-                    <span>Dịch vụ phòng: 0989.633.678</span>
+                    <span>Dịch vụ phòng: 0989.633.456</span>
                   </div>
                 </div>
               </div>

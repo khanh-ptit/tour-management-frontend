@@ -28,7 +28,6 @@ function Cart() {
   const [deletingIndex, setDeletingIndex] = useState(null); // Xóa bằng nút thùng rác
   const [subtractIndex, setSubtractIndex] = useState(null); // Xóa bằng nút giảm số lượng
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [totalCartPrice, setTotalCartPrice] = useState(0);
   const [messageApi, contextHolder] = message.useMessage();
   const [selectedTours, setSelectedTours] = useState([]);
   const dispatch = useDispatch();
@@ -44,7 +43,6 @@ function Cart() {
 
   useEffect(() => {
     document.title = "Giỏ hàng";
-    console.log("Title sau khi đặt trong useEffect:", document.title);
   }, []);
 
   // Fetch danh sách tỉnh/thành phố

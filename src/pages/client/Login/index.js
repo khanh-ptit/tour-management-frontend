@@ -61,6 +61,13 @@ function Login() {
       });
       localStorage.removeItem("resetPasswordSuccessMessage");
     }
+    if (localStorage.getItem("loginFirstMessage")) {
+      messageApi.open({
+        type: "error",
+        content: localStorage.getItem("loginFirstMessage"),
+      });
+      localStorage.removeItem("loginFirstMessage");
+    }
   }, [messageApi]);
 
   // Xử lý mở Modal

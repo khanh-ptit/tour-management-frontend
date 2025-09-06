@@ -30,6 +30,12 @@
       color: $primary-color;
       font-weight: 600;
     }
+
+    &--count-down {
+      font-size: 1.2rem;
+      color: red;
+      font-weight: 600;
+    }
   }
 
   &__item {

@@ -4,12 +4,21 @@ import { FaLocationDot } from "react-icons/fa6";
 import banner from "../../../images/client/banner.jpg";
 import { useNavigate } from "react-router-dom";
 import "./Banner.scss";
+import { message } from "antd";
 const { RangePicker } = DatePicker;
 
 function Banner() {
   const navigate = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
+
   const handleFinish = (e) => {
-    // console.log(e);
+    if (!e.location) {
+      messageApi.open({
+        type: "error",
+        content: "Vui lòng nhập địa điểm!",
+      });
+      return;
+    }
     const params = new URLSearchParams();
 
     if (e.location) {
@@ -28,6 +37,7 @@ function Banner() {
 
   return (
     <>
+      {contextHolder}
       <div className="container-fluid">
         <img src={banner} alt="Banner" className="banner-img" />
         <div className="search-tour">

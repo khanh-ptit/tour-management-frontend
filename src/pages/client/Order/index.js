@@ -10,6 +10,7 @@ function Order() {
   const [loading, setLoading] = useState(true);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedPrice, setSelectedPrice] = useState(null);
+  const [paidStatus, setPaidStatus] = useState(null);
   const [sortOrder, setSortOrder] = useState(null);
   const [objectPagination, setObjectPagination] = useState({
     total: 0,
@@ -34,6 +35,11 @@ function Order() {
         params.sortKey = sortKey;
         params.sortValue = sortValue;
       }
+
+      if (paidStatus !== null) {
+        params.paidStatus = paidStatus;
+      }
+
       const response = await getOrderList(params);
       if (response.code === 200) {
         setOrders(response.orders);
@@ -51,13 +57,12 @@ function Order() {
     objectPagination.pageSize,
     messageApi,
     sortOrder,
+    paidStatus,
   ]);
 
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders]);
-
-  // console.log(objectPagination);
 
   const handleSort = (type, value) => {
     if (!value) {
@@ -84,8 +89,16 @@ function Order() {
     }
   };
 
+  const handleFilter = (value) => {
+    if (!value) {
+      setPaidStatus(null);
+      setOrders(orders);
+      return;
+    }
+    setPaidStatus(value);
+  };
+
   const handlePagination = async (value) => {
-    console.log(value);
     setObjectPagination((prev) => ({ ...prev, currentPage: parseInt(value) }));
   };
 
@@ -104,7 +117,19 @@ function Order() {
           </Breadcrumb>
           <div className={styles["head-control"]}>
             <span className={styles["head-control__title"]}>
-              Sắp xếp theo:{" "}
+              Bộ lọc và sắp xếp :{" "}
+            </span>
+            <span className={styles["select"]}>
+              <Select
+                style={{ width: "100%" }}
+                value={paidStatus}
+                onChange={(value) => handleFilter(value)}
+                placeholder="Trạng thái"
+                allowClear
+              >
+                <Select.Option value="paid">Đã thanh toán</Select.Option>
+                <Select.Option value="unPaid">Chưa thanh toán</Select.Option>
+              </Select>
             </span>
             <span className={styles["select"]}>
               <Select

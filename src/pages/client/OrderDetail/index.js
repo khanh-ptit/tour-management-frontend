@@ -1,4 +1,4 @@
-import { message, Spin, Tag } from "antd";
+import { message, Modal, Spin, Tag } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -13,6 +13,9 @@ function OrderDetail() {
   const [messageApi, contextHolder] = message.useMessage();
   const [order, setOrder] = useState(null);
   const [paymentUrl, setPaymentUrl] = useState(null);
+  const [countdown, setCountdown] = useState(180);
+  const [showPayment, setShowPayment] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const isPaidRef = useRef(null); // Lưu trạng thái thanh toán trước đó
 
   useEffect(() => {
@@ -39,7 +42,25 @@ function OrderDetail() {
     };
 
     fetchOrder();
-  }, [id, messageApi]); // ❌ Xóa `order` khỏi dependency để tránh fetch liên tục
+  }, [id, messageApi]);
+
+  useEffect(() => {
+    if (!order || order.isPaid || !paymentUrl) return;
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          setShowPayment(false);
+          setIsModalOpen(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [order, paymentUrl]);
 
   useEffect(() => {
     if (!order || order.isPaid) return; // Dừng nếu order chưa có hoặc đã thanh toán
@@ -57,9 +78,15 @@ function OrderDetail() {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [id, order, messageApi]); // ⚠️ Vẫn giữ `id` nhưng tránh phụ thuộc vào `order` để tránh re-fetch
+  }, [id, order, messageApi]);
 
   if (!order) return <Spin spinning={!order} tip="Đang tải dữ liệu..."></Spin>;
+
+  const formatTime = (seconds) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s < 10 ? "0" + s : s}`;
+  };
 
   return (
     <>
@@ -118,14 +145,22 @@ function OrderDetail() {
                 </div>
               </div>
               <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                {!order.isPaid && !!paymentUrl && (
-                  <>
-                    <img
-                      src={paymentUrl}
-                      alt="QR Code"
-                      style={{ width: "200px", height: "200px" }}
-                    />
-                  </>
+                {!order.isPaid && !!paymentUrl && showPayment && (
+                  <div className="row">
+                    <div className="col-12 text-center">
+                      <img
+                        src={paymentUrl}
+                        alt="QR Code"
+                        style={{ width: "200px", height: "200px" }}
+                      />
+                    </div>
+
+                    <div
+                      className={`mt-2 text-center ${styles["order__head--count-down"]}`}
+                    >
+                      Phiên thanh toán sẽ hết hạn sau: {formatTime(countdown)}
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
@@ -186,6 +221,21 @@ function OrderDetail() {
           </div>
         </div>
       )}
+      <Modal
+        title="Thông báo"
+        open={isModalOpen}
+        onOk={() => {
+          setIsModalOpen(false);
+          window.location.reload(); // ✅ reload lại trang khi xác nhận
+        }}
+        onCancel={() => setIsModalOpen(false)}
+        okText="Tải lại"
+        cancelText="Đóng"
+      >
+        <p>
+          Phiên thanh toán đã hết hạn, vui lòng tải lại trang để lấy mã QR mới.
+        </p>
+      </Modal>
     </>
   );
 }

@@ -145,7 +145,11 @@ function Tour() {
             </Select>
           </span>
         </div>
-        <Spin spinning={loading} tip="Đang tải dữ liệu...">
+        <Spin
+          spinning={loading}
+          tip="Đang tải dữ liệu..."
+          wrapperClassName={styles["tour__spin-wrapper"]}
+        >
           <div className={`row ${styles["tour__list"]}`}>
             {tours.length > 0 &&
               tours.map((item) => (

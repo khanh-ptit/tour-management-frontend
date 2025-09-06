@@ -138,6 +138,17 @@ function TourDetailClient() {
     }
   };
 
+  const handleChatButton = () => {
+    if (!isAuthenticated) {
+      messageApi.open({
+        type: "error",
+        content: "Vui lòng đăng nhập để chat với admin!",
+      });
+    } else {
+      setIsChatOpen(true);
+    }
+  };
+
   return (
     <>
       {contextHolder}
@@ -335,7 +346,8 @@ function TourDetailClient() {
                       <div className={`col-12 mt-2 mb-4`}>
                         <button
                           className="button button__green w-100"
-                          onClick={() => setIsChatOpen(true)}
+                          // onClick={() => setIsChatOpen(true)}
+                          onClick={handleChatButton}
                         >
                           <IoChatbubbleEllipsesSharp
                             style={{ fontSize: "24px", marginRight: "5px" }}
@@ -350,75 +362,70 @@ function TourDetailClient() {
                     {tour.description}
                   </div>
                 </div>
-                <div className={`${styles["tour-reference"]}`}>
-                  <div className="box-head__title">Có thể bạn quan tâm</div>
-                  <div className={`row ${customStyles["tour__list"]} mb-4`}>
-                    <Swiper
-                      spaceBetween={20} // Khoảng cách giữa các item
-                      slidesPerView={1} // Mặc định hiển thị 1 item trên mobile
-                      navigation // Thêm nút next/prev
-                      pagination={{ clickable: true }} // Thêm dấu chấm bên dưới
-                      breakpoints={{
-                        640: { slidesPerView: 2 }, // 2 item khi màn hình >= 640px
-                        1024: { slidesPerView: 3 }, // 3 item khi màn hình >= 1024px
-                        1200: { slidesPerView: 4 }, // 4 item khi màn hình >= 1200px
-                      }}
-                      modules={[Navigation, Pagination]}
-                      className={customStyles["tour__swiper"]}
-                    >
-                      {referenceTours.map((item) => (
-                        <SwiperSlide key={item._id}>
-                          <div className={`${customStyles["tour__item"]}`}>
-                            <div className={customStyles["tour__image"]}>
-                              <img src={item.images[0]} alt={item.name} />
-                              <div
-                                className={
-                                  customStyles["tour__discountPercentage"]
-                                }
-                              >
-                                -{item.discountPercentage}%
-                              </div>
-                              <div className={customStyles["tour__overlay"]}>
-                                <Link to={`/tours/detail/${item.slug}`}>
-                                  <button
-                                    className={`button button__primary ${customStyles["tour__button"]}`}
-                                  >
-                                    Xem chi tiết
-                                  </button>
-                                </Link>
-                                <button
-                                  className={`button ${customStyles["tour__button"]}`}
-                                >
-                                  Thêm vào giỏ hàng
-                                </button>
-                              </div>
-                            </div>
-
-                            <div className={customStyles["tour__content"]}>
-                              <div className={customStyles["tour__title"]}>
-                                {item.name}
-                              </div>
-                              <div className={customStyles["tour__old-price"]}>
-                                Giá niêm yết: {item.totalPrice.toLocaleString()}{" "}
-                                VNĐ
-                              </div>
-                              <div className={customStyles["tour__new-price"]}>
-                                Giá ưu đãi: {item.newPrice.toLocaleString()} VNĐ
-                              </div>
-                              <div className={customStyles["tour__duration"]}>
-                                Thời gian: {item.duration}
-                              </div>
-                            </div>
-                          </div>
-                        </SwiperSlide>
-                      ))}
-                    </Swiper>
-                  </div>
-                </div>
               </>
             )}
           </div>
         </Spin>
+        <div className={`${styles["tour-reference"]}`}>
+          <div className="box-head__title">Có thể bạn quan tâm</div>
+          <div className={`row ${customStyles["tour__list"]} mb-4`}>
+            <Swiper
+              spaceBetween={20} // Khoảng cách giữa các item
+              slidesPerView={1} // Mặc định hiển thị 1 item trên mobile
+              navigation // Thêm nút next/prev
+              pagination={{ clickable: true }} // Thêm dấu chấm bên dưới
+              breakpoints={{
+                640: { slidesPerView: 2 }, // 2 item khi màn hình >= 640px
+                1024: { slidesPerView: 3 }, // 3 item khi màn hình >= 1024px
+                1200: { slidesPerView: 4 }, // 4 item khi màn hình >= 1200px
+              }}
+              modules={[Navigation, Pagination]}
+              className={customStyles["tour__swiper"]}
+            >
+              {referenceTours.map((item) => (
+                <SwiperSlide key={item._id}>
+                  <div className={`${customStyles["tour__item"]}`}>
+                    <div className={customStyles["tour__image"]}>
+                      <img src={item.images[0]} alt={item.name} />
+                      <div className={customStyles["tour__discountPercentage"]}>
+                        -{item.discountPercentage}%
+                      </div>
+                      <div className={customStyles["tour__overlay"]}>
+                        <Link to={`/tours/detail/${item.slug}`}>
+                          <button
+                            className={`button button__primary ${customStyles["tour__button"]}`}
+                          >
+                            Xem chi tiết
+                          </button>
+                        </Link>
+                        <button
+                          className={`button ${customStyles["tour__button"]}`}
+                        >
+                          Thêm vào giỏ hàng
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className={customStyles["tour__content"]}>
+                      <div className={customStyles["tour__title"]}>
+                        {item.name}
+                      </div>
+                      <div className={customStyles["tour__old-price"]}>
+                        Giá niêm yết: {item.totalPrice.toLocaleString()} VNĐ
+                      </div>
+                      <div className={customStyles["tour__new-price"]}>
+                        Giá ưu đãi: {item.newPrice.toLocaleString()} VNĐ
+                      </div>
+                      <div className={customStyles["tour__duration"]}>
+                        Thời gian: {item.duration}
+                      </div>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </div>
       </div>
     </>
   );

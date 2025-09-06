@@ -35,7 +35,14 @@ const PrivateRoutesClient = () => {
       </Spin>
     );
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/user/login" replace />;
+  return isAuthenticated ? (
+    <Outlet />
+  ) : (
+    (() => {
+      localStorage.setItem("loginFirstMessage", "Vui lòng đăng nhập trước!");
+      return <Navigate to="/user/login" replace />;
+    })()
+  );
 };
 
 export default PrivateRoutesClient;
