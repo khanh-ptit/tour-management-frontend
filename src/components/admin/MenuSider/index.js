@@ -11,6 +11,10 @@ import {
   LogoutOutlined,
   ContactsOutlined,
   UserOutlined,
+  TeamOutlined,
+  SafetyCertificateOutlined,
+  FileTextOutlined,
+  FolderOpenOutlined,
 } from "@ant-design/icons";
 import {
   IoLocationOutline,
@@ -82,7 +86,7 @@ function MenuSider() {
       key: "/admin/chats",
     },
     {
-      label: <Link to="/admin/accounts">Сhăm sóc khách hàng</Link>,
+      label: <Link to="/admin/accounts">Tài khoản admin</Link>,
       icon: <ContactsOutlined />,
       key: "/admin/accounts",
     },
@@ -90,6 +94,26 @@ function MenuSider() {
       label: <Link to="/admin/users">Tài khoản client</Link>,
       icon: <UserOutlined />,
       key: "/admin/users",
+    },
+    {
+      label: <Link to="/admin/roles">Quản lý nhóm quyền</Link>,
+      icon: <TeamOutlined />,
+      key: "/admin/roles",
+    },
+    {
+      label: <Link to="/admin/roles/permissions">Phân quyền</Link>,
+      icon: <SafetyCertificateOutlined />,
+      key: "/admin/roles/permissions",
+    },
+    {
+      label: <Link to="/admin/articles">Quản lý bài viết</Link>,
+      icon: <FileTextOutlined />,
+      key: "/admin/articles",
+    },
+    {
+      label: <Link to="/admin/article-categories">Danh mục bài viết</Link>,
+      icon: <FolderOpenOutlined />,
+      key: "/admin/articles",
     },
     {
       type: "divider",

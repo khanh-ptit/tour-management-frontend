@@ -29,6 +29,8 @@ import Cart from "../pages/client/Cart";
 import Order from "../pages/client/Order";
 import OrderDetail from "../pages/client/OrderDetail";
 import ChatAdmin from "../pages/admin/Chat";
+import Roles from "../pages/admin/Role";
+import CreateRole from "../pages/admin/Role/create";
 
 export const routes = [
   {
@@ -158,6 +160,14 @@ export const routes = [
           {
             path: "destinations/create",
             element: <CreateDestination />,
+          },
+          {
+            path: "roles",
+            element: <Roles />,
+          },
+          {
+            path: "roles/create",
+            element: <CreateRole />,
           },
         ],
       },

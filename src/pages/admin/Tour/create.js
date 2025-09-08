@@ -127,8 +127,6 @@ function CreateTour() {
       totalPrice,
     };
 
-    console.log("Tour Data:", tourData);
-
     // Gửi request lưu dữ liệu vào database (nếu có API)
     const result = await createTour(tourData);
     if (result) {

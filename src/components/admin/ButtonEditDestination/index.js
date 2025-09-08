@@ -161,7 +161,7 @@ function ButtonEditDestination(props) {
 
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Tạo điểm đến
+              Cập nhật điểm đến
             </Button>
           </Form.Item>
         </Form>
