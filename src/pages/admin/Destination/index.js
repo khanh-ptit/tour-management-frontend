@@ -1,7 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import TableTourCategories from "../../../components/admin/TableTourCategories";
-import HeadControlTourCategory from "../../../components/admin/HeadControlTourCategory";
-import GridTourCategory from "../../../components/admin/GridTourCategory";
 import { getDestinationList } from "../../../services/admin/destination.service";
 import HeadControlDestination from "../../../components/admin/HeadControlDestination";
 import TableDestination from "../../../components/admin/TableDestination";

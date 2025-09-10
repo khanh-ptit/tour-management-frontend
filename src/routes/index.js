@@ -31,6 +31,8 @@ import OrderDetail from "../pages/client/OrderDetail";
 import ChatAdmin from "../pages/admin/Chat";
 import Roles from "../pages/admin/Role";
 import CreateRole from "../pages/admin/Role/create";
+import Accounts from "../pages/admin/Account";
+import CreateAccount from "../pages/admin/Account/create";
 
 export const routes = [
   {
@@ -168,6 +170,14 @@ export const routes = [
           {
             path: "roles/create",
             element: <CreateRole />,
+          },
+          {
+            path: "accounts",
+            element: <Accounts />,
+          },
+          {
+            path: "accounts/create",
+            element: <CreateAccount />,
           },
         ],
       },
