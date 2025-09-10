@@ -21,3 +21,8 @@ export const editRole = async (id, data) => {
   const result = await patch(`${prefixAdmin}roles/edit/${id}`, data);
   return result;
 };
+
+export const editPermission = async (data) => {
+  const result = await patch(`${prefixAdmin}roles/permissions`, data);
+  return result;
+};
