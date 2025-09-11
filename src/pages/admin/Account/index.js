@@ -47,7 +47,6 @@ function Accounts() {
       if (filterStatus) {
         params.status = filterStatus;
       }
-      console.log("🚀 ~ Accounts ~ params:", params);
 
       const result = await getAccountList(params);
       if (result) {
