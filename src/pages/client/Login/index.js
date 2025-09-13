@@ -4,9 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   deleteAllOtp,
+  deleteAllVerifyOtp,
   forgotPassword,
   login,
   otpPassword,
+  resendVerifyOtp,
+  verifyUser,
 } from "../../../services/client/user.service";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../../actions/auth";
@@ -15,6 +18,7 @@ function Login() {
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
   const [forgotForm] = Form.useForm();
+  const [verifyForm] = Form.useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // const { isAuthenticated } = useSelector((state) => state.authReducer);
@@ -27,6 +31,17 @@ function Login() {
   const [isCounting, setIsCounting] = useState(false);
   const [otpValue, setOtpValue] = useState("");
   // const [isOtpVerified, setIsOtpVerified] = useState(false);
+
+  const [isModalVerifyOpen, setIsModalVerifyOpen] = useState(false);
+  const [isOtpVerifySent, setIsOtpVerifySent] = useState(false); // State hiển thị OTP input
+  const [verifyEmail, setVerifyEmail] = useState("");
+  // OTP expire (3 phút)
+  const [expireCountdown, setExpireCountdown] = useState(180);
+  const [isExpiring, setIsExpiring] = useState(false);
+
+  // Resend cooldown (60s)
+  const [resendCountdown, setResendCountdown] = useState(0);
+  const [isResending, setIsResending] = useState(false);
 
   // useEffect(() => {
   //   if (isAuthenticated === true && !isOtpVerified) {
@@ -68,6 +83,13 @@ function Login() {
       });
       localStorage.removeItem("loginFirstMessage");
     }
+    if (localStorage.getItem("verifySuccessMessage")) {
+      messageApi.open({
+        type: "success",
+        content: localStorage.getItem("verifySuccessMessage"),
+      });
+      localStorage.removeItem("verifySuccessMessage");
+    }
   }, [messageApi]);
 
   // Xử lý mở Modal
@@ -96,7 +118,108 @@ function Login() {
     forgotForm.resetFields(); // Reset toàn bộ form
   };
 
+  useEffect(() => {
+    let timer;
+    if (isExpiring && expireCountdown > 0) {
+      timer = setTimeout(() => setExpireCountdown((prev) => prev - 1), 1000);
+    } else if (expireCountdown === 0 && isExpiring) {
+      messageApi.open({
+        type: "info",
+        content: "OTP đã hết hạn, vui lòng xác thực lại!",
+      });
+      setIsExpiring(false);
+      setIsOtpSent(false);
+    }
+    return () => clearTimeout(timer);
+  }, [isExpiring, expireCountdown, messageApi]);
+
+  useEffect(() => {
+    let timer;
+    if (isResending && resendCountdown > 0) {
+      timer = setTimeout(() => setResendCountdown((prev) => prev - 1), 1000);
+    } else if (resendCountdown === 0 && isResending) {
+      // cooldown kết thúc
+      setIsResending(false);
+    }
+    return () => clearTimeout(timer);
+  }, [isResending, resendCountdown]);
+
+  const handleVerifyCancel = async () => {
+    setIsModalVerifyOpen(false);
+    setVerifyEmail("");
+    setIsOtpVerifySent(false);
+
+    setIsExpiring(false);
+    setExpireCountdown(180);
+    setIsResending(false);
+    setResendCountdown(0);
+
+    if (isOtpVerifySent) {
+      try {
+        const emailValue = verifyForm.getFieldValue("verifyEmail");
+        if (emailValue) {
+          await deleteAllVerifyOtp(emailValue);
+        }
+      } catch (error) {
+        console.error("Lỗi khi xóa OTP:", error);
+      }
+    }
+    verifyForm.resetFields();
+  };
+
+  const handleResend = async (targetEmail) => {
+    if (isResending) return;
+
+    try {
+      const response = await resendVerifyOtp({ email: targetEmail });
+      if (response.code === 200) {
+        verifyForm.setFieldsValue({ otp: "" });
+        messageApi.success(`Đã gửi lại OTP đến email: ${targetEmail}`);
+
+        setExpireCountdown(180);
+        setIsExpiring(true);
+        setIsOtpSent(true);
+
+        setResendCountdown(60);
+        setIsResending(true);
+      }
+    } catch (err) {
+      console.error("Resend OTP error:", err);
+      messageApi.error("Gửi lại OTP thất bại");
+    }
+  };
+
+  const handleVerifyUser = async () => {
+    try {
+      const values = await verifyForm.validateFields(["verifyEmail", "otp"]);
+
+      const verifyObj = {
+        email: values.verifyEmail,
+        otp: values.otp,
+      };
+
+      const response = await verifyUser(verifyObj);
+
+      if (response?.code === 200) {
+        messageApi.success(response.message || "Xác thực OTP thành công!");
+        // nếu cần reset timer sau verify thành công:
+        setExpireCountdown(180);
+        setIsExpiring(true);
+        setIsOtpSent(true);
+        setIsModalVerifyOpen(false);
+      } else {
+        messageApi.error(response.message || "OTP không hợp lệ!");
+      }
+    } catch (error) {
+      messageApi.open({
+        type: "error",
+        content: error.message || "Lỗi validate",
+      });
+    }
+  };
+
   const handleFinish = async (data) => {
+    setVerifyEmail(data?.email);
     try {
       const response = await login(data);
       if (response.code === 200) {
@@ -113,7 +236,20 @@ function Login() {
         navigate("/");
       }
     } catch (error) {
-      console.error("Lỗi đăng nhập:", error);
+      if (
+        error.message ===
+        "Tài khoản của bạn chưa được kích hoạt. Vui lòng xác thực!"
+      ) {
+        setVerifyEmail(data?.email);
+        handleResend(data?.email);
+        setIsModalVerifyOpen(true);
+        setIsOtpVerifySent(true);
+        setExpireCountdown(180);
+        setIsExpiring(true);
+
+        setResendCountdown(60);
+        setIsResending(true);
+      }
       messageApi.open({
         type: "error",
         content: error.message || "Có lỗi xảy ra khi đăng nhập!",
@@ -242,6 +378,64 @@ function Login() {
           </div>
         </div>
       </div>
+
+      <Modal
+        title="Kích hoạt tài khoản"
+        open={isModalVerifyOpen}
+        onCancel={handleVerifyCancel}
+        footer={[
+          <Button key="cancel" onClick={handleVerifyCancel}>
+            Hủy
+          </Button>,
+
+          <Button
+            key="resend"
+            type="primary"
+            onClick={() => handleResend(verifyEmail)}
+            disabled={isResending}
+          >
+            {isResending
+              ? `Gửi lại OTP (${formatTime(resendCountdown)})`
+              : "Gửi lại OTP"}
+          </Button>,
+          <Button key="verify" type="primary" onClick={handleVerifyUser}>
+            Xác nhận OTP
+          </Button>,
+        ]}
+      >
+        <p>Vui lòng nhập mã OTP gồm 6 chữ số để kích hoạt tài khoản.</p>
+        <Form form={verifyForm} layout="vertical">
+          <Form.Item
+            initialValue={verifyEmail}
+            label="Email"
+            name="verifyEmail"
+            rules={[
+              { required: true, message: "Vui lòng nhập email!" },
+              { type: "email", message: "Email không hợp lệ!" },
+            ]}
+          >
+            <Input readOnly={true} placeholder="Nhập email của bạn" />
+          </Form.Item>
+
+          <Form.Item
+            label="Mã OTP"
+            name="otp"
+            rules={[
+              { required: true, message: "Vui lòng nhập mã OTP!" },
+              { len: 6, message: "OTP phải có 6 chữ số!" },
+            ]}
+          >
+            <Input placeholder="Nhập mã OTP" maxLength={6} />
+          </Form.Item>
+
+          <p>
+            Mã hết hạn sau:{" "}
+            <strong style={{ color: "red" }}>
+              {formatTime(expireCountdown)}
+            </strong>
+          </p>
+        </Form>
+      </Modal>
 
       {/* Modal nhập email khôi phục */}
       <Modal

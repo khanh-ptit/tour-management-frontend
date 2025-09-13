@@ -26,6 +26,21 @@ export const deleteAllOtp = async (email) => {
   return result;
 };
 
+export const deleteAllVerifyOtp = async (email) => {
+  const result = await del(`${version}/user/verify/delete-otp/${email}`);
+  return result;
+};
+
+export const resendVerifyOtp = async (email) => {
+  const result = await post(`${version}/user/verify/resend-otp`, email);
+  return result;
+};
+
+export const verifyUser = async (data) => {
+  const result = await post(`${version}/user/verify`, data);
+  return result;
+};
+
 export const resetPassword = async (data) => {
   const result = await patch(`${version}/user/password/reset`, data);
   return result;
