@@ -15,11 +15,10 @@ function PermissionPage() {
     "tour-categories": ["view", "create", "edit", "delete"],
     tours: ["view", "create", "edit", "delete"],
     destinations: ["view", "create", "edit", "delete"],
+    orders: ["view", "create", "edit", "delete"],
     services: ["view", "create", "edit", "delete"],
     accounts: ["view", "create", "edit", "delete"],
     users: ["view", "edit", "delete"],
-    articles: ["view", "create", "edit", "delete"],
-    "article-categories": ["view", "create", "edit", "delete"],
     roles: ["view", "create", "edit", "delete", "permissions"],
     chat: ["chat"],
   };
@@ -29,11 +28,10 @@ function PermissionPage() {
     tours: "Quản lý tour",
     roles: "Quản lý nhóm quyền",
     destinations: "Quản lý điểm du lịch",
+    orders: "Quản lý đơn hàng",
     services: "Quản lý dịch vụ",
     accounts: "Tài khoản admin",
     users: "Tài khoản client",
-    articles: "Quản lý bài viết",
-    "article-categories": "Danh mục bài viết",
     chat: "Chăm sóc khách hàng",
   };
 

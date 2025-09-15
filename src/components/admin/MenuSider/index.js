@@ -13,8 +13,7 @@ import {
   UserOutlined,
   TeamOutlined,
   SafetyCertificateOutlined,
-  FileTextOutlined,
-  FolderOpenOutlined,
+  ShoppingOutlined,
 } from "@ant-design/icons";
 import {
   IoLocationOutline,
@@ -76,6 +75,11 @@ function MenuSider() {
       key: "/admin/tour-categories",
     },
     {
+      label: <Link to="/admin/orders">Quản lý đơn hàng</Link>,
+      key: "/admin/orders",
+      icon: <ShoppingOutlined />,
+    },
+    {
       label: <Link to="/admin/services">Dịch vụ</Link>,
       icon: <CustomerServiceOutlined />,
       key: "/admin/services",
@@ -104,19 +108,6 @@ function MenuSider() {
       label: <Link to="/admin/roles/permissions">Phân quyền</Link>,
       icon: <SafetyCertificateOutlined />,
       key: "/admin/roles/permissions",
-    },
-    {
-      label: <Link to="/admin/articles">Quản lý bài viết</Link>,
-      icon: <FileTextOutlined />,
-      key: "/admin/articles",
-    },
-    {
-      label: <Link to="/admin/article-categories">Danh mục bài viết</Link>,
-      icon: <FolderOpenOutlined />,
-      key: "/admin/articles",
-    },
-    {
-      type: "divider",
     },
     {
       label: "Tài khoản",

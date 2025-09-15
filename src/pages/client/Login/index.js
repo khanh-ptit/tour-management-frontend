@@ -43,12 +43,8 @@ function Login() {
   const [resendCountdown, setResendCountdown] = useState(0);
   const [isResending, setIsResending] = useState(false);
 
-  // useEffect(() => {
-  //   if (isAuthenticated === true && !isOtpVerified) {
-  //     localStorage.setItem("redirectErrorMessage", "Bạn đã đăng nhập rồi!");
-  //     navigate("/");
-  //   }
-  // }, [isAuthenticated, navigate, isOtpVerified]);
+  const [isResendingForgot, setIsResendingForgot] = useState(false);
+  const [resendForgotCountdown, setResendForgotCountdown] = useState(0);
 
   useEffect(() => {
     let timer;
@@ -59,6 +55,19 @@ function Login() {
     }
     return () => clearTimeout(timer);
   }, [isCounting, countdown]);
+
+  useEffect(() => {
+    let timer;
+    if (isResendingForgot && resendForgotCountdown > 0) {
+      timer = setTimeout(
+        () => setResendForgotCountdown((prev) => prev - 1),
+        1000
+      );
+    } else if (resendForgotCountdown === 0 && isResendingForgot) {
+      setIsResendingForgot(false);
+    }
+    return () => clearTimeout(timer);
+  }, [isResendingForgot, resendForgotCountdown]);
 
   useEffect(() => {
     const successMessage = localStorage.getItem("registerClientSuccessMessage");
@@ -272,6 +281,8 @@ function Login() {
         setIsOtpSent(true); // Hiển thị input OTP sau khi gửi email thành công
         setCountdown(180); // Reset về 3 phút
         setIsCounting(true); // Bắt đầu đếm
+        setResendForgotCountdown(60);
+        setIsResendingForgot(true);
       } else if (response.code === 400) {
         messageApi.open({
           type: "error",
@@ -446,29 +457,19 @@ function Login() {
           <Button key="cancel" onClick={handleCancel}>
             Hủy
           </Button>,
-
-          !isOtpSent ? (
-            <Button
-              key="submit"
-              type="primary"
-              onClick={() => handleForgotPassword("")}
-            >
-              Gửi yêu cầu
-            </Button>
-          ) : (
-            <Button
-              type="primary"
-              onClick={() => handleForgotPassword("resend")}
-              disabled={isCounting}
-            >
-              Gửi lại OTP
-            </Button>
-          ),
-          isOtpSent && isCounting && (
-            <Button key="verify" type="primary" onClick={handleSendOTP}>
-              Xác nhận OTP
-            </Button>
-          ),
+          <Button
+            key="resend"
+            type="primary"
+            onClick={() => handleForgotPassword("resend")}
+            disabled={isResendingForgot}
+          >
+            {isResendingForgot
+              ? `Gửi lại OTP (${formatTime(resendForgotCountdown)})`
+              : "Gửi lại OTP"}
+          </Button>,
+          <Button key="verify" type="primary" onClick={handleSendOTP}>
+            Xác nhận OTP
+          </Button>,
         ]}
       >
         <p>Nhập email của bạn để nhận hướng dẫn đặt lại mật khẩu.</p>
