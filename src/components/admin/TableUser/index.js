@@ -37,8 +37,10 @@ function TableUser(props) {
           return <Tag color="green">Hoạt động</Tag>;
         } else if (status === "inactive") {
           return <Tag color="red">Dừng hoạt động</Tag>;
-        } else {
+        } else if (status === "initial") {
           return <Tag color="yellow">Chưa kích hoạt</Tag>;
+        } else {
+          return <Tag color="orange">Quên mật khẩu</Tag>;
         }
       },
     },

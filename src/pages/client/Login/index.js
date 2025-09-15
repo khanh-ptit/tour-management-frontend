@@ -46,6 +46,8 @@ function Login() {
   const [isResendingForgot, setIsResendingForgot] = useState(false);
   const [resendForgotCountdown, setResendForgotCountdown] = useState(0);
 
+  const [isForgotFlow, setIsForgotFlow] = useState(false);
+
   useEffect(() => {
     let timer;
     if (isCounting && countdown > 0) {
@@ -103,6 +105,7 @@ function Login() {
 
   // Xử lý mở Modal
   const showForgotPasswordModal = () => {
+    setIsForgotFlow(false);
     setIsModalOpen(true);
   };
 
@@ -194,7 +197,8 @@ function Login() {
       }
     } catch (err) {
       console.error("Resend OTP error:", err);
-      messageApi.error("Gửi lại OTP thất bại");
+      messageApi.error(err.message);
+      setIsModalVerifyOpen(false);
     }
   };
 
@@ -229,6 +233,7 @@ function Login() {
 
   const handleFinish = async (data) => {
     setVerifyEmail(data?.email);
+    setEmail(data?.email);
     try {
       const response = await login(data);
       if (response.code === 200) {
@@ -258,6 +263,15 @@ function Login() {
 
         setResendCountdown(60);
         setIsResending(true);
+      } else if (
+        error.message ===
+          "Bạn đã nhập sai mật khẩu quá 5 lần! Vui lòng nhập OTP để đặt lại mật khẩu" ||
+        error.message ===
+          "Bạn đã nhập sai mật khẩu quá nhiều lần. Vui lòng xác thực!"
+      ) {
+        showForgotPasswordModal();
+        setIsForgotFlow(true);
+        handleResendForgotPassword(data?.email);
       }
       messageApi.open({
         type: "error",
@@ -267,6 +281,30 @@ function Login() {
   };
 
   // Xử lý gửi email khôi phục
+  const handleResendForgotPassword = async (email) => {
+    try {
+      const response = await forgotPassword({
+        email,
+        exceedingLoginFail: true,
+      });
+      if (response.code === 200) {
+        setIsOtpSent(true);
+        setCountdown(180);
+        setIsCounting(true);
+        setResendForgotCountdown(60);
+        setIsResendingForgot(true);
+      } else if (response.code === 400) {
+        messageApi.open({
+          type: "error",
+          content: response.message,
+        });
+        return;
+      }
+    } catch (error) {
+      console.log("Lỗi validate form:", error);
+    }
+  };
+
   const handleForgotPassword = async (value) => {
     try {
       if (value === "resend") {
@@ -275,7 +313,11 @@ function Login() {
         setOtpValue("");
       }
       const values = await forgotForm.validateFields(["email"]);
-      const response = await forgotPassword(values);
+      const data = {
+        email: values.email,
+        exceedingLoginFail: isForgotFlow,
+      };
+      const response = await forgotPassword(data);
       if (response.code === 200) {
         messageApi.success(`Đã gửi yêu cầu khôi phục tới ${values.email}`);
         setIsOtpSent(true); // Hiển thị input OTP sau khi gửi email thành công
@@ -292,6 +334,11 @@ function Login() {
       }
     } catch (error) {
       console.log("Lỗi validate form:", error);
+      messageApi.open({
+        type: "error",
+        content: error.message,
+      });
+      setIsModalOpen(false);
     }
   };
 
@@ -457,19 +504,31 @@ function Login() {
           <Button key="cancel" onClick={handleCancel}>
             Hủy
           </Button>,
-          <Button
-            key="resend"
-            type="primary"
-            onClick={() => handleForgotPassword("resend")}
-            disabled={isResendingForgot}
-          >
-            {isResendingForgot
-              ? `Gửi lại OTP (${formatTime(resendForgotCountdown)})`
-              : "Gửi lại OTP"}
-          </Button>,
-          <Button key="verify" type="primary" onClick={handleSendOTP}>
-            Xác nhận OTP
-          </Button>,
+          !isOtpSent ? (
+            <Button
+              key="submit"
+              type="primary"
+              onClick={() => handleForgotPassword("")}
+            >
+              Gửi yêu cầu
+            </Button>
+          ) : (
+            <Button
+              key="resend"
+              type="primary"
+              onClick={() => handleForgotPassword("resend")}
+              disabled={isResendingForgot}
+            >
+              {isResendingForgot
+                ? `Gửi lại OTP (${formatTime(resendForgotCountdown)})`
+                : "Gửi lại OTP"}
+            </Button>
+          ),
+          isOtpSent && isCounting && (
+            <Button key="verify" type="primary" onClick={handleSendOTP}>
+              Xác nhận OTP
+            </Button>
+          ),
         ]}
       >
         <p>Nhập email của bạn để nhận hướng dẫn đặt lại mật khẩu.</p>

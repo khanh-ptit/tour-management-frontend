@@ -34,6 +34,7 @@ function HeadControlUser({ setSearchText, setSortOrder, setFilterStatus }) {
             <Select.Option value="active">Hoạt động</Select.Option>
             <Select.Option value="initial">Chưa kích hoạt</Select.Option>
             <Select.Option value="inactive">Dừng hoạt động</Select.Option>
+            <Select.Option value="forgot">Quên mật khẩu</Select.Option>
           </Select>
         </Col>
       </Row>
