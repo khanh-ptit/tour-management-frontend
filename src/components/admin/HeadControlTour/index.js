@@ -49,6 +49,8 @@ function HeadControlTour({
           >
             <Select.Option value="price-asc">Giá tăng dần</Select.Option>
             <Select.Option value="price-desc">Giá giảm dần</Select.Option>
+            <Select.Option value="createdAt-asc">Tạo sớm nhất</Select.Option>
+            <Select.Option value="createdAt-desc">Tạo gần nhất</Select.Option>
           </Select>
         </Col>
         <Col xs={12} sm={6} md={6} lg={6} xl={6} xxl={6}>

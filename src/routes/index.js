@@ -35,6 +35,8 @@ import Accounts from "../pages/admin/Account";
 import CreateAccount from "../pages/admin/Account/create";
 import PermissionPage from "../pages/admin/Role/permission";
 import UserPage from "../pages/admin/User";
+import Serivces from "../pages/admin/Service";
+import CreateService from "../pages/admin/Service/create";
 
 export const routes = [
   {
@@ -188,6 +190,14 @@ export const routes = [
           {
             path: "users",
             element: <UserPage />,
+          },
+          {
+            path: "services",
+            element: <Serivces />,
+          },
+          {
+            path: "services/create",
+            element: <CreateService />,
           },
         ],
       },
