@@ -3,34 +3,12 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import "./HeadControlAccount.scss";
 
-function HeadControlAccount({
-  setSearchText,
-  setSortOrder,
-  setFilterStatus,
-  setIsGrid,
-}) {
+function HeadControlAccount({ setSearchText, setSortOrder, setFilterStatus }) {
   return (
     <div className="mb-50 mt-20">
       <Row gutter={[20, 20]} align="middle">
         <Col span={24}>
-          <div className="control-header">
-            <Switch
-              onChange={setIsGrid}
-              className="control-header__item"
-              checkedChildren="Lưới"
-              unCheckedChildren="Bảng"
-            />
-            <Link className="control-header__item" to="/admin/accounts/create">
-              <Button
-                color="primary"
-                variant="outlined"
-                icon={<PlusOutlined />}
-                className="add-room-btn"
-              >
-                Thêm tài khoản
-              </Button>
-            </Link>
-          </div>
+          <div className="control-header"></div>
         </Col>
         <Col xs={24} sm={12} md={6} lg={6} xl={6} xxl={6}>
           <Input.Search
@@ -61,6 +39,26 @@ function HeadControlAccount({
             <Select.Option value="active">Hoạt động</Select.Option>
             <Select.Option value="inactive">Dừng hoạt động</Select.Option>
           </Select>
+        </Col>
+        <Col
+          xs={12}
+          sm={6}
+          md={6}
+          lg={6}
+          xl={6}
+          xxl={6}
+          style={{ display: "flex", justifyContent: "center" }}
+        >
+          <Link className="control-header__item" to="/admin/accounts/create">
+            <Button
+              color="primary"
+              variant="outlined"
+              icon={<PlusOutlined />}
+              className="add-room-btn"
+            >
+              Thêm tài khoản
+            </Button>
+          </Link>
         </Col>
       </Row>
     </div>

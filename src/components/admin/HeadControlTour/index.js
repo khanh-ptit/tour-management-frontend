@@ -12,26 +12,6 @@ function HeadControlTour({
   return (
     <div className="mb-50 mt-20">
       <Row gutter={[20, 20]} align="middle">
-        <Col span={24}>
-          <div className="control-header">
-            <Switch
-              onChange={setIsGrid}
-              className="control-header__item"
-              checkedChildren="Lưới"
-              unCheckedChildren="Bảng"
-            />
-            <Link className="control-header__item" to="/admin/tours/create">
-              <Button
-                color="primary"
-                variant="outlined"
-                icon={<PlusOutlined />}
-                className="add-room-btn"
-              >
-                Thêm tour
-              </Button>
-            </Link>
-          </div>
-        </Col>
         <Col xs={24} sm={12} md={6} lg={6} xl={6} xxl={6}>
           <Input.Search
             placeholder="Tìm kiếm theo tên tour"
@@ -63,6 +43,26 @@ function HeadControlTour({
             <Select.Option value="active">Hoạt động</Select.Option>
             <Select.Option value="inactive">Dừng hoạt động</Select.Option>
           </Select>
+        </Col>
+        <Col
+          xs={12}
+          sm={6}
+          md={6}
+          lg={6}
+          xl={6}
+          xxl={6}
+          style={{ display: "flex", justifyContent: "center" }}
+        >
+          <Link className="control-header__item" to="/admin/tours/create">
+            <Button
+              color="primary"
+              variant="outlined"
+              icon={<PlusOutlined />}
+              className="add-room-btn"
+            >
+              Thêm tour
+            </Button>
+          </Link>
         </Col>
       </Row>
     </div>

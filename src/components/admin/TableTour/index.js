@@ -3,6 +3,7 @@ import ButtonDeleteTour from "../ButtonDeleteTour";
 import ButtonViewTour from "../ButtonViewTour";
 import ButtonEditTour from "../ButtonEditTour";
 import "./TableTour.scss";
+import moment from "moment";
 
 function TableTour(props) {
   const { tours, onReload, loading, pagination, handlePagination } = props;
@@ -56,23 +57,23 @@ function TableTour(props) {
           <Tag color="red">Dừng hoạt động</Tag>
         ),
     },
-    {
-      title: "Dịch vụ",
-      key: "services",
-      dataIndex: "services",
-      render: (services) =>
-        services && services.length ? (
-          <div className="table__amenities">
-            {services.map((service, index) => (
-              <Tag color="blue" key={index}>
-                {service.name}
-              </Tag>
-            ))}
-          </div>
-        ) : (
-          "Không có"
-        ),
-    },
+    // {
+    //   title: "Dịch vụ",
+    //   key: "services",
+    //   dataIndex: "services",
+    //   render: (services) =>
+    //     services && services.length ? (
+    //       <div className="table__amenities">
+    //         {services.map((service, index) => (
+    //           <Tag color="blue" key={index}>
+    //             {service.name}
+    //           </Tag>
+    //         ))}
+    //       </div>
+    //     ) : (
+    //       "Không có"
+    //     ),
+    // },
     {
       title: "Hành động",
       align: "center",
@@ -83,6 +84,36 @@ function TableTour(props) {
           <ButtonDeleteTour onReload={onReload} record={record} />
         </div>
       ),
+    },
+    {
+      title: "Thời gian tạo",
+      align: "center",
+      render: (_, record) => {
+        if (record.createdBy)
+          return (
+            <>
+              <p>{record.createdBy.accountId.fullName}</p>
+              <p>{moment(record.createdBy.createdAt).format("DD/MM/YYYY")}</p>
+            </>
+          );
+        else return <>N/A</>;
+      },
+    },
+    {
+      title: "Cập nhật lần cuối",
+      align: "center",
+      render: (_, record) => {
+        if (record.updatedBy && record.updatedBy.length > 0) {
+          const lastUpdate = record.updatedBy[record.updatedBy.length - 1];
+          return (
+            <>
+              <p>{lastUpdate.accountId.fullName}</p>
+              <p>{moment(lastUpdate.updatedAt).format("DD/MM/YYYY")}</p>
+            </>
+          );
+        }
+        return <p>N/A</p>;
+      },
     },
   ];
 

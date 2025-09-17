@@ -36,7 +36,7 @@ function CreateTour() {
       const result = await getServiceList();
       if (result) {
         // console.log(result);
-        setServices(result);
+        setServices(result.services);
       }
     };
     fetchServices();

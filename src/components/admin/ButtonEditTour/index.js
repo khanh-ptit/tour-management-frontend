@@ -63,7 +63,7 @@ function ButtonEditTour(props) {
           [getServiceList(), getTourCategoryList(), getDestinationList()]
         );
 
-        setServices(servicesRes);
+        setServices(servicesRes.services);
         setTourCategories(categoriesRes.tourCategories);
         setDestinations(destinationsRes.destinations);
       };

@@ -3,20 +3,12 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import "./HeadControlTour.scss";
 
-function HeadControlTourCategory({
-  setIsGrid,
-}) {
+function HeadControlTourCategory({ setIsGrid }) {
   return (
     <div className="mb-50 mt-20">
       <Row gutter={[20, 20]} align="middle">
         <Col span={24}>
           <div className="control-header">
-            <Switch
-              onChange={setIsGrid}
-              className="control-header__item"
-              checkedChildren="Lưới"
-              unCheckedChildren="Bảng"
-            />
             <Link
               className="control-header__item"
               to="/admin/tour-categories/create"

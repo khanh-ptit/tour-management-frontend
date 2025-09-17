@@ -9,6 +9,8 @@ function Destinations() {
   const [isGrid, setIsGrid] = useState(false);
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(null);
+  const [searchText, setSearchText] = useState("");
+  const [sortOrder, setSortOrder] = useState(null);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 4,
@@ -35,6 +37,16 @@ function Destinations() {
         limit: pagination.pageSize, // Sử dụng pageSize động
       };
 
+      if (searchText) {
+        params.keyword = searchText;
+      }
+
+      if (sortOrder) {
+        const [sortKey, sortValue] = sortOrder.split("-");
+        params.sortKey = sortKey;
+        params.sortValue = sortValue;
+      }
+
       const result = await getDestinationList(params);
       if (result) {
         setDestinations(result.destinations);
@@ -46,7 +58,7 @@ function Destinations() {
     } finally {
       setLoading(false);
     }
-  }, [pagination.current, pagination.pageSize, reload]); // Thêm pagination.pageSize vào dependency
+  }, [pagination.current, pagination.pageSize, sortOrder, searchText, reload]); // Thêm pagination.pageSize vào dependency
 
   useEffect(() => {
     fetchDestinations();
@@ -75,7 +87,11 @@ function Destinations() {
 
   return (
     <>
-      <HeadControlDestination setIsGrid={handleChangeView} />
+      <HeadControlDestination
+        setSearchText={setSearchText}
+        setSortOrder={setSortOrder}
+        setIsGrid={handleChangeView}
+      />
       {isGrid ? (
         <GridDestination destinations={destinations} />
       ) : (
