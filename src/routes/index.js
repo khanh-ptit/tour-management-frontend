@@ -37,6 +37,8 @@ import PermissionPage from "../pages/admin/Role/permission";
 import UserPage from "../pages/admin/User";
 import Serivces from "../pages/admin/Service";
 import CreateService from "../pages/admin/Service/create";
+import Orders from "../pages/admin/Order";
+import OrderDetailAdmin from "../pages/admin/Order/detail";
 
 export const routes = [
   {
@@ -198,6 +200,14 @@ export const routes = [
           {
             path: "services/create",
             element: <CreateService />,
+          },
+          {
+            path: "orders",
+            element: <Orders />,
+          },
+          {
+            path: "orders/detail/:id",
+            element: <OrderDetailAdmin />,
           },
         ],
       },

@@ -2,6 +2,7 @@ import { Spin, Table, Tag } from "antd";
 import ButtonViewTour from "../ButtonViewTour";
 import ButtonDeleteAccount from "../ButtonDeleteAccount";
 import ButtonEditAccount from "../ButtonEditAccount";
+import moment from "moment";
 
 function TableAccount(props) {
   const { accounts, onReload, loading, pagination, handlePagination } = props;
@@ -54,6 +55,13 @@ function TableAccount(props) {
           <ButtonEditAccount onReload={onReload} record={record} />
           <ButtonDeleteAccount onReload={onReload} record={record} />
         </div>
+      ),
+    },
+    {
+      title: "Thời gian tạo",
+      align: "center",
+      render: (_, record) => (
+        <p>{moment(record.createdAt).format("hh:mm DD/MM/YYYY")}</p>
       ),
     },
   ];
