@@ -1,0 +1,21 @@
+.stat-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  .stat-card__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .stat-card__value {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 0;
+  }
+  .stat-card__title {
+    margin: 0;
+    color: #666;
+  }
+  .stat-card__icon {
+    font-size: 30px;
+  }
+}

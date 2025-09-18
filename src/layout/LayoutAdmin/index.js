@@ -1,8 +1,12 @@
-import { Layout, Button, Badge, Drawer } from "antd";
+import { Layout, Button, Badge, Drawer, Dropdown, Space, Avatar } from "antd";
 import styles from "./LayoutAdmin.module.scss";
 import logo from "../../images/logo.png";
 import logoFold from "../../images/logo-fold.png";
-import { SearchOutlined, MenuFoldOutlined } from "@ant-design/icons";
+import {
+  BellOutlined,
+  MenuFoldOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { useState, useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
 import MenuSider from "../../components/admin/MenuSider";
@@ -13,6 +17,26 @@ function LayoutAdmin() {
   const [collapsed, setCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [drawerVisible, setDrawerVisible] = useState(false);
+
+  const accountMenu = {
+    items: [
+      {
+        key: "profile",
+        label: <span>Thông tin tài khoản</span>,
+      },
+      {
+        key: "change-password",
+        label: <span>Đổi mật khẩu</span>,
+      },
+      {
+        type: "divider",
+      },
+      {
+        key: "logout",
+        label: <span style={{ color: "red" }}>Đăng xuất</span>,
+      },
+    ],
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -50,14 +74,26 @@ function LayoutAdmin() {
               }}
               icon={<MenuFoldOutlined />}
             />
-            <Button
-              type="text"
-              className={styles["header__search"]}
-              icon={<SearchOutlined />}
-            />
           </div>
-          <div className={styles["header__nav--right"]}>
-            <Badge dot>{/* <Notification /> */}</Badge>
+          <div
+            className={`${styles["header__nav--right"]} d-flex align-items-center`}
+          >
+            <Badge dot>
+              <BellOutlined style={{ fontSize: "18px" }} />
+            </Badge>
+
+            <div className="mx-4">
+              <Dropdown
+                menu={accountMenu}
+                placement="bottomRight"
+                trigger={["hover"]}
+              >
+                <Space style={{ cursor: "pointer" }}>
+                  <Avatar size="small" icon={<UserOutlined />} />
+                  <span>Nguyễn Văn A</span>
+                </Space>
+              </Dropdown>
+            </div>
           </div>
         </div>
       </header>
