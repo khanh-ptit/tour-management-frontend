@@ -2,8 +2,7 @@ import { Button } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
-function ButtonViewDestination(props) {
-  const { record } = props;
+function ButtonViewUser(props) {
   return (
     <>
       <Link to={`#`}>
@@ -13,4 +12,4 @@ function ButtonViewDestination(props) {
   );
 }
 
-export default ButtonViewDestination;
+export default ButtonViewUser;

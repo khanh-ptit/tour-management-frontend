@@ -1,8 +1,8 @@
 import { Spin, Table, Tag } from "antd";
-import ButtonViewTour from "../ButtonViewTour";
-import ButtonDeleteAccount from "../ButtonDeleteAccount";
-import ButtonEditAccount from "../ButtonEditAccount";
 import moment from "moment";
+import ButtonDeleteUser from "../ButtonDeleteUser";
+import ButtonEditUser from "../ButtonEditUser";
+import ButtonViewUser from "../ButtonViewUser";
 
 function TableUser(props) {
   const { users, onReload, loading, pagination, handlePagination } = props;
@@ -50,9 +50,9 @@ function TableUser(props) {
       align: "center",
       render: (_, record) => (
         <div className="button__wrap">
-          <ButtonViewTour record={record} />
-          <ButtonEditAccount onReload={onReload} record={record} />
-          <ButtonDeleteAccount onReload={onReload} record={record} />
+          <ButtonViewUser record={record} />
+          <ButtonEditUser onReload={onReload} record={record} />
+          <ButtonDeleteUser onReload={onReload} record={record} />
         </div>
       ),
     },

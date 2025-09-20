@@ -7,17 +7,12 @@ export const getUserList = async (params = {}) => {
   return result;
 };
 
-// export const deleteAccount = async (id) => {
-//   const result = await del(`${prefixAdmin}accounts/delete/${id}`);
-//   return result;
-// };
+export const deleteUser = async (id) => {
+  const result = await del(`${prefixAdmin}users/delete/${id}`);
+  return result;
+};
 
-// export const createAccount = async (data) => {
-//   const result = await post(`${prefixAdmin}accounts/create`, data);
-//   return result;
-// };
-
-// export const editAccount = async (id, data) => {
-//   const result = await patch(`${prefixAdmin}accounts/edit/${id}`, data);
-//   return result;
-// };
+export const editUser = async (id, data) => {
+  const result = await patch(`${prefixAdmin}users/edit/${id}`, data);
+  return result;
+};
