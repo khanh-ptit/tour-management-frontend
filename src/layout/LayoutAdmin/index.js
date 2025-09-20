@@ -8,8 +8,11 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { useState, useEffect } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import MenuSider from "../../components/admin/MenuSider";
+import { getInfo } from "../../services/admin/my-account.service";
+import { logout } from "../../services/admin/auth.service";
+import { useSelector } from "react-redux";
 
 const { Sider, Content } = Layout;
 
@@ -17,23 +20,49 @@ function LayoutAdmin() {
   const [collapsed, setCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [drawerVisible, setDrawerVisible] = useState(false);
+  const [account, setAccount] = useState({});
+  const navigate = useNavigate();
+  const { accountInfo } = useSelector((state) => state.accountReducer);
+
+  useEffect(() => {
+    const fetchAccount = async () => {
+      const response = await getInfo();
+      if (response.code === 200) {
+        setAccount(response.account);
+      }
+    };
+    fetchAccount();
+  }, []);
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    const result = await logout();
+    if (result) {
+      localStorage.setItem("logoutSuccessMessage", result.message);
+      navigate("/admin/auth/login");
+    }
+  };
 
   const accountMenu = {
     items: [
       {
-        key: "profile",
-        label: <span>Thông tin tài khoản</span>,
-      },
-      {
-        key: "change-password",
-        label: <span>Đổi mật khẩu</span>,
+        key: "/admin/my-account/info",
+        label: <Link to="/admin/my-account/info">Thông tin tài khoản</Link>,
       },
       {
         type: "divider",
       },
       {
-        key: "logout",
-        label: <span style={{ color: "red" }}>Đăng xuất</span>,
+        key: "/admin/auth/logout",
+        label: (
+          <Link
+            onClick={handleLogout}
+            style={{ color: "red" }}
+            to="/admin/auth/logout"
+          >
+            Đăng xuất
+          </Link>
+        ),
       },
     ],
   };
@@ -89,8 +118,12 @@ function LayoutAdmin() {
                 trigger={["hover"]}
               >
                 <Space style={{ cursor: "pointer" }}>
-                  <Avatar size="small" icon={<UserOutlined />} />
-                  <span>Nguyễn Văn A</span>
+                  <Avatar
+                    src={accountInfo.avatar || account.avatar}
+                    size="small"
+                    icon={<UserOutlined />}
+                  />
+                  <span>{accountInfo.fullName || account.fullName}</span>
                 </Space>
               </Dropdown>
             </div>

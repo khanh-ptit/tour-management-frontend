@@ -121,13 +121,6 @@ function MenuSider() {
         },
         {
           label: (
-            <Link to="/admin/my-account/change-password">Đổi mật khẩu</Link>
-          ),
-          icon: <SwapOutlined />,
-          key: "/admin/my-account/change-password",
-        },
-        {
-          label: (
             <Link onClick={handleLogout} to="/admin/auth/logout">
               Đăng xuất
             </Link>

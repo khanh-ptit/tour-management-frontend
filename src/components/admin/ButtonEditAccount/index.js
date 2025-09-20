@@ -160,10 +160,7 @@ function ButtonEditAccount(props) {
                 label="Mật khẩu"
                 rules={[{ required: false }]}
               >
-                <Input
-                  type="password"
-                  placeholder="Để trống nếu không muốn thay đổi"
-                />
+                <Input.Password placeholder="Để trống nếu không muốn thay đổi" />
               </Form.Item>
             </Col>
             <Col span={24}>

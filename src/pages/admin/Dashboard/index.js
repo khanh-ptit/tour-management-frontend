@@ -1,4 +1,4 @@
-import { Button, Col, message, Row } from "antd";
+import { Button, Col, message, Row, Spin } from "antd";
 import { useEffect, useState } from "react";
 import {
   getOrderCount,
@@ -29,6 +29,7 @@ function Dashboard() {
   const [recentDebt, setRecentDebt] = useState([]);
   const [orderStatus, setOrderStatus] = useState({});
   const [userStatus, setUserStatus] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     document.title = "Trang tổng quan";
@@ -46,82 +47,82 @@ function Dashboard() {
   }, []);
 
   useEffect(() => {
-    const fetchUserCount = async () => {
-      const userStatisticResponse = await getUserCount();
-      if (userStatisticResponse.code === 200) {
-        setUserStatistic({
-          totalUsers: userStatisticResponse.totalUsers,
-          activeUsers: userStatisticResponse.activeUsers,
-          inactiveUsers: userStatisticResponse.inactiveUsers,
-          initialUsers: userStatisticResponse.initialUsers,
-          forgotPasswordUsers: userStatisticResponse.forgotPasswordUsers,
-        });
-        setUserStatus({
-          activeUserPercentage: userStatisticResponse.activeUserPercentage,
-          inactiveUserPercentage: userStatisticResponse.inactiveUserPercentage,
-          initialUserPercentage: userStatisticResponse.initialUserPercentage,
-          forgotPasswordUserPercentage:
-            userStatisticResponse.forgotPasswordUserPercentage,
-        });
-        console.log(userStatus);
+    const fetchAll = async () => {
+      try {
+        const [
+          userStatisticResponse,
+          tourStatisticResponse,
+          orderStatisticResponse,
+          profitStatisticResponse,
+          recentProfitStatisticResponse,
+          recentDebtStatisticResponse,
+        ] = await Promise.all([
+          getUserCount(),
+          getTourCount(),
+          getOrderCount(),
+          getThisMonthProfit(),
+          getRecentProfit(),
+          getRecentDebt(),
+        ]);
+
+        if (userStatisticResponse.code === 200) {
+          setUserStatistic({
+            totalUsers: userStatisticResponse.totalUsers,
+            activeUsers: userStatisticResponse.activeUsers,
+            inactiveUsers: userStatisticResponse.inactiveUsers,
+            initialUsers: userStatisticResponse.initialUsers,
+            forgotPasswordUsers: userStatisticResponse.forgotPasswordUsers,
+          });
+          setUserStatus({
+            activeUserPercentage: userStatisticResponse.activeUserPercentage,
+            inactiveUserPercentage:
+              userStatisticResponse.inactiveUserPercentage,
+            initialUserPercentage: userStatisticResponse.initialUserPercentage,
+            forgotPasswordUserPercentage:
+              userStatisticResponse.forgotPasswordUserPercentage,
+          });
+        }
+
+        if (tourStatisticResponse.code === 200) {
+          setTourStatistic({
+            totalTours: tourStatisticResponse.totalTours,
+            activeTours: tourStatisticResponse.activeTours,
+            inactiveTours: tourStatisticResponse.inactiveTours,
+          });
+        }
+
+        if (orderStatisticResponse.code === 200) {
+          setOrderStatistic({
+            totalPaidOrder: orderStatisticResponse.totalPaidOrder,
+            totalUnPaidOrder: orderStatisticResponse.totalUnPaidOrder,
+          });
+          setOrderStatus({
+            totalUnPaidOrderPercentage:
+              orderStatisticResponse.totalUnPaidOrderPercentage,
+            totalPaidOrderPercentage:
+              orderStatisticResponse.totalPaidOrderPercentage,
+          });
+        }
+
+        if (profitStatisticResponse.code === 200) {
+          setThisMonthProfit(profitStatisticResponse.data);
+        }
+
+        if (recentProfitStatisticResponse.code === 200) {
+          setRecentProfit(recentProfitStatisticResponse.data);
+        }
+
+        if (recentDebtStatisticResponse.code === 200) {
+          setRecentDebt(recentDebtStatisticResponse.data);
+        }
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchUserCount();
 
-    const fetchTourCount = async () => {
-      const tourStatisticResponse = await getTourCount();
-      if (tourStatisticResponse.code === 200) {
-        setTourStatistic({
-          totalTours: tourStatisticResponse.totalTours,
-          activeTours: tourStatisticResponse.activeTours,
-          inactiveTours: tourStatisticResponse.inactiveTours,
-        });
-
-        console.log("🚀 ~ Dashboard ~ userStatus:", userStatus);
-      }
-    };
-    fetchTourCount();
-
-    const fetchOrderCount = async () => {
-      const orderStatisticResponse = await getOrderCount();
-      if (orderStatisticResponse.code === 200) {
-        setOrderStatistic({
-          totalPaidOrder: orderStatisticResponse.totalPaidOrder,
-          totalUnPaidOrder: orderStatisticResponse.totalUnPaidOrder,
-        });
-        setOrderStatus({
-          totalUnPaidOrderPercentage:
-            orderStatisticResponse.totalUnPaidOrderPercentage,
-          totalPaidOrderPercentage:
-            orderStatisticResponse.totalPaidOrderPercentage,
-        });
-      }
-    };
-    fetchOrderCount();
-
-    const fetchThisMonthProfit = async () => {
-      const profitStatisticResponse = await getThisMonthProfit();
-      if (profitStatisticResponse.code === 200) {
-        setThisMonthProfit(profitStatisticResponse.data);
-      }
-    };
-    fetchThisMonthProfit();
-
-    const fetchRecentProfit = async () => {
-      const recentProfitStatisticResponse = await getRecentProfit();
-      if (recentProfitStatisticResponse.code === 200) {
-        setRecentProfit(recentProfitStatisticResponse.data);
-      }
-    };
-    fetchRecentProfit();
-
-    const fetchRecentDebt = async () => {
-      const recentDebtStatisticResponse = await getRecentDebt();
-      if (recentDebtStatisticResponse.code === 200) {
-        setRecentDebt(recentDebtStatisticResponse.data);
-      }
-    };
-    fetchRecentDebt();
+    fetchAll();
   }, []);
 
   const profitConfig = {
@@ -137,7 +138,7 @@ function Dashboard() {
       },
       grid: null,
       label: {
-        formatter: (val) => Number(val).toLocaleString("vi-VN"), // format trục Y
+        formatter: (val) => Number(val).toLocaleString("vi-VN"),
       },
     },
     xAxis: {
@@ -293,85 +294,97 @@ function Dashboard() {
   return (
     <>
       {contextHolder}
-      <div className={`${styles["dashboard-admin"]}`}>
-        <h4 className={`${styles["dashboard-admin__title"]}`}>
-          Trang tổng quan
-        </h4>
-        <Button color="primary" variant="outlined" icon={<PrinterOutlined />}>
-          In báo cáo
-        </Button>
-      </div>
-      <Row gutter={[20, 20]} className="mb-4">
-        <Col xs={24} sm={12} md={12} lg={6}>
-          <StatCard
-            title="Tổng người dùng"
-            value={userStatistic.totalUsers || 0}
-            icon={<UserOutlined />}
-            color="#1890ff"
-          />
-        </Col>
-        <Col xs={24} sm={12} md={12} lg={6}>
-          <StatCard
-            title="Doanh thu (tháng này)"
-            value={`${thisMonthProfit.totalProfit} VNĐ`}
-            icon={<DollarOutlined />}
-            color="#52c41a"
-          />
-        </Col>
-        <Col xs={24} sm={12} md={12} lg={6}>
-          <StatCard
-            title="Đơn hàng chưa thanh toán"
-            value={orderStatistic?.totalUnPaidOrder || 0}
-            icon={<ShoppingCartOutlined />}
-            color="#faad14"
-          />
-        </Col>
-        <Col xs={24} sm={12} md={12} lg={6}>
-          <StatCard
-            title="Tour đang khai thác"
-            value={tourStatistic.activeTours || 0}
-            icon={<InboxOutlined />}
-            color="#722ed1"
-          />
-        </Col>
-      </Row>
-      <Row gutter={[20, 20]}>
-        <Col xs={24} sm={16}>
-          <div className={styles["chart-card"]}>
-            <div className={`${styles["dashboard-admin__chart-title"]}`}>
-              Doanh thu 6 tháng gần nhất
-            </div>
-            <Line {...profitConfig} />
+      {loading ? (
+        <Spin spinning={loading} tip="Đang tải dữ liệu...">
+          <div style={{ minHeight: "100vh" }} />
+        </Spin>
+      ) : (
+        <>
+          <div className={`${styles["dashboard-admin"]}`}>
+            <h4 className={`${styles["dashboard-admin__title"]}`}>
+              Trang tổng quan
+            </h4>
+            <Button
+              color="primary"
+              variant="outlined"
+              icon={<PrinterOutlined />}
+            >
+              In báo cáo
+            </Button>
           </div>
-        </Col>
-        <Col xs={24} sm={8}>
-          <div className={styles["chart-card"]}>
-            <div className={`${styles["dashboard-admin__chart-title"]}`}>
-              Trạng thái đơn hàng
-            </div>
-            <Pie {...orderStatusConfig} />
-          </div>
-        </Col>
-      </Row>
+          <Row gutter={[20, 20]} className="mb-4">
+            <Col xs={24} sm={12} md={12} lg={6}>
+              <StatCard
+                title="Tổng người dùng"
+                value={userStatistic.totalUsers || 0}
+                icon={<UserOutlined />}
+                color="#1890ff"
+              />
+            </Col>
+            <Col xs={24} sm={12} md={12} lg={6}>
+              <StatCard
+                title="Doanh thu (tháng này)"
+                value={`${thisMonthProfit.totalProfit} VNĐ`}
+                icon={<DollarOutlined />}
+                color="#52c41a"
+              />
+            </Col>
+            <Col xs={24} sm={12} md={12} lg={6}>
+              <StatCard
+                title="Đơn hàng chưa thanh toán"
+                value={orderStatistic?.totalUnPaidOrder || 0}
+                icon={<ShoppingCartOutlined />}
+                color="#faad14"
+              />
+            </Col>
+            <Col xs={24} sm={12} md={12} lg={6}>
+              <StatCard
+                title="Tour đang khai thác"
+                value={tourStatistic.activeTours || 0}
+                icon={<InboxOutlined />}
+                color="#722ed1"
+              />
+            </Col>
+          </Row>
+          <Row gutter={[20, 20]}>
+            <Col xs={24} sm={16}>
+              <div className={styles["chart-card"]}>
+                <div className={`${styles["dashboard-admin__chart-title"]}`}>
+                  Doanh thu 6 tháng gần nhất
+                </div>
+                <Line {...profitConfig} />
+              </div>
+            </Col>
+            <Col xs={24} sm={8}>
+              <div className={styles["chart-card"]}>
+                <div className={`${styles["dashboard-admin__chart-title"]}`}>
+                  Trạng thái đơn hàng
+                </div>
+                <Pie {...orderStatusConfig} />
+              </div>
+            </Col>
+          </Row>
 
-      <Row gutter={[20, 20]}>
-        <Col xs={24} sm={8}>
-          <div className={styles["chart-card"]}>
-            <div className={`${styles["dashboard-admin__chart-title"]}`}>
-              Trạng thái người dùng
-            </div>
-            <Pie {...userStatusConfig} />
-          </div>
-        </Col>
-        <Col xs={24} sm={16}>
-          <div className={styles["chart-card"]}>
-            <div className={`${styles["dashboard-admin__chart-title"]}`}>
-              Dư nợ 6 tháng gần nhất
-            </div>
-            <Line {...debtConfig} />
-          </div>
-        </Col>
-      </Row>
+          <Row gutter={[20, 20]}>
+            <Col xs={24} sm={8}>
+              <div className={styles["chart-card"]}>
+                <div className={`${styles["dashboard-admin__chart-title"]}`}>
+                  Trạng thái người dùng
+                </div>
+                <Pie {...userStatusConfig} />
+              </div>
+            </Col>
+            <Col xs={24} sm={16}>
+              <div className={styles["chart-card"]}>
+                <div className={`${styles["dashboard-admin__chart-title"]}`}>
+                  Dư nợ 6 tháng gần nhất
+                </div>
+                <Line {...debtConfig} />
+              </div>
+            </Col>
+          </Row>
+        </>
+      )}
     </>
   );
 }

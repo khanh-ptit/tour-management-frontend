@@ -105,7 +105,7 @@ function CreateAccount() {
               label="Mật khẩu"
               rules={[{ required: true }]}
             >
-              <Input type="password" />
+              <Input.Password />
             </Form.Item>
           </Col>
           <Col span={24}>

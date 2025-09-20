@@ -39,6 +39,7 @@ import Serivces from "../pages/admin/Service";
 import CreateService from "../pages/admin/Service/create";
 import Orders from "../pages/admin/Order";
 import OrderDetailAdmin from "../pages/admin/Order/detail";
+import MyAccount from "../pages/admin/MyAccount";
 
 export const routes = [
   {
@@ -208,6 +209,10 @@ export const routes = [
           {
             path: "orders/detail/:id",
             element: <OrderDetailAdmin />,
+          },
+          {
+            path: "my-account/info",
+            element: <MyAccount />,
           },
         ],
       },
