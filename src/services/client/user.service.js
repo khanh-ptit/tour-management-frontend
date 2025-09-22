@@ -1,4 +1,4 @@
-import { del, patch, post } from "../../utils/request.js";
+import { del, get, patch, post } from "../../utils/request.js";
 const version = "api/v1";
 
 export const register = async (options) => {
@@ -43,5 +43,25 @@ export const verifyUser = async (data) => {
 
 export const resetPassword = async (data) => {
   const result = await patch(`${version}/user/password/reset`, data);
+  return result;
+};
+
+export const getProfile = async () => {
+  const result = await get(`${version}/user/profile`);
+  return result;
+};
+
+export const getOrderStatistic = async () => {
+  const result = await get(`${version}/user/order-statistic`);
+  return result;
+};
+
+export const changePasswordUser = async (data) => {
+  const result = await patch(`${version}/user/change-password`, data);
+  return result;
+};
+
+export const editInfoUser = async (data) => {
+  const result = await patch(`${version}/user/edit-info`, data);
   return result;
 };
