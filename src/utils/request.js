@@ -10,7 +10,11 @@ const handleResponse = async (response) => {
   if (!response.ok) {
     const errorData = await response.json().catch(() => null);
     const errorMessage = errorData?.message || `Lỗi HTTP ${response.status}`;
-    throw new Error(errorMessage);
+
+    const error = new Error(errorMessage);
+    error.status = response.status;
+    error.code = errorData?.code || response.status;
+    throw error;
   }
   return response.json();
 };

@@ -3,6 +3,9 @@ import HeadControlTour from "../../../components/admin/HeadControlTour";
 import { getTourList } from "../../../services/admin/tour.service";
 import GridTour from "../../../components/admin/GridTour";
 import TableTour from "../../../components/admin/TableTour";
+import { useNavigate } from "react-router-dom";
+import { Spin } from "antd";
+import { useSelector } from "react-redux";
 
 function Tours() {
   const [tours, setTours] = useState([]);
@@ -12,6 +15,8 @@ function Tours() {
   const [isGrid, setIsGrid] = useState(false);
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(null);
+  const { permissions } = useSelector((state) => state.roleReducer);
+  const navigate = useNavigate();
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 4,
@@ -48,12 +53,15 @@ function Tours() {
         params.status = filterStatus;
       }
 
-      const result = await getTourList(params);
-      if (result) {
-        setTours(result.tours);
-        setPagination((prev) => ({ ...prev, total: result.total }));
+      const response = await getTourList(params);
+      if (response.code === 200) {
+        setTours(response.tours);
+        setPagination((prev) => ({ ...prev, total: response.total }));
       }
     } catch (error) {
+      if (error.code === 403) {
+        navigate("/admin/error/403");
+      }
       console.error("Lỗi khi fetch dữ liệu:", error);
     } finally {
       setLoading(false);
@@ -70,16 +78,28 @@ function Tours() {
 
   useEffect(() => {
     document.title = "Quản lý tour | Admin";
+    if (!permissions.includes("tours_view")) {
+      navigate("/admin/error/403");
+    }
   }, []);
 
   const handleChangeView = () => {
-    // console.log("*");
     setIsGrid((prev) => !prev);
     setPagination((prev) => ({
       ...prev,
-      current: 1, // Cập nhật current về 1 mỗi khi đổi chế độ
+      current: 1,
     }));
   };
+
+  if (tours.length === 0) {
+    return (
+      <>
+        <Spin spinning={loading} tip="Đang tải dữ liệu...">
+          <div style={{ height: "80vh" }}></div>
+        </Spin>
+      </>
+    );
+  }
 
   return (
     <>

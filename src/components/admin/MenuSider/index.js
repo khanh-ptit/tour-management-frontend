@@ -23,6 +23,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./MenuSider.scss";
 import { logout } from "../../../services/admin/auth.service";
 import { matchPath } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const getSelectedKey = (pathname) => {
   if (matchPath("/admin/rooms/*", pathname)) return "/admin/rooms";
@@ -37,6 +38,7 @@ const getSelectedKey = (pathname) => {
 
 function MenuSider() {
   const location = useLocation(); // Lấy URL hiện tại
+  const { permissions } = useSelector((state) => state.roleReducer);
   const navigate = useNavigate();
 
   const handleLogout = async (e) => {
@@ -59,7 +61,7 @@ function MenuSider() {
       icon: <BorderOuterOutlined />,
       key: "/admin/rooms",
     },
-    {
+    permissions.includes("tours_view") && {
       label: <Link to="/admin/tours">Quản lý tour du lịch</Link>,
       icon: <PicLeftOutlined />,
       key: "/admin/tours",

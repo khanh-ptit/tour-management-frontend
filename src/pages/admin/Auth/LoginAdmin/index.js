@@ -4,10 +4,14 @@ import { Form, Input, Button, Card, message } from "antd";
 import "./LoginAdmin.scss"; // Import file SCSS nếu cần
 import logoFold from "../../../../images/logo-fold.png";
 import { checkAuth, checkLogin } from "../../../../services/admin/auth.service";
+import { updateAccount } from "../../../../actions/account";
+import { useDispatch } from "react-redux";
+import { getPermissions } from "../../../../actions/role";
 
 const LoginAdmin = () => {
   const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,8 +45,9 @@ const LoginAdmin = () => {
     setLoading(true);
     try {
       const result = await checkLogin(e);
-
       localStorage.setItem("loginSuccessMessage", result.message);
+      dispatch(updateAccount(result.user));
+      dispatch(getPermissions(result.role));
       navigate("/admin/dashboard");
     } catch (error) {
       messageApi.error(error.message || "Đăng nhập thất bại!");

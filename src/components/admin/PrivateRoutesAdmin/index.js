@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { checkAuth } from "../../../services/admin/auth.service";
 import { Spin } from "antd";
+import { useDispatch } from "react-redux";
+import { getPermissions } from "../../../actions/role";
 
 const PrivateRoutesAdmin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -12,6 +15,7 @@ const PrivateRoutesAdmin = () => {
         const response = await checkAuth();
         if (response.user) {
           setIsAuthenticated(true);
+          dispatch(getPermissions(response.role));
         } else {
           setIsAuthenticated(false);
         }

@@ -4,10 +4,12 @@ import ButtonViewTour from "../ButtonViewTour";
 import ButtonEditTour from "../ButtonEditTour";
 import "./TableTour.scss";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
 function TableTour(props) {
+  const { permissions } = useSelector((state) => state.roleReducer);
+
   const { tours, onReload, loading, pagination, handlePagination } = props;
-  // console.log(tours);
   const columns = [
     { title: "STT", key: "index", render: (_, __, index) => index + 1 },
     { title: "Tên tour", dataIndex: "name", key: "name" },
@@ -80,8 +82,12 @@ function TableTour(props) {
       render: (_, record) => (
         <div className="button__wrap">
           <ButtonViewTour record={record} />
-          <ButtonEditTour onReload={onReload} record={record} />
-          <ButtonDeleteTour onReload={onReload} record={record} />
+          {permissions.includes("tours_edit") && (
+            <ButtonEditTour onReload={onReload} record={record} />
+          )}
+          {permissions.includes("tours_delete") && (
+            <ButtonDeleteTour onReload={onReload} record={record} />
+          )}
         </div>
       ),
     },

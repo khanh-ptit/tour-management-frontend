@@ -40,6 +40,7 @@ import CreateService from "../pages/admin/Service/create";
 import Orders from "../pages/admin/Order";
 import OrderDetailAdmin from "../pages/admin/Order/detail";
 import MyAccount from "../pages/admin/MyAccount";
+import Error403 from "../pages/admin/Error/error403";
 
 export const routes = [
   {
@@ -213,6 +214,10 @@ export const routes = [
           {
             path: "my-account/info",
             element: <MyAccount />,
+          },
+          {
+            path: "error/403",
+            element: <Error403 />,
           },
         ],
       },

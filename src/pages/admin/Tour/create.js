@@ -18,6 +18,7 @@ import { getServiceList } from "../../../services/admin/service.service";
 import { createTour } from "../../../services/admin/tour.service";
 import { getTourCategoryList } from "../../../services/admin/tour-category.service";
 import { getDestinationList } from "../../../services/admin/destination.service";
+import { useSelector } from "react-redux";
 // import "./CreateRoom.scss";
 
 const { RangePicker } = DatePicker;
@@ -29,9 +30,14 @@ function CreateTour() {
   const [destinations, setDestinations] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [servicesPrice, setServicesPrice] = useState(0);
+  const navigate = useNavigate();
+  const { permissions } = useSelector((state) => state.roleReducer);
 
   useEffect(() => {
     document.title = "Thêm mới tour | Admin";
+    if (!permissions.includes("tours_create")) {
+      navigate("/admin/error/403");
+    }
     const fetchServices = async () => {
       const result = await getServiceList();
       if (result) {
@@ -60,7 +66,6 @@ function CreateTour() {
   const [imageUrls, setImageUrls] = useState([]); // Danh sách URL ảnh sau khi upload
   const [previewUrls, setPreviewUrls] = useState([]); // Danh sách preview ảnh
   const [messageApi, contextHolder] = message.useMessage();
-  const navigate = useNavigate();
 
   // Xử lý upload nhiều ảnh
   const handleUpload = async (files) => {
