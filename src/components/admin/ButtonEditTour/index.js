@@ -59,8 +59,16 @@ function ButtonEditTour(props) {
       setTotalPrice(record.totalPrice);
 
       const fetchData = async () => {
+        const queryParams = {
+          page: 1,
+          limit: 50,
+        };
         const [servicesRes, categoriesRes, destinationsRes] = await Promise.all(
-          [getServiceList(), getTourCategoryList(), getDestinationList()]
+          [
+            getServiceList(),
+            getTourCategoryList(),
+            getDestinationList(queryParams),
+          ]
         );
 
         setServices(servicesRes.services);

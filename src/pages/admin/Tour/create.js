@@ -54,8 +54,12 @@ function CreateTour() {
       }
     };
     fetchTourCategories();
+    const queryParams = {
+      page: 1,
+      limit: 50,
+    };
     const fetchDestinations = async () => {
-      const result = await getDestinationList();
+      const result = await getDestinationList(queryParams);
       // console.log(result);
       setDestinations(result.destinations);
     };

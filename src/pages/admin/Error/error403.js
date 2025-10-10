@@ -1,8 +1,13 @@
 import { Result, Button } from "antd";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Error403() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "403 Forbidden";
+  }, []);
 
   return (
     <div
@@ -11,7 +16,6 @@ function Error403() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#f5f5f5",
       }}
     >
       <Result
