@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button, Col, Row, Spin, Tag } from "antd";
 import { EditOutlined } from "@ant-design/icons";
@@ -10,14 +10,20 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import "./TourDetail.scss";
 import { getTourDetail } from "../../../services/admin/tour.service";
+import { useSelector } from "react-redux";
 
 function TourDetail() {
   const { slug } = useParams();
   const [tour, setTour] = useState(null);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  // const [spinning, setSpinning] = useState(true);
+  const { permissions } = useSelector((state) => state.roleReducer);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!permissions.includes("tours_view")) {
+      navigate("/admin/error/403");
+    }
+
     if (tour) {
       document.title = `Chi tiết tour | ${tour.name}`;
     }

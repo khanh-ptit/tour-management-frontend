@@ -4,19 +4,23 @@ import { uploadToCloudinary } from "../../../services/uploadToCloudinary.service
 import { useNavigate } from "react-router-dom";
 import { UploadOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { createDestination } from "../../../services/admin/destination.service";
+import { useSelector } from "react-redux";
 
 function CreateDestination() {
+  const navigate = useNavigate();
+  const { permissions } = useSelector((state) => state.roleReducer);
+
   useEffect(() => {
+    if (!permissions.includes("destinations_create")) {
+      navigate("/admin/error/403");
+    }
     document.title = "Thêm mới điểm đến | Admin";
   }, []);
-
-  // console.log(tourCategoryList);
 
   const [form] = Form.useForm();
   const [thumbnail, setThumbnail] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
   const [messageApi, contextHolder] = message.useMessage();
-  const navigate = useNavigate();
 
   // Xử lý upload nhiều ảnh
   const handleUpload = async (file) => {

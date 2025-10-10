@@ -34,10 +34,10 @@ function CreateTour() {
   const { permissions } = useSelector((state) => state.roleReducer);
 
   useEffect(() => {
-    document.title = "Thêm mới tour | Admin";
     if (!permissions.includes("tours_create")) {
       navigate("/admin/error/403");
     }
+    document.title = "Thêm mới tour | Admin";
     const fetchServices = async () => {
       const result = await getServiceList();
       if (result) {

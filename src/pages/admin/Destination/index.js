@@ -3,6 +3,8 @@ import { getDestinationList } from "../../../services/admin/destination.service"
 import HeadControlDestination from "../../../components/admin/HeadControlDestination";
 import TableDestination from "../../../components/admin/TableDestination";
 import GridDestination from "../../../components/admin/GridDestination";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Destinations() {
   const [destinations, setDestinations] = useState([]);
@@ -16,6 +18,8 @@ function Destinations() {
     pageSize: 4,
     total: 0,
   });
+  const { permissions } = useSelector((state) => state.roleReducer);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setPagination((prev) => ({
@@ -73,6 +77,9 @@ function Destinations() {
   };
 
   useEffect(() => {
+    if (!permissions.includes("destinations_view")) {
+      navigate("/admin/error/403");
+    }
     document.title = "Điểm du lịch | Admin";
   }, []);
 

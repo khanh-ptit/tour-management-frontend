@@ -66,7 +66,7 @@ function MenuSider() {
       icon: <PicLeftOutlined />,
       key: "/admin/tours",
     },
-    {
+    permissions.includes("destinations_view") && {
       label: <Link to="/admin/destinations">Điểm du lịch</Link>,
       icon: <IoLocationOutline />,
       key: "/admin/destinations",

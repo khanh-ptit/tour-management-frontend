@@ -77,10 +77,10 @@ function Tours() {
   };
 
   useEffect(() => {
-    document.title = "Quản lý tour | Admin";
     if (!permissions.includes("tours_view")) {
       navigate("/admin/error/403");
     }
+    document.title = "Quản lý tour | Admin";
   }, []);
 
   const handleChangeView = () => {

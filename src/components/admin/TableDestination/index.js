@@ -3,10 +3,12 @@ import ButtonViewDestination from "../ButtonViewDestination";
 import ButtonDeleteDestination from "../ButtonDeleteDestination";
 import ButtonEditDestination from "../ButtonEditDestination";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
 function TableDestination(props) {
   const { loading, pagination, handlePagination, onReload, destinations } =
     props;
+  const { permissions } = useSelector((state) => state.roleReducer);
 
   const column = [
     { title: "STT", key: "index", render: (_, __, index) => index + 1 },
@@ -35,12 +37,16 @@ function TableDestination(props) {
       render: (_, record) => (
         <div className="button__wrap">
           <ButtonViewDestination record={record} />
-          <ButtonEditDestination
-            destinations={destinations}
-            record={record}
-            onReload={onReload}
-          />
-          <ButtonDeleteDestination record={record} onReload={onReload} />
+          {permissions.includes("destinations_edit") && (
+            <ButtonEditDestination
+              destinations={destinations}
+              record={record}
+              onReload={onReload}
+            />
+          )}
+          {permissions.includes("destinations_delete") && (
+            <ButtonDeleteDestination record={record} onReload={onReload} />
+          )}
         </div>
       ),
     },
