@@ -5,13 +5,20 @@ import { uploadToCloudinary } from "../../../services/uploadToCloudinary.service
 import { useNavigate } from "react-router-dom";
 import { getRoleList } from "../../../services/admin/role.service";
 import { createAccount } from "../../../services/admin/account.service";
+import { useSelector } from "react-redux";
 // import "./CreateRoom.scss";
 
 const { Option } = Select;
 
 function CreateAccount() {
+  const navigate = useNavigate();
+  const { permissions } = useSelector((state) => state.roleReducer);
+
   const [roles, setRoles] = useState([]);
   useEffect(() => {
+    if (!permissions.includes("accounts_create")) {
+      navigate("/admin/error/403");
+    }
     document.title = "Thêm mới tài khoản | Admin";
     const fetchRoles = async () => {
       const response = await getRoleList();
@@ -26,7 +33,6 @@ function CreateAccount() {
   const [messageApi, contextHolder] = message.useMessage();
   const [avatar, setAvatar] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
-  const navigate = useNavigate();
 
   // Xử lý upload nhiều ảnh
   const handleUpload = async (file) => {

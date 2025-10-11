@@ -3,6 +3,8 @@ import GridTour from "../../../components/admin/GridTour";
 import { getAccountList } from "../../../services/admin/account.service";
 import TableAccount from "../../../components/admin/TableAccount";
 import HeadControlAccount from "../../../components/admin/HeadControlAccount";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Accounts() {
   const [accounts, setAccounts] = useState([]);
@@ -12,6 +14,8 @@ function Accounts() {
   const [isGrid, setIsGrid] = useState(false);
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(null);
+  const { permissions } = useSelector((state) => state.roleReducer);
+  const navigate = useNavigate();
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 4,
@@ -69,6 +73,9 @@ function Accounts() {
   };
 
   useEffect(() => {
+    if (!permissions.includes("accounts_view")) {
+      navigate("/admin/error/403");
+    }
     document.title = "Quản lý tài khoản | Admin";
   }, []);
 

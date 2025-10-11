@@ -91,12 +91,12 @@ function MenuSider() {
       icon: <IoChatbubbleEllipsesOutline />,
       key: "/admin/chats",
     },
-    {
+    permissions.includes("accounts_view") && {
       label: <Link to="/admin/accounts">Tài khoản admin</Link>,
       icon: <ContactsOutlined />,
       key: "/admin/accounts",
     },
-    {
+    permissions.includes("users_view") && {
       label: <Link to="/admin/users">Tài khoản client</Link>,
       icon: <UserOutlined />,
       key: "/admin/users",

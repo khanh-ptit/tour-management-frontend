@@ -2,8 +2,11 @@ import { Button, Col, Input, Row, Select, Switch } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import "./HeadControlAccount.scss";
+import { useSelector } from "react-redux";
 
 function HeadControlAccount({ setSearchText, setSortOrder, setFilterStatus }) {
+  const { permissions } = useSelector((state) => state.roleReducer);
+
   return (
     <div className="mb-50 mt-20">
       <Row gutter={[20, 20]} align="middle">
@@ -40,26 +43,28 @@ function HeadControlAccount({ setSearchText, setSortOrder, setFilterStatus }) {
             <Select.Option value="inactive">Dừng hoạt động</Select.Option>
           </Select>
         </Col>
-        <Col
-          xs={12}
-          sm={6}
-          md={6}
-          lg={6}
-          xl={6}
-          xxl={6}
-          style={{ display: "flex", justifyContent: "center" }}
-        >
-          <Link className="control-header__item" to="/admin/accounts/create">
-            <Button
-              color="primary"
-              variant="outlined"
-              icon={<PlusOutlined />}
-              className="add-room-btn"
-            >
-              Thêm tài khoản
-            </Button>
-          </Link>
-        </Col>
+        {permissions.includes("accounts_create") && (
+          <Col
+            xs={12}
+            sm={6}
+            md={6}
+            lg={6}
+            xl={6}
+            xxl={6}
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <Link className="control-header__item" to="/admin/accounts/create">
+              <Button
+                color="primary"
+                variant="outlined"
+                icon={<PlusOutlined />}
+                className="add-room-btn"
+              >
+                Thêm tài khoản
+              </Button>
+            </Link>
+          </Col>
+        )}
       </Row>
     </div>
   );

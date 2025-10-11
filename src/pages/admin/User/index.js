@@ -3,6 +3,8 @@ import { getUserList } from "../../../services/admin/user.service";
 import { message } from "antd";
 import HeadControlUser from "../../../components/admin/HeadControlUser";
 import TableUser from "../../../components/admin/TableUser";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function UserPage() {
   const [users, setUsers] = useState([]);
@@ -11,6 +13,8 @@ function UserPage() {
   const [filterStatus, setFilterStatus] = useState(null);
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(null);
+  const { permissions } = useSelector((state) => state.roleReducer);
+  const navigate = useNavigate();
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 4,
@@ -71,6 +75,9 @@ function UserPage() {
   };
 
   useEffect(() => {
+    if (!permissions.includes("users_view")) {
+      navigate("/admin/error/403");
+    }
     document.title = "Quản lý người dùng | Admin";
   }, []);
 

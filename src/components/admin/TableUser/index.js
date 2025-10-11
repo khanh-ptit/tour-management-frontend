@@ -3,8 +3,11 @@ import moment from "moment";
 import ButtonDeleteUser from "../ButtonDeleteUser";
 import ButtonEditUser from "../ButtonEditUser";
 import ButtonViewUser from "../ButtonViewUser";
+import { useSelector } from "react-redux";
 
 function TableUser(props) {
+  const { permissions } = useSelector((state) => state.roleReducer);
+
   const { users, onReload, loading, pagination, handlePagination } = props;
 
   const columns = [
@@ -51,8 +54,12 @@ function TableUser(props) {
       render: (_, record) => (
         <div className="button__wrap">
           <ButtonViewUser record={record} />
-          <ButtonEditUser onReload={onReload} record={record} />
-          <ButtonDeleteUser onReload={onReload} record={record} />
+          {permissions.includes("users_edit") && (
+            <ButtonEditUser onReload={onReload} record={record} />
+          )}
+          {permissions.includes("users_delete") && (
+            <ButtonDeleteUser onReload={onReload} record={record} />
+          )}
         </div>
       ),
     },
