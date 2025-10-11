@@ -76,7 +76,7 @@ function MenuSider() {
       icon: <AppstoreAddOutlined />,
       key: "/admin/tour-categories",
     },
-    {
+    permissions.includes("orders_view") && {
       label: <Link to="/admin/orders">Quản lý đơn hàng</Link>,
       key: "/admin/orders",
       icon: <ShoppingOutlined />,

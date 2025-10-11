@@ -5,6 +5,8 @@ import { getOrderList } from "../../../services/admin/order.service";
 
 import TableOrder from "../../../components/admin/TableOrder";
 import HeadControlOrder from "../../../components/admin/HeadControlOrder";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Orders() {
   const [orders, setOrders] = useState([]);
@@ -14,6 +16,8 @@ function Orders() {
   const [isGrid, setIsGrid] = useState(false);
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(null);
+  const { permissions } = useSelector((state) => state.roleReducer);
+  const navigate = useNavigate();
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 4,
@@ -71,6 +75,9 @@ function Orders() {
   };
 
   useEffect(() => {
+    if (!permissions.includes("orders_view")) {
+      navigate("/admin/error/403");
+    }
     document.title = "Quản lý tour | Admin";
   }, []);
 

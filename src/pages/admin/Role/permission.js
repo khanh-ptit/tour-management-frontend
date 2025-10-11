@@ -15,7 +15,7 @@ function PermissionPage() {
     "tour-categories": ["view", "create", "edit", "delete"],
     tours: ["view", "create", "edit", "delete"],
     destinations: ["view", "create", "edit", "delete"],
-    orders: ["view", "create", "edit", "delete"],
+    orders: ["view", "edit", "delete"],
     services: ["view", "create", "edit", "delete"],
     accounts: ["view", "create", "edit", "delete"],
     users: ["view", "edit", "delete"],

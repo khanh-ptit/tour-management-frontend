@@ -5,8 +5,11 @@ import moment from "moment";
 import ButtonDeleteOrder from "../ButtonDeleteOrder";
 import ButtonViewOrder from "../ButtonViewOrder";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 function TableOrder(props) {
+  const { permissions } = useSelector((state) => state.roleReducer);
+
   const { orders, onReload, loading, pagination, handlePagination } = props;
   const columns = [
     { title: "STT", key: "index", render: (_, __, index) => index + 1 },
@@ -51,8 +54,12 @@ function TableOrder(props) {
       render: (_, record) => (
         <div className="button__wrap">
           <ButtonViewOrder record={record} />
-          <ButtonEditTour onReload={onReload} record={record} />
-          <ButtonDeleteOrder onReload={onReload} record={record} />
+          {permissions.includes("orders_edit") && (
+            <ButtonEditTour onReload={onReload} record={record} />
+          )}
+          {permissions.includes("orders_delete") && (
+            <ButtonDeleteOrder onReload={onReload} record={record} />
+          )}
         </div>
       ),
     },

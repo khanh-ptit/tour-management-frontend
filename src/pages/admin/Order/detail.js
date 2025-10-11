@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Spin, Tag } from "antd";
 import moment from "moment";
@@ -7,13 +7,18 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { getOrderDetailAdmin } from "../../../services/admin/order.service";
 import styles from "./OrderDetail.module.scss";
+import { useSelector } from "react-redux";
 
 function OrderDetailAdmin() {
   const { id } = useParams();
   const [order, setOrder] = useState(null);
-  // const [spinning, setSpinning] = useState(true);
+  const { permissions } = useSelector((state) => state.roleReducer);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!permissions.includes("orders_view")) {
+      navigate("/admin/error/403");
+    }
     if (order) {
       document.title = `Chi tiết đơn hàng`;
     }
