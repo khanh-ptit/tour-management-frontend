@@ -81,7 +81,7 @@ function MenuSider() {
       key: "/admin/orders",
       icon: <ShoppingOutlined />,
     },
-    {
+    permissions.includes("services_view") && {
       label: <Link to="/admin/services">Dịch vụ</Link>,
       icon: <CustomerServiceOutlined />,
       key: "/admin/services",

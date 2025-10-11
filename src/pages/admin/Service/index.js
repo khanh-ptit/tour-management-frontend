@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { getServiceList } from "../../../services/admin/service.service";
 import TableService from "../../../components/admin/TableService";
 import HeadControlService from "../../../components/admin/HeadControlService";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Serivces() {
   const [services, setServices] = useState([]);
@@ -10,6 +12,8 @@ function Serivces() {
   const [filterStatus, setFilterStatus] = useState(null);
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(null);
+  const { permissions } = useSelector((state) => state.roleReducer);
+  const navigate = useNavigate();
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 4,
@@ -63,6 +67,9 @@ function Serivces() {
   };
 
   useEffect(() => {
+    if (!permissions.includes("services_view")) {
+      navigate("/admin/error/403");
+    }
     document.title = "Quản lý dịch vụ | Admin";
   }, []);
 

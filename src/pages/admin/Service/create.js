@@ -2,14 +2,19 @@ import { useEffect } from "react";
 import { Form, Input, InputNumber, Button, Row, Col, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { createService } from "../../../services/admin/service.service";
+import { useSelector } from "react-redux";
 
 function CreateService() {
+  const navigate = useNavigate();
+  const { permissions } = useSelector((state) => state.roleReducer);
   useEffect(() => {
+    if (!permissions.includes("services_create")) {
+      navigate("/admin/error/403");
+    }
     document.title = "Thêm mới dịch vụ | Admin";
   }, []);
 
   const [form] = Form.useForm();
-  const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
 
   const onFinish = async (values) => {

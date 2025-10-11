@@ -2,8 +2,11 @@ import { Button, Col, Input, Row, Select } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import "./HeadControlService.scss";
+import { useSelector } from "react-redux";
 
 function HeadControlService({ setSearchText, setSortOrder }) {
+  const { permissions } = useSelector((state) => state.roleReducer);
+
   return (
     <div className="mb-50 mt-20">
       <Row gutter={[20, 20]} align="middle">
@@ -31,18 +34,20 @@ function HeadControlService({ setSearchText, setSortOrder }) {
         <Col xs={12} sm={6} md={6} lg={6} xl={6} xxl={6}>
           {" "}
         </Col>
-        <Col xs={12} sm={6} md={6} lg={6} xl={6} xxl={6}>
-          <Link className="control-header__item" to="/admin/services/create">
-            <Button
-              color="primary"
-              variant="outlined"
-              icon={<PlusOutlined />}
-              className="add-room-btn"
-            >
-              Thêm dịch vụ
-            </Button>
-          </Link>
-        </Col>
+        {permissions.includes("services_create") && (
+          <Col xs={12} sm={6} md={6} lg={6} xl={6} xxl={6}>
+            <Link className="control-header__item" to="/admin/services/create">
+              <Button
+                color="primary"
+                variant="outlined"
+                icon={<PlusOutlined />}
+                className="add-room-btn"
+              >
+                Thêm dịch vụ
+              </Button>
+            </Link>
+          </Col>
+        )}
       </Row>
     </div>
   );
