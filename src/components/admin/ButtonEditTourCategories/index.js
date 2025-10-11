@@ -70,15 +70,18 @@ function ButtonEditTourCategory(props) {
   };
 
   const onFinish = async (values) => {
+    const formatName = values.name.replace(/^[-\s]+/, "").trim();
+
     const updatedTourCategoryData = {
       ...values,
+      name: formatName,
       thumbnail,
     };
+
     const result = await updateTourCategory(
       record.slug,
       updatedTourCategoryData
     );
-    // const result = undefined; // Gọi API cập nhật ở đây
     if (result) {
       messageApi.open({
         type: "success",

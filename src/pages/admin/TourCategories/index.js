@@ -3,6 +3,8 @@ import { getTourCategoryList } from "../../../services/admin/tour-category.servi
 import TableTourCategories from "../../../components/admin/TableTourCategories";
 import HeadControlTourCategory from "../../../components/admin/HeadControlTourCategory";
 import GridTourCategory from "../../../components/admin/GridTourCategory";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function TourCategories() {
   const [tourCategories, setTourCategories] = useState([]);
@@ -14,6 +16,8 @@ function TourCategories() {
     pageSize: 4,
     total: 0,
   });
+  const { permissions } = useSelector((state) => state.roleReducer);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setPagination((prev) => ({
@@ -60,6 +64,9 @@ function TourCategories() {
   };
 
   useEffect(() => {
+    if (!permissions.includes("tour-categories_view")) {
+      navigate("/admin/error/403");
+    }
     document.title = "Danh mục tour | Admin";
   }, []);
 

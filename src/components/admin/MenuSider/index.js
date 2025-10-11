@@ -71,7 +71,7 @@ function MenuSider() {
       icon: <IoLocationOutline />,
       key: "/admin/destinations",
     },
-    {
+    permissions.includes("tour-categories_view") && {
       label: <Link to="/admin/tour-categories">Danh mục tour</Link>,
       icon: <AppstoreAddOutlined />,
       key: "/admin/tour-categories",

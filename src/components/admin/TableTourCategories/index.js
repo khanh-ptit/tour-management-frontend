@@ -2,10 +2,13 @@ import { Spin, Table } from "antd";
 import ButtonViewTourCategories from "../ButtonViewTourCategory";
 import ButtonDeleteTourCategory from "../ButtonDeleteTourCategory";
 import ButtonEditTourCategory from "../ButtonEditTourCategories";
+import { useSelector } from "react-redux";
+import moment from "moment";
 
 function TableTourCategories(props) {
   const { loading, pagination, handlePagination, onReload, tourCategories } =
     props;
+  const { permissions } = useSelector((state) => state.roleReducer);
 
   const column = [
     { title: "STT", key: "index", render: (_, __, index) => index + 1 },
@@ -21,7 +24,6 @@ function TableTourCategories(props) {
         return parentCategory ? parentCategory.name : "--------";
       },
     },
-
     {
       title: "Ảnh",
       dataIndex: "thumbnail",
@@ -50,14 +52,48 @@ function TableTourCategories(props) {
       render: (_, record) => (
         <div className="button__wrap">
           <ButtonViewTourCategories record={record} />
-          <ButtonEditTourCategory
-            tourCategories={tourCategories}
-            record={record}
-            onReload={onReload}
-          />
-          <ButtonDeleteTourCategory record={record} onReload={onReload} />
+          {permissions.includes("tour-categories_edit") && (
+            <ButtonEditTourCategory
+              tourCategories={tourCategories}
+              record={record}
+              onReload={onReload}
+            />
+          )}
+          {permissions.includes("tour-categories_delete") && (
+            <ButtonDeleteTourCategory record={record} onReload={onReload} />
+          )}
         </div>
       ),
+    },
+    {
+      title: "Thời gian tạo",
+      align: "center",
+      render: (_, record) => {
+        if (record.createdBy)
+          return (
+            <>
+              <p>{record.createdBy.accountId.fullName}</p>
+              <p>{moment(record.createdBy.createdAt).format("DD/MM/YYYY")}</p>
+            </>
+          );
+        else return <>N/A</>;
+      },
+    },
+    {
+      title: "Cập nhật lần cuối",
+      align: "center",
+      render: (_, record) => {
+        if (record.updatedBy && record.updatedBy.length > 0) {
+          const lastUpdate = record.updatedBy[record.updatedBy.length - 1];
+          return (
+            <>
+              <p>{lastUpdate.accountId.fullName}</p>
+              <p>{moment(lastUpdate.updatedAt).format("DD/MM/YYYY")}</p>
+            </>
+          );
+        }
+        return <p>N/A</p>;
+      },
     },
   ];
 

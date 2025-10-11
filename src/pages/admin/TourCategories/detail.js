@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button, Col, Row, Spin, Tag } from "antd";
 import { EditOutlined } from "@ant-design/icons";
@@ -11,14 +11,20 @@ import {
   getTourCategoryDetail,
   getTourCategoryList,
 } from "../../../services/admin/tour-category.service";
+import { useSelector } from "react-redux";
 
 function TourCategoryDetail() {
   const { slug } = useParams();
   const [tourCategory, setTourCategory] = useState(null);
   const [tourCategoryList, setTourCategoryList] = useState([]);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const { permissions } = useSelector((state) => state.roleReducer);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!permissions.includes("tour-categories_view")) {
+      navigate("/admin/error/403");
+    }
     if (tourCategory) {
       document.title = `Danh mục tour | ${tourCategory.name}`;
     }
