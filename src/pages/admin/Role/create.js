@@ -2,13 +2,18 @@ import { useEffect, useState } from "react";
 import { Form, Input, Button, message, Row, Col } from "antd";
 import { createRole } from "../../../services/admin/role.service";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function CreateRole() {
   const [form] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
+  const { permissions } = useSelector((state) => state.roleReducer);
 
   useEffect(() => {
+    if (!permissions.includes("roles_create")) {
+      navigate("/admin/error/403");
+    }
     document.title = "Thêm mới nhóm quyền | Admin";
   });
 

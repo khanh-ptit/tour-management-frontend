@@ -5,11 +5,17 @@ import {
 } from "../../../services/admin/role.service";
 import { Checkbox, Button, message, Spin } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function PermissionPage() {
   const [roles, setRoles] = useState([]);
   const [permissions, setPermissions] = useState({});
   const [messageApi, contextHolder] = message.useMessage();
+  const navigate = useNavigate();
+  const { permissions: permissionsReducers } = useSelector(
+    (state) => state.roleReducer
+  );
 
   const modules = {
     "tour-categories": ["view", "create", "edit", "delete"],
@@ -45,6 +51,9 @@ function PermissionPage() {
   };
 
   useEffect(() => {
+    if (!permissionsReducers.includes("roles_permissions")) {
+      navigate("/admin/error/403");
+    }
     document.title = "Phân quyền | Admin";
     const fetchRoles = async () => {
       const response = await getRoleList();

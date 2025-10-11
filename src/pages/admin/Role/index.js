@@ -3,12 +3,16 @@ import { getRoleList } from "../../../services/admin/role.service";
 import TableRole from "../../../components/admin/TableRole";
 import GridRole from "../../../components/admin/GridRole";
 import HeadControlRole from "../../../components/admin/HeadControlRole";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Roles() {
   const [roles, setRoles] = useState([]);
   const [isGrid, setIsGrid] = useState(false);
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(null);
+  const { permissions } = useSelector((state) => state.roleReducer);
+  const navigate = useNavigate();
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 4,
@@ -52,6 +56,9 @@ function Roles() {
   };
 
   useEffect(() => {
+    if (!permissions.includes("roles_view")) {
+      navigate("/admin/error/403");
+    }
     document.title = "Quản lý nhóm quyền | Admin";
   }, []);
 

@@ -2,8 +2,11 @@ import { Button, Col, Row, Switch } from "antd";
 import { KeyOutlined, PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import "./HeadControlRole.scss";
+import { useSelector } from "react-redux";
 
 function HeadControlRole({ setIsGrid }) {
+  const { permissions } = useSelector((state) => state.roleReducer);
+
   return (
     <div className="mb-50 mt-20">
       <Row gutter={[20, 20]} align="middle">
@@ -15,29 +18,33 @@ function HeadControlRole({ setIsGrid }) {
               checkedChildren="Lưới"
               unCheckedChildren="Bảng"
             />
-            <Link
-              className="control-header__item"
-              to="/admin/roles/permissions"
-            >
-              <Button
-                color="red"
-                variant="outlined"
-                icon={<KeyOutlined />}
-                className="add-room-btn"
+            {permissions.includes("roles_permissions") && (
+              <Link
+                className="control-header__item"
+                to="/admin/roles/permissions"
               >
-                Phân quyền
-              </Button>
-            </Link>
-            <Link className="control-header__item" to="/admin/roles/create">
-              <Button
-                color="primary"
-                variant="outlined"
-                icon={<PlusOutlined />}
-                className="add-room-btn"
-              >
-                Thêm mới nhóm quyền
-              </Button>
-            </Link>
+                <Button
+                  color="red"
+                  variant="outlined"
+                  icon={<KeyOutlined />}
+                  className="add-room-btn"
+                >
+                  Phân quyền
+                </Button>
+              </Link>
+            )}
+            {permissions.includes("roles_create") && (
+              <Link className="control-header__item" to="/admin/roles/create">
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  icon={<PlusOutlined />}
+                  className="add-room-btn"
+                >
+                  Thêm mới nhóm quyền
+                </Button>
+              </Link>
+            )}
           </div>
         </Col>
       </Row>

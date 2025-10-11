@@ -5,6 +5,8 @@ import { getRoomChatAdmin } from "../../../services/admin/room-chat.service";
 import { getChatByRoom } from "../../../services/admin/chat.service";
 import { useSocket } from "../../../context/SocketContext";
 import "./ChatAdmin.scss"; // Import SCSS thông thường
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const { Sider, Content } = Layout;
 
@@ -16,8 +18,13 @@ function ChatAdmin() {
   const [chatMessages, setChatMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
   const chatEndRef = useRef(null); // Ref để cuộn xuống cuối danh sách
+  const { permissions } = useSelector((state) => state.roleReducer);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!permissions.includes("chat_chat")) {
+      navigate("/admin/error/403");
+    }
     document.title = "Chăm sóc khách hàng | Admin";
   }, []);
 

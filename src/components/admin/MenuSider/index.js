@@ -86,7 +86,7 @@ function MenuSider() {
       icon: <CustomerServiceOutlined />,
       key: "/admin/services",
     },
-    {
+    permissions.includes("chat_chat") && {
       label: <Link to="/admin/chats">CSKH (Chat) </Link>,
       icon: <IoChatbubbleEllipsesOutline />,
       key: "/admin/chats",
@@ -101,12 +101,12 @@ function MenuSider() {
       icon: <UserOutlined />,
       key: "/admin/users",
     },
-    {
+    permissions.includes("roles_view") && {
       label: <Link to="/admin/roles">Quản lý nhóm quyền</Link>,
       icon: <TeamOutlined />,
       key: "/admin/roles",
     },
-    {
+    permissions.includes("roles_permissions") && {
       label: <Link to="/admin/roles/permissions">Phân quyền</Link>,
       icon: <SafetyCertificateOutlined />,
       key: "/admin/roles/permissions",
