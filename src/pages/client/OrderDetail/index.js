@@ -1,6 +1,6 @@
 import { message, Modal, Spin, Tag } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   checkPaymentStatus,
   getOrderDetail,
@@ -16,6 +16,7 @@ function OrderDetail() {
   const [countdown, setCountdown] = useState(180);
   const [showPayment, setShowPayment] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
   const isPaidRef = useRef(null); // Lưu trạng thái thanh toán trước đó
 
   useEffect(() => {
@@ -37,6 +38,12 @@ function OrderDetail() {
           isPaidRef.current = response.order.isPaid; // Lưu trạng thái thanh toán ban đầu
         }
       } catch (error) {
+        if (error.code === 404) {
+          navigate("/error/404");
+        }
+        if (error.code === 400) {
+          navigate("/error/400");
+        }
         messageApi.open({ type: "error", content: error.message });
       }
     };
@@ -80,7 +87,12 @@ function OrderDetail() {
     return () => clearInterval(interval);
   }, [id, order, messageApi]);
 
-  if (!order) return <Spin spinning={!order} tip="Đang tải dữ liệu..."></Spin>;
+  if (!order)
+    return (
+      <Spin spinning={!order} tip="Đang tải dữ liệu...">
+        <div style={{ minHeight: "50vh" }}></div>
+      </Spin>
+    );
 
   const formatTime = (seconds) => {
     const m = Math.floor(seconds / 60);

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Breadcrumb, Pagination, Select, Spin } from "antd";
 import styles from "./Tour.module.scss";
 import { getToursByDestination } from "../../../services/client/destination.service";
@@ -9,6 +9,7 @@ function Destination() {
   const { slug } = useParams();
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
+  const navigate = useNavigate();
 
   // State lưu trạng thái của từng Select
   const [selectedTime, setSelectedTime] = useState(null);
@@ -39,12 +40,18 @@ function Destination() {
       params.sortKey = sortKey;
       params.sortValue = sortValue;
     }
-    const response = await getToursByDestination(slug, params);
-    if (response.code === 200) {
-      setTours(response.tours);
-      setObjectPagination((prev) => ({ ...prev, total: response.total }));
-      setLoading(false);
-      setTitle(response.title);
+    try {
+      const response = await getToursByDestination(slug, params);
+      if (response.code === 200) {
+        setTours(response.tours);
+        setObjectPagination((prev) => ({ ...prev, total: response.total }));
+        setLoading(false);
+        setTitle(response.title);
+      }
+    } catch (error) {
+      if (error.code === 404) {
+        navigate("/error/404");
+      }
     }
   }, [objectPagination.currentPage, sortOrder, slug]);
 

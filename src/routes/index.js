@@ -43,6 +43,8 @@ import MyAccount from "../pages/admin/MyAccount";
 import Error403 from "../pages/admin/Error/error403";
 import Error404 from "../pages/admin/Error/error404";
 import Error400 from "../pages/admin/Error/error400";
+import Error404Client from "../pages/client/Error/error404";
+import Error400Client from "../pages/client/Error/error400";
 
 export const routes = [
   {
@@ -101,6 +103,18 @@ export const routes = [
           {
             path: "/tours/detail/:slug",
             element: <TourDetailClient />,
+          },
+          {
+            path: "/error/404",
+            element: <Error404Client />,
+          },
+          {
+            path: "/error/400",
+            element: <Error400Client />,
+          },
+          {
+            path: "*",
+            element: <Error404Client />,
           },
         ],
       },

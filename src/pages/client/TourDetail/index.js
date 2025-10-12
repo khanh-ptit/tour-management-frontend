@@ -55,32 +55,41 @@ function TourDetailClient() {
   useEffect(() => {
     const fetchTour = async () => {
       setLoading(true);
-      const response = await getTourDetail(slug);
-      if (response.code === 200) {
-        setTour(response.tour);
+      try {
+        const response = await getTourDetail(slug);
+        if (response.code === 200) {
+          setTour(response.tour);
 
-        const fetchedDestinationName = response.tour.destinationId?.name || ""; // Lấy trực tiếp từ API
-        setDestinationName(fetchedDestinationName); // Cập nhật state
+          const fetchedDestinationName =
+            response.tour.destinationId?.name || ""; // Lấy trực tiếp từ API
+          setDestinationName(fetchedDestinationName); // Cập nhật state
 
-        if (domesticTour.some((dest) => dest.name === fetchedDestinationName)) {
-          setReferenceSlug("tour-trong-nuoc");
-        } else if (
-          foreignTour.some((dest) => dest.name === fetchedDestinationName)
-        ) {
-          setReferenceSlug("tour-nuoc-ngoai");
-        } else {
-          setLoading(false);
-        }
-        const fetchReferenceTours = async () => {
-          const result = await getTourByCategory(referenceSlug);
-          if (result.code === 200) {
-            setReferenceTours(result.tours);
+          if (
+            domesticTour.some((dest) => dest.name === fetchedDestinationName)
+          ) {
+            setReferenceSlug("tour-trong-nuoc");
+          } else if (
+            foreignTour.some((dest) => dest.name === fetchedDestinationName)
+          ) {
+            setReferenceSlug("tour-nuoc-ngoai");
+          } else {
             setLoading(false);
           }
-        };
-        if (referenceSlug !== null) fetchReferenceTours();
-      } else if (response.code === 404) {
-        navigate("/error/404");
+          const fetchReferenceTours = async () => {
+            const result = await getTourByCategory(referenceSlug);
+            if (result.code === 200) {
+              setReferenceTours(result.tours);
+              setLoading(false);
+            }
+          };
+          if (referenceSlug !== null) fetchReferenceTours();
+        } else if (response.code === 404) {
+          navigate("/error/404");
+        }
+      } catch (error) {
+        if (error.code === 404) {
+          navigate("/error/404");
+        }
       }
     };
     fetchTour();
