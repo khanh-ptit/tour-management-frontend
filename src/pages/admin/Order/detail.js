@@ -29,8 +29,13 @@ function OrderDetailAdmin() {
       try {
         const result = await getOrderDetailAdmin(id);
         setOrder(result.order);
-        console.log("🚀 ~ fetchOrder ~ result.order:", result.order);
       } catch (error) {
+        if (error.code === 400) {
+          navigate("/admin/error/400");
+        }
+        if (error.code === 404) {
+          navigate("/admin/error/404");
+        }
         console.error("Lỗi khi lấy dữ liệu đơn hàng:", error);
       }
     }

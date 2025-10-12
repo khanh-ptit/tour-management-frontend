@@ -36,6 +36,9 @@ function TourCategoryDetail() {
         const result = await getTourCategoryDetail(slug);
         setTourCategory(result.tourCategory);
       } catch (error) {
+        if (error.code === 404) {
+          navigate("/admin/error/404");
+        }
         console.error("Lỗi khi lấy dữ liệu danh mục:", error);
       }
     }

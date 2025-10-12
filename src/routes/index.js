@@ -41,6 +41,8 @@ import Orders from "../pages/admin/Order";
 import OrderDetailAdmin from "../pages/admin/Order/detail";
 import MyAccount from "../pages/admin/MyAccount";
 import Error403 from "../pages/admin/Error/error403";
+import Error404 from "../pages/admin/Error/error404";
+import Error400 from "../pages/admin/Error/error400";
 
 export const routes = [
   {
@@ -218,6 +220,18 @@ export const routes = [
           {
             path: "error/403",
             element: <Error403 />,
+          },
+          {
+            path: "error/404",
+            element: <Error404 />,
+          },
+          {
+            path: "error/400",
+            element: <Error400 />,
+          },
+          {
+            path: "*",
+            element: <Error404 />,
           },
         ],
       },

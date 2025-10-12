@@ -38,6 +38,9 @@ function TourDetail() {
         setTour(result);
         // setSpinning(false);
       } catch (error) {
+        if (error.code === 404) {
+          navigate("/admin/error/404");
+        }
         console.error("Lỗi khi lấy dữ liệu phòng:", error);
       }
     }
