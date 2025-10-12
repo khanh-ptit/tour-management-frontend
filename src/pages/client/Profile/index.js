@@ -41,6 +41,7 @@ import { Line, Pie } from "@ant-design/charts";
 import styles from "./Profile.module.scss";
 import { uploadToCloudinary } from "../../../services/uploadToCloudinary.service";
 import { useDispatch } from "react-redux";
+import { updateInfo } from "../../../actions/userClient";
 
 const { Title, Text } = Typography;
 
@@ -158,6 +159,7 @@ function Profile() {
         const refreshed = await getProfile();
         if (refreshed.code === 200) {
           setProfile(refreshed.user);
+          dispatch(updateInfo(refreshed.user));
         }
         // dispatch(updateAccount(refreshed.account));
         infoForm.resetFields();

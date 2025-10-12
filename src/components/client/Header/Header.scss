@@ -195,6 +195,25 @@ $header-transition: ease 0.3s;
   }
 }
 
+.header__category-dropdown .ant-dropdown-menu {
+  margin-top: 10px;
+  min-width: 180px !important;
+}
+
+.ant-dropdown-menu-submenu .ant-dropdown-menu {
+  min-width: 180px !important;
+}
+
+.header__category-dropdown .ant-dropdown-menu-submenu-title {
+  font-size: 15px !important;
+  padding: 8px !important;
+}
+
+.ant-dropdown-menu-submenu .ant-dropdown-menu-item {
+  font-size: 15px !important;
+  padding: 8px !important;
+}
+
 /* Dropdown Styles */
 .header__dropdown {
   border-radius: $header-border-radius;

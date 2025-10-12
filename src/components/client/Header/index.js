@@ -1,14 +1,28 @@
 import { Link, useNavigate } from "react-router-dom";
 import removeAccents from "../../../utils/removeAccents";
 import logoTopTenTravel from "../../../images/client/logoTopTenTravel.png";
-import { Badge, Button, Dropdown, Input, Menu, message, Popover } from "antd";
-import { ShoppingCartOutlined, MenuOutlined } from "@ant-design/icons";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Dropdown,
+  Input,
+  Menu,
+  message,
+  Space,
+} from "antd";
+import {
+  ShoppingCartOutlined,
+  MenuOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./Header.scss";
 import { logout } from "../../../actions/auth";
 import { getCart } from "../../../services/client/cart.service";
 import { updateCartQuantity } from "../../../actions/cart";
+import { getTourCategoryList } from "../../../services/admin/tour-category.service";
 
 const { Search } = Input;
 
@@ -28,8 +42,45 @@ function Header() {
   const [keyword, setKeyword] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
-  const { isAuthenticated } = useSelector((state) => state.authReducer);
+  const { isAuthenticated, user } = useSelector((state) => state.authReducer);
+  const { userUpdate } = useSelector((state) => state.userReducer);
   const { cartQuantity } = useSelector((state) => state.cartReducer);
+  const [categoryTree, setCategoryTree] = useState([]);
+
+  const buildCategoryTree = (categories) => {
+    const map = {};
+    const roots = [];
+
+    categories.forEach((cat) => {
+      map[cat._id] = { ...cat, children: [] };
+    });
+
+    categories.forEach((cat) => {
+      if (cat.categoryParentId) {
+        map[cat.categoryParentId]?.children.push(map[cat._id]);
+      } else {
+        roots.push(map[cat._id]);
+      }
+    });
+
+    return roots;
+  };
+
+  const renderCategoryMenu = (tree) => (
+    <Menu className="header__category-menu" style={{ marginBottom: "100px" }}>
+      {tree.map((parent) => (
+        <Menu.SubMenu key={parent._id} title={parent.name.trim()}>
+          {parent.children.map((child) => (
+            <Menu.Item key={child._id}>
+              <Link to={`/tour-categories/${child.slug}`}>
+                {child.name.replace(/^---\s*/, "")}
+              </Link>
+            </Menu.Item>
+          ))}
+        </Menu.SubMenu>
+      ))}
+    </Menu>
+  );
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -42,6 +93,21 @@ function Header() {
         console.error(error);
       }
     };
+
+    const fetchTourCategories = async () => {
+      try {
+        const params = {
+          isBasic: true,
+        };
+        const response = await getTourCategoryList(params);
+        if (response.code === 200) {
+          setCategoryTree(buildCategoryTree(response.tourCategories));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchTourCategories();
 
     if (isAuthenticated) {
       fetchCart();
@@ -162,6 +228,24 @@ function Header() {
     </Menu>
   );
 
+  const accountMenu = {
+    items: [
+      {
+        key: "/user/profile",
+        label: <Link to="/user/profile">Thông tin tài khoản</Link>,
+      },
+      {
+        type: "divider",
+      },
+      {
+        key: "/user/logout",
+        label: "Đăng xuất",
+        danger: true,
+        onClick: handleLogout,
+      },
+    ],
+  };
+
   return (
     <>
       {contextHolder}
@@ -177,7 +261,14 @@ function Header() {
                 <Link to="/news">Tin tức</Link>
               </li>
               <li>
-                <Link to="/contact">Liên hệ</Link>
+                <Dropdown
+                  overlay={renderCategoryMenu(categoryTree)}
+                  trigger={["hover"]}
+                  placement="bottom"
+                  overlayClassName="header__category-dropdown"
+                >
+                  <span className="header__menu-link">Danh mục tour</span>
+                </Dropdown>
               </li>
               {!isAuthenticated ? (
                 <>
@@ -191,12 +282,21 @@ function Header() {
               ) : (
                 <>
                   <li>
-                    <Link to="/user/profile">Cá nhân</Link>
-                  </li>
-                  <li>
-                    <span onClick={handleLogout} style={{ cursor: "pointer" }}>
-                      Đăng xuất
-                    </span>
+                    <Dropdown
+                      menu={accountMenu}
+                      placement="bottomRight"
+                      trigger={["hover"]}
+                      overlayClassName="header__category-dropdown"
+                    >
+                      <Space style={{ cursor: "pointer" }}>
+                        <Avatar
+                          src={userUpdate?.avatar || user.avatar}
+                          size="small"
+                          icon={<UserOutlined />}
+                        />
+                        <span>{userUpdate?.fullName || user.fullName}</span>
+                      </Space>
+                    </Dropdown>
                   </li>
                 </>
               )}

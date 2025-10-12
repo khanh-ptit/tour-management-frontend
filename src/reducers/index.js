@@ -4,6 +4,7 @@ import authReducer from "./auth";
 import cartReducer from "./cart";
 import accountReducer from "./account";
 import roleReducer from "./role";
+import userReducer from "./userClient";
 
 const allReducers = combineReducers({
   destinationReducer,
@@ -11,6 +12,7 @@ const allReducers = combineReducers({
   cartReducer,
   accountReducer,
   roleReducer,
+  userReducer,
   // Thêm reducers tại đây
 });
 
