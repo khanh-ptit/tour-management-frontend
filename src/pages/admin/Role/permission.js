@@ -53,6 +53,7 @@ function PermissionPage() {
   useEffect(() => {
     if (!permissionsReducers.includes("roles_permissions")) {
       navigate("/admin/error/403");
+      return;
     }
     document.title = "Phân quyền | Admin";
     const fetchRoles = async () => {

@@ -66,6 +66,7 @@ function TourCategories() {
   useEffect(() => {
     if (!permissions.includes("tour-categories_view")) {
       navigate("/admin/error/403");
+      return;
     }
     document.title = "Danh mục tour | Admin";
   }, []);

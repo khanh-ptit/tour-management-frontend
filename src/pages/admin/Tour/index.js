@@ -61,6 +61,7 @@ function Tours() {
     } catch (error) {
       if (error.code === 403) {
         navigate("/admin/error/403");
+        return;
       }
       console.error("Lỗi khi fetch dữ liệu:", error);
     } finally {
@@ -79,6 +80,7 @@ function Tours() {
   useEffect(() => {
     if (!permissions.includes("tours_view")) {
       navigate("/admin/error/403");
+      return;
     }
     document.title = "Quản lý tour | Admin";
   }, []);

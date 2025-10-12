@@ -24,6 +24,7 @@ function TourCategoryDetail() {
   useEffect(() => {
     if (!permissions.includes("tour-categories_view")) {
       navigate("/admin/error/403");
+      return;
     }
     if (tourCategory) {
       document.title = `Danh mục tour | ${tourCategory.name}`;
@@ -38,6 +39,7 @@ function TourCategoryDetail() {
       } catch (error) {
         if (error.code === 404) {
           navigate("/admin/error/404");
+          return;
         }
         console.error("Lỗi khi lấy dữ liệu danh mục:", error);
       }

@@ -77,6 +77,7 @@ function UserPage() {
   useEffect(() => {
     if (!permissions.includes("users_view")) {
       navigate("/admin/error/403");
+      return;
     }
     document.title = "Quản lý người dùng | Admin";
   }, []);

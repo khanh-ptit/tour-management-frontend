@@ -51,6 +51,7 @@ function Tour() {
     } catch (error) {
       if (error.code === 404) {
         navigate("/error/404");
+        return;
       }
     }
   }, [objectPagination.currentPage, sortOrder, slug]);

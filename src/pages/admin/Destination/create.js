@@ -13,6 +13,7 @@ function CreateDestination() {
   useEffect(() => {
     if (!permissions.includes("destinations_create")) {
       navigate("/admin/error/403");
+      return;
     }
     document.title = "Thêm mới điểm đến | Admin";
   }, []);

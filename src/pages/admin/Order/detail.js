@@ -18,6 +18,7 @@ function OrderDetailAdmin() {
   useEffect(() => {
     if (!permissions.includes("orders_view")) {
       navigate("/admin/error/403");
+      return;
     }
     if (order) {
       document.title = `Chi tiết đơn hàng`;
@@ -32,9 +33,11 @@ function OrderDetailAdmin() {
       } catch (error) {
         if (error.code === 400) {
           navigate("/admin/error/400");
+          return;
         }
         if (error.code === 404) {
           navigate("/admin/error/404");
+          return;
         }
         console.error("Lỗi khi lấy dữ liệu đơn hàng:", error);
       }

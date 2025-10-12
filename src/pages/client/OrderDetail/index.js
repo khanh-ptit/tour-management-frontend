@@ -40,9 +40,11 @@ function OrderDetail() {
       } catch (error) {
         if (error.code === 404) {
           navigate("/error/404");
+          return;
         }
         if (error.code === 400) {
           navigate("/error/400");
+          return;
         }
         messageApi.open({ type: "error", content: error.message });
       }

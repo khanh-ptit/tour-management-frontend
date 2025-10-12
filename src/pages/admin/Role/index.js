@@ -58,6 +58,7 @@ function Roles() {
   useEffect(() => {
     if (!permissions.includes("roles_view")) {
       navigate("/admin/error/403");
+      return;
     }
     document.title = "Quản lý nhóm quyền | Admin";
   }, []);

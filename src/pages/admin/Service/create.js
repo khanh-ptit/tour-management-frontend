@@ -10,6 +10,7 @@ function CreateService() {
   useEffect(() => {
     if (!permissions.includes("services_create")) {
       navigate("/admin/error/403");
+      return;
     }
     document.title = "Thêm mới dịch vụ | Admin";
   }, []);

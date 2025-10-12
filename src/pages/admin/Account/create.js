@@ -18,6 +18,7 @@ function CreateAccount() {
   useEffect(() => {
     if (!permissions.includes("accounts_create")) {
       navigate("/admin/error/403");
+      return;
     }
     document.title = "Thêm mới tài khoản | Admin";
     const fetchRoles = async () => {

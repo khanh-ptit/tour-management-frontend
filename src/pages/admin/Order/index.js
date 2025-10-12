@@ -77,6 +77,7 @@ function Orders() {
   useEffect(() => {
     if (!permissions.includes("orders_view")) {
       navigate("/admin/error/403");
+      return;
     }
     document.title = "Quản lý tour | Admin";
   }, []);

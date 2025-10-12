@@ -22,6 +22,7 @@ function TourDetail() {
   useEffect(() => {
     if (!permissions.includes("tours_view")) {
       navigate("/admin/error/403");
+      return;
     }
 
     if (tour) {
@@ -40,6 +41,7 @@ function TourDetail() {
       } catch (error) {
         if (error.code === 404) {
           navigate("/admin/error/404");
+          return;
         }
         console.error("Lỗi khi lấy dữ liệu phòng:", error);
       }

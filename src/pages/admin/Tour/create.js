@@ -36,6 +36,7 @@ function CreateTour() {
   useEffect(() => {
     if (!permissions.includes("tours_create")) {
       navigate("/admin/error/403");
+      return;
     }
     document.title = "Thêm mới tour | Admin";
     const fetchServices = async () => {

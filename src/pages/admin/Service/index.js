@@ -69,6 +69,7 @@ function Serivces() {
   useEffect(() => {
     if (!permissions.includes("services_view")) {
       navigate("/admin/error/403");
+      return;
     }
     document.title = "Quản lý dịch vụ | Admin";
   }, []);

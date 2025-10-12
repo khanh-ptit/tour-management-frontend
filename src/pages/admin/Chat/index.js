@@ -24,6 +24,7 @@ function ChatAdmin() {
   useEffect(() => {
     if (!permissions.includes("chat_chat")) {
       navigate("/admin/error/403");
+      return;
     }
     document.title = "Chăm sóc khách hàng | Admin";
   }, []);

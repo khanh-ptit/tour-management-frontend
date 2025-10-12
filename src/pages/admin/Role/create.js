@@ -13,6 +13,7 @@ function CreateRole() {
   useEffect(() => {
     if (!permissions.includes("roles_create")) {
       navigate("/admin/error/403");
+      return;
     }
     document.title = "Thêm mới nhóm quyền | Admin";
   });

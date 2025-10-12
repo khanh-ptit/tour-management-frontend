@@ -75,6 +75,7 @@ function Accounts() {
   useEffect(() => {
     if (!permissions.includes("accounts_view")) {
       navigate("/admin/error/403");
+      return;
     }
     document.title = "Quản lý tài khoản | Admin";
   }, []);

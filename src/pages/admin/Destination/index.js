@@ -79,6 +79,7 @@ function Destinations() {
   useEffect(() => {
     if (!permissions.includes("destinations_view")) {
       navigate("/admin/error/403");
+      return;
     }
     document.title = "Điểm du lịch | Admin";
   }, []);

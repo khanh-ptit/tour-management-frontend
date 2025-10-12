@@ -85,10 +85,12 @@ function TourDetailClient() {
           if (referenceSlug !== null) fetchReferenceTours();
         } else if (response.code === 404) {
           navigate("/error/404");
+          return;
         }
       } catch (error) {
         if (error.code === 404) {
           navigate("/error/404");
+          return;
         }
       }
     };
