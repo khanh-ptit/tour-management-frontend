@@ -22,7 +22,7 @@ import "./Header.scss";
 import { logout } from "../../../actions/auth";
 import { getCart } from "../../../services/client/cart.service";
 import { updateCartQuantity } from "../../../actions/cart";
-import { getTourCategoryList } from "../../../services/admin/tour-category.service";
+import { getTourCategoryClientList } from "../../../services/client/tour-category.service";
 
 const { Search } = Input;
 
@@ -96,10 +96,7 @@ function Header() {
 
     const fetchTourCategories = async () => {
       try {
-        const params = {
-          isBasic: true,
-        };
-        const response = await getTourCategoryList(params);
+        const response = await getTourCategoryClientList();
         if (response.code === 200) {
           setCategoryTree(buildCategoryTree(response.tourCategories));
         }
