@@ -1,6 +1,7 @@
 import { Button, Col, message, Row, Spin } from "antd";
 import { useEffect, useState } from "react";
 import {
+  exportExcel,
   getOrderCount,
   getRecentDebt,
   getRecentProfit,
@@ -15,9 +16,11 @@ import {
   DollarOutlined,
   ShoppingCartOutlined,
   InboxOutlined,
+  DownloadOutlined,
 } from "@ant-design/icons";
 import StatCard from "../../../components/admin/StatCard";
 import { Line, Pie } from "@ant-design/charts";
+import moment from "moment";
 
 function Dashboard() {
   const [messageApi, contextHolder] = message.useMessage();
@@ -291,6 +294,27 @@ function Dashboard() {
     },
   };
 
+  const handleExportExcel = async () => {
+    try {
+      const blob = await exportExcel();
+
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      const filename = `BaoCaoQuanTri_${moment(Date.now()).format(
+        "DD_MM_YYYY_HH_mm"
+      )}.xlsx`;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Lỗi khi tải file Excel:", error);
+    }
+  };
+
   return (
     <>
       {contextHolder}
@@ -307,9 +331,10 @@ function Dashboard() {
             <Button
               color="primary"
               variant="outlined"
-              icon={<PrinterOutlined />}
+              icon={<DownloadOutlined />}
+              onClick={handleExportExcel}
             >
-              In báo cáo
+              Xuất Excel
             </Button>
           </div>
           <Row gutter={[20, 20]} className="mb-4">

@@ -30,3 +30,22 @@ export const getRecentDebt = async () => {
   const result = await get(`${prefixAdmin}dashboard/debt`);
   return result;
 };
+
+const API_DOMAIN = "http://localhost:5000/";
+
+export const exportExcel = async () => {
+  const response = await fetch(`${API_DOMAIN}api/v1/admin/dashboard/export`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const blob = await response.blob();
+  return blob;
+};
