@@ -1,4 +1,7 @@
 import { Button, Form, Input, message, Modal } from "antd";
+import { FaMicrophone } from "react-icons/fa6";
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
 import "./Login.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -10,9 +13,11 @@ import {
   otpPassword,
   resendVerifyOtp,
   verifyUser,
+  verifyVoice,
 } from "../../../services/client/user.service";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../../actions/auth";
+import { updateInfo } from "../../../actions/userClient";
 
 function Login() {
   const [messageApi, contextHolder] = message.useMessage();
@@ -47,6 +52,15 @@ function Login() {
   const [resendForgotCountdown, setResendForgotCountdown] = useState(0);
 
   const [isForgotFlow, setIsForgotFlow] = useState(false);
+  const [isVoiceModalOpen, setIsVoiceModalOpen] = useState(false);
+  const [recording, setRecording] = useState(false);
+  const [audioBlob, setAudioBlob] = useState(null);
+
+  const [mediaRecorder, setMediaRecorder] = useState(null);
+  const [audioContext, setAudioContext] = useState(null);
+  const [analyser, setAnalyser] = useState(null);
+  const [dataArray, setDataArray] = useState(null);
+  const [animationId, setAnimationId] = useState(null);
 
   useEffect(() => {
     let timer;
@@ -236,17 +250,25 @@ function Login() {
     setEmail(data?.email);
     try {
       const response = await login(data);
-      if (response.code === 200) {
+      if (
+        response.message === "Mật khẩu chính xác. Yêu cầu xác thực giọng nói."
+      ) {
+        // Bật modal giọng nói
+        setIsVoiceModalOpen(true);
+      } else {
+        // Login bình thường
         form.resetFields();
         localStorage.setItem("loginClientSuccessMessage", response.message);
         dispatch(loginSuccess(response.user));
         localStorage.setItem("cartId", response.cart._id);
-        localStorage.setItem("token", response.token); // Lưu token vào localStorage
-        localStorage.setItem("user", JSON.stringify(response.user)); // Lưu user vào localStorage
+        localStorage.setItem("token", response.token);
+        localStorage.setItem("user", JSON.stringify(response.user));
         messageApi.open({
           type: "success",
           content: response.message,
         });
+        dispatch(updateInfo(response.user));
+
         navigate("/");
       }
     } catch (error) {
@@ -382,6 +404,114 @@ function Login() {
       2,
       "0"
     )}`;
+  };
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      // Ghi âm
+      const recorder = new MediaRecorder(stream);
+      const chunks = [];
+      recorder.ondataavailable = (e) => chunks.push(e.data);
+      recorder.onstop = () => {
+        const blob = new Blob(chunks, { type: "audio/webm" });
+        setAudioBlob(blob);
+      };
+      recorder.start();
+      setMediaRecorder(recorder);
+      setRecording(true);
+
+      // Khởi tạo audio context cho visualizer
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const source = audioCtx.createMediaStreamSource(stream);
+      const analyserNode = audioCtx.createAnalyser();
+      analyserNode.fftSize = 256;
+      const bufferLength = analyserNode.frequencyBinCount;
+      const dataArr = new Uint8Array(bufferLength);
+
+      source.connect(analyserNode);
+      setAudioContext(audioCtx);
+      setAnalyser(analyserNode);
+      setDataArray(dataArr);
+
+      visualize(analyserNode, dataArr); // bắt đầu render visualizer
+    } catch (err) {
+      messageApi.error("Không thể truy cập micro. Vui lòng kiểm tra quyền!");
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorder) mediaRecorder.stop();
+    setRecording(false);
+
+    if (animationId) cancelAnimationFrame(animationId);
+    if (audioContext) audioContext.close();
+  };
+
+  const handleVerifyVoice = async () => {
+    if (!audioBlob) {
+      messageApi.error("Bạn chưa ghi âm giọng nói!");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("email", email);
+    console.log("🚀 ~ handleVerifyVoice ~ email:", email);
+    formData.append("voice", audioBlob, "voice.webm");
+    console.log("🚀 ~ handleVerifyVoice ~ formData:", formData);
+
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+
+    try {
+      const response = await verifyVoice(formData);
+      console.log("🚀 ~ handleVerifyVoice ~ response:", response);
+      if (response.code === 200) {
+        // Voice hợp lệ
+        localStorage.setItem("loginClientSuccessMessage", response.message);
+        dispatch(loginSuccess(response.user));
+        localStorage.setItem("cartId", response.cart._id);
+        localStorage.setItem("token", response.token);
+        localStorage.setItem("user", JSON.stringify(response.user));
+        messageApi.open({
+          type: "success",
+          content: response.message,
+        });
+        dispatch(updateInfo(response.user));
+
+        navigate("/");
+      } else {
+        messageApi.error(response.message || "Xác thực giọng nói thất bại!");
+      }
+    } catch (err) {
+      console.error(err);
+      messageApi.error("Lỗi khi gửi giọng nói!");
+    }
+  };
+
+  const visualize = (analyserNode, dataArr) => {
+    const draw = () => {
+      analyserNode.getByteFrequencyData(dataArr);
+
+      const bars = document.querySelectorAll("#voice-visualizer .bar");
+      const segmentSize = Math.floor(dataArr.length / bars.length);
+
+      bars.forEach((bar, i) => {
+        const start = i * segmentSize;
+        const end = start + segmentSize;
+        const segment = dataArr.slice(start, end);
+        const avg =
+          segment.reduce((sum, val) => sum + val, 0) / (segment.length || 1);
+        const scale = Math.max(0.2, Math.min(avg / 100, 1));
+        bar.style.transform = `scaleY(${scale})`;
+      });
+
+      const id = requestAnimationFrame(draw);
+      setAnimationId(id);
+    };
+    draw();
   };
 
   return (
@@ -569,6 +699,52 @@ function Login() {
             </>
           )}
         </Form>
+      </Modal>
+
+      <Modal
+        title="Xác thực giọng nói"
+        open={isVoiceModalOpen}
+        onCancel={() => setIsVoiceModalOpen(false)}
+        footer={[
+          !recording ? (
+            <Button key="record" type="primary" onClick={startRecording}>
+              Bắt đầu ghi âm
+            </Button>
+          ) : (
+            <Button key="stop" danger onClick={stopRecording}>
+              Dừng ghi
+            </Button>
+          ),
+          <Button
+            key="verify"
+            type="primary"
+            onClick={handleVerifyVoice}
+            disabled={!audioBlob}
+          >
+            Xác thực
+          </Button>,
+        ]}
+      >
+        <div className="voice-modal-container">
+          <FaMicrophone className="micro-icon" />
+          <div id="voice-visualizer" className="voice-visualizer">
+            {[...Array(32)].map((_, i) => (
+              <span key={i} className="bar"></span>
+            ))}
+          </div>
+          {audioBlob && (
+            <AudioPlayer
+              src={URL.createObjectURL(audioBlob)}
+              autoPlay={false}
+              customAdditionalControls={[]}
+              style={{
+                borderRadius: "8px",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                marginTop: "16px",
+              }}
+            />
+          )}
+        </div>
       </Modal>
     </>
   );

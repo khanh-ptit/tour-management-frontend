@@ -71,3 +71,36 @@
     }
   }
 }
+
+.voice-modal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.voice-modal-container .micro-icon {
+  font-size: 48px;
+  color: #1890ff;
+  margin-bottom: 16px;
+}
+
+.voice-visualizer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px; // 👈 khoảng cách giữa các thanh
+  height: 60px; // 👈 chiều cao tổng thể của visualize
+  width: 100%;
+  max-width: 300px; // 👈 tránh quá rộng
+}
+
+.voice-visualizer .bar {
+  flex: 1;
+  background: #1890ff;
+  height: 20%; // chiều cao mặc định ban đầu
+  transform-origin: bottom;
+  transition: transform 0.1s linear;
+  border-radius: 2px;
+}

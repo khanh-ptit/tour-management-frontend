@@ -227,17 +227,6 @@ function Profile() {
     [monthlySpend]
   );
 
-  const orderStatusData = [
-    {
-      type: "Đã thanh toán",
-      value: Number(orderPercentage?.paidOrderPercentage || 0),
-    },
-    {
-      type: "Chưa thanh toán",
-      value: Number(orderPercentage?.unpaidOrderPercentage || 0),
-    },
-  ];
-
   const orderStatusConfig = useMemo(
     () => ({
       data: [
