@@ -18,6 +18,7 @@ import {
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../../actions/auth";
 import { updateInfo } from "../../../actions/userClient";
+import AntDAudioPlayer from "../../../components/client/AudioPlayer";
 
 function Login() {
   const [messageApi, contextHolder] = message.useMessage();
@@ -467,9 +468,7 @@ function Login() {
 
     try {
       const response = await verifyVoice(formData);
-      console.log("🚀 ~ handleVerifyVoice ~ response:", response);
       if (response.code === 200) {
-        // Voice hợp lệ
         localStorage.setItem("loginClientSuccessMessage", response.message);
         dispatch(loginSuccess(response.user));
         localStorage.setItem("cartId", response.cart._id);
@@ -480,7 +479,7 @@ function Login() {
           content: response.message,
         });
         dispatch(updateInfo(response.user));
-
+        setIsVoiceModalOpen(false);
         navigate("/");
       } else {
         messageApi.error(response.message || "Xác thực giọng nói thất bại!");
@@ -728,21 +727,15 @@ function Login() {
         <div className="voice-modal-container">
           <FaMicrophone className="micro-icon" />
           <div id="voice-visualizer" className="voice-visualizer">
-            {[...Array(32)].map((_, i) => (
-              <span key={i} className="bar"></span>
-            ))}
+            {!audioBlob &&
+              [...Array(32)].map((_, i) => (
+                <span key={i} className="bar"></span>
+              ))}
           </div>
           {audioBlob && (
-            <AudioPlayer
-              src={URL.createObjectURL(audioBlob)}
-              autoPlay={false}
-              customAdditionalControls={[]}
-              style={{
-                borderRadius: "8px",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                marginTop: "16px",
-              }}
-            />
+            <div style={{ marginTop: 16, width: "100%" }}>
+              <AntDAudioPlayer src={URL.createObjectURL(audioBlob)} />
+            </div>
           )}
         </div>
       </Modal>

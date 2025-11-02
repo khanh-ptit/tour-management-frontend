@@ -2,11 +2,6 @@ import { del, get, patch, post } from "../../utils/request.js";
 import axios from "axios";
 const API_DOMAIN = "http://localhost:5000/";
 
-// Hàm lấy token từ localStorage
-const getToken = () => {
-  return localStorage.getItem("token"); // Lấy token từ localStorage
-};
-
 const version = "api/v1";
 
 export const register = async (options) => {
@@ -74,15 +69,17 @@ export const editInfoUser = async (data) => {
   return result;
 };
 
+export const toggleTwoFa = async (userId, status, captchaToken) => {
+  const result = await patch(
+    `${version}/user/toggle-two-fa/${userId}?status=${status}&captchaToken=${captchaToken}`
+  );
+  return result;
+};
+
 export const verifyVoice = (formData) => {
-  const token = getToken();
-  console.log("🚀 ~ verifyVoice ~ token:", token);
   const headers = {
     "Content-Type": "multipart/form-data",
   };
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`; // Thêm token vào header nếu tồn tại
-  }
 
   return axios
     .post(`${API_DOMAIN}api/v1/user/verify-voice`, formData, {

@@ -42,6 +42,7 @@ import styles from "./Profile.module.scss";
 import { uploadToCloudinary } from "../../../services/uploadToCloudinary.service";
 import { useDispatch } from "react-redux";
 import { updateInfo } from "../../../actions/userClient";
+import TwoFaSetting from "../../../components/client/TwoFaSetting";
 
 const { Title, Text } = Typography;
 
@@ -57,7 +58,13 @@ function Profile() {
   const [infoForm] = Form.useForm();
   const [avatar, setAvatar] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
+  const [isTwoFa, setIsTwoFa] = useState(false);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (profile) document.title = `Thông tin người dùng | ${profile?.fullName}`;
+    else document.title = `Thông tin người dùng`;
+  });
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -69,6 +76,7 @@ function Profile() {
 
         if (profileResponse.code === 200) {
           setProfile(profileResponse.user);
+          setIsTwoFa(profileResponse.user.isTwoFa);
         }
 
         if (orderStatisticResponse.code === 200) {
@@ -262,6 +270,10 @@ function Profile() {
     [orderPercentage]
   );
 
+  const handleToggle = (newState) => {
+    setIsTwoFa(newState);
+  };
+
   return (
     <>
       {contextHolder}
@@ -349,13 +361,17 @@ function Profile() {
                 )}
               </Descriptions.Item>
               <Descriptions.Item label="Ngày tạo">
-                {moment(profile.createdAt).format("hh:ss DD/MM/YYYY")}
+                {moment(profile.createdAt).format("HH:mm:ss DD/MM/YYYY")}
               </Descriptions.Item>
               <Descriptions.Item label="Cập nhật gần nhất">
-                {moment(profile.updatedAt).format("hh:ss DD/MM/YYYY")}
+                {moment(profile.updatedAt).format("HH:mm:ss DD/MM/YYYY")}
               </Descriptions.Item>
               <Descriptions.Item label="Xác thực 2 yếu tố">
-                <Checkbox />
+                <TwoFaSetting
+                  user={profile}
+                  isTwoFa={isTwoFa}
+                  onToggle={handleToggle}
+                />
               </Descriptions.Item>
             </Descriptions>
           </Card>
