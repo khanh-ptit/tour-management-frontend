@@ -1,7 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { Modal, Button, Switch, message } from "antd";
 import ReCAPTCHA from "react-google-recaptcha";
-import { toggleTwoFa } from "../../../services/client/user.service";
+import {
+  enableTwoFa,
+  toggleTwoFa,
+} from "../../../services/client/user.service";
+import ModalVoiceRecord from "../ModalVoiceRecord";
 
 function TwoFaSetting({ user, isTwoFa, onToggle }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -9,6 +13,7 @@ function TwoFaSetting({ user, isTwoFa, onToggle }) {
   const [messageApi, contextHolder] = message.useMessage();
   const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
   const [captchaToken, setCaptchaToken] = useState(null);
+  const [isModalVoiceOpen, setIsModalVoiceOpen] = useState(false);
   const captchaRef = useRef();
 
   const handleToggleRequest = (newState) => {
@@ -35,21 +40,33 @@ function TwoFaSetting({ user, isTwoFa, onToggle }) {
       return;
     }
 
-    try {
-      const response = await toggleTwoFa(user._id, pendingState, captchaToken);
-
-      if (response.code === 200) {
-        messageApi.success(response.message);
-        if (onToggle) onToggle(pendingState);
+    if (pendingState) {
+      setIsModalVoiceOpen(true);
+    } else {
+      try {
+        const response = await toggleTwoFa(user._id, false, captchaToken);
+        if (response.code === 200) {
+          messageApi.success(response.message);
+          if (onToggle) onToggle(false);
+        }
+      } catch (error) {
+        messageApi.error("Có lỗi xảy ra khi tắt 2FA!");
       }
-    } catch (error) {
-      messageApi.error("Có lỗi xảy ra. Vui lòng thử lại!");
     }
 
     setIsModalOpen(false);
     setPendingState(null);
     setIsCaptchaVerified(false);
     captchaRef.current?.reset();
+  };
+
+  const handleToggleTwoFa = async (newState, voiceUrl) => {
+    const objVoiceUrl = { voiceUrl };
+    const response = await enableTwoFa(user._id, objVoiceUrl);
+    if (response.code === 200) {
+      // messageApi.success(response.message);
+      if (onToggle) onToggle(newState);
+    }
   };
 
   return (
@@ -91,6 +108,13 @@ function TwoFaSetting({ user, isTwoFa, onToggle }) {
           </div>
         )}
       </Modal>
+
+      <ModalVoiceRecord
+        onClose={() => setIsModalVoiceOpen(false)}
+        isOpen={isModalVoiceOpen}
+        email={user?.email}
+        onVerified={(audioUrl) => handleToggleTwoFa(true, audioUrl)}
+      />
     </>
   );
 }

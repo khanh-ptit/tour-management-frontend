@@ -76,6 +76,14 @@ export const toggleTwoFa = async (userId, status, captchaToken) => {
   return result;
 };
 
+export const enableTwoFa = async (userId, voiceUrl) => {
+  const result = await post(
+    `${version}/user/enable-two-fa/${userId}`,
+    voiceUrl
+  );
+  return result;
+};
+
 export const verifyVoice = (formData) => {
   const headers = {
     "Content-Type": "multipart/form-data",

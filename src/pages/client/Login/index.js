@@ -1,4 +1,4 @@
-import { Button, Form, Input, message, Modal } from "antd";
+import { Button, Form, Input, message, Modal, Spin } from "antd";
 import { FaMicrophone } from "react-icons/fa6";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../../actions/auth";
 import { updateInfo } from "../../../actions/userClient";
 import AntDAudioPlayer from "../../../components/client/AudioPlayer";
+import { LoadingOutlined } from "@ant-design/icons";
 
 function Login() {
   const [messageApi, contextHolder] = message.useMessage();
@@ -62,6 +63,7 @@ function Login() {
   const [analyser, setAnalyser] = useState(null);
   const [dataArray, setDataArray] = useState(null);
   const [animationId, setAnimationId] = useState(null);
+  const [isProcessingVoice, setIsProcessingVoice] = useState(false);
 
   useEffect(() => {
     let timer;
@@ -456,18 +458,15 @@ function Login() {
       return;
     }
 
+    setIsProcessingVoice(true); // ✅ Khóa thao tác
+
     const formData = new FormData();
     formData.append("email", email);
-    console.log("🚀 ~ handleVerifyVoice ~ email:", email);
     formData.append("voice", audioBlob, "voice.webm");
-    console.log("🚀 ~ handleVerifyVoice ~ formData:", formData);
-
-    for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
-    }
 
     try {
       const response = await verifyVoice(formData);
+
       if (response.code === 200) {
         localStorage.setItem("loginClientSuccessMessage", response.message);
         dispatch(loginSuccess(response.user));
@@ -487,6 +486,8 @@ function Login() {
     } catch (err) {
       console.error(err);
       messageApi.error("Lỗi khi gửi giọng nói!");
+    } finally {
+      setIsProcessingVoice(false);
     }
   };
 
@@ -539,7 +540,10 @@ function Login() {
                     label="Mật khẩu"
                     name="password"
                     rules={[
-                      { required: true, message: "Vui lòng nhập mật khẩu!" },
+                      {
+                        required: true,
+                        message: "Vui lòng nhập mật khẩu!",
+                      },
                     ]}
                   >
                     <Input.Password
@@ -703,7 +707,12 @@ function Login() {
       <Modal
         title="Xác thực giọng nói"
         open={isVoiceModalOpen}
-        onCancel={() => setIsVoiceModalOpen(false)}
+        onCancel={() => {
+          if (isProcessingVoice) return;
+          setIsVoiceModalOpen(false);
+        }}
+        maskClosable={false}
+        keyboard={false}
         footer={[
           !recording ? (
             <Button key="record" type="primary" onClick={startRecording}>
@@ -724,20 +733,48 @@ function Login() {
           </Button>,
         ]}
       >
-        <div className="voice-modal-container">
-          <FaMicrophone className="micro-icon" />
-          <div id="voice-visualizer" className="voice-visualizer">
-            {!audioBlob &&
-              [...Array(32)].map((_, i) => (
-                <span key={i} className="bar"></span>
-              ))}
-          </div>
-          {audioBlob && (
-            <div style={{ marginTop: 16, width: "100%" }}>
-              <AntDAudioPlayer src={URL.createObjectURL(audioBlob)} />
+        <Spin
+          spinning={isProcessingVoice}
+          indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />}
+          tip="Đang xác thực giọng nói..."
+          size="large"
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 10000,
+            background: "rgba(255, 255, 255, 0.6)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div className="voice-modal-container">
+            <FaMicrophone className="micro-icon" />
+            <div id="voice-visualizer" className="voice-visualizer">
+              {!audioBlob &&
+                [...Array(32)].map((_, i) => (
+                  <span key={i} className="bar"></span>
+                ))}
             </div>
-          )}
-        </div>
+            {!audioBlob && (
+              <div
+                style={{
+                  color: "red",
+                  fontSize: "20px",
+                  marginTop: "20px",
+                  fontWeight: "600",
+                }}
+              >
+                Vui lòng nói: Xin chào Việt Nam!
+              </div>
+            )}
+            {audioBlob && (
+              <div style={{ marginTop: 16, width: "100%" }}>
+                <AntDAudioPlayer src={URL.createObjectURL(audioBlob)} />
+              </div>
+            )}
+          </div>
+        </Spin>
       </Modal>
     </>
   );
