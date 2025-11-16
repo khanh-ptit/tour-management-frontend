@@ -21,7 +21,24 @@ const handleResponse = async (response) => {
 
 // Hàm GET request
 export const get = async (path) => {
-  const token = getToken(); // Lấy token
+  const token = getToken();
+
+  const [purePath, queryString] = path.split("?");
+  const safePath = purePath
+    .split("/")
+    .map((segment) => encodeURIComponent(segment))
+    .join("/");
+
+  let finalPath = safePath;
+
+  if (queryString) {
+    const params = new URLSearchParams(queryString);
+    const encodedQuery = Array.from(params.entries())
+      .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+      .join("&");
+    finalPath += `?${encodedQuery}`;
+  }
+
   const headers = {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -30,7 +47,7 @@ export const get = async (path) => {
     headers["Authorization"] = `Bearer ${token}`; // Thêm token vào header nếu tồn tại
   }
 
-  const response = await fetch(`${API_DOMAIN}${path}`, {
+  const response = await fetch(`${API_DOMAIN}${finalPath}`, {
     method: "GET",
     credentials: "include",
     headers,
