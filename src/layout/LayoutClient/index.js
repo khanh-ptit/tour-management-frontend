@@ -10,7 +10,7 @@ import {
   setDestinationsDispatch,
   setForeginDestinationsDispatch,
 } from "../../actions/destination";
-import ChatPopup from "../../components/client/ChatPopup";
+import ChatPopup from "../../pages/client/Chatbot";
 
 function LayoutClient() {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -51,7 +51,7 @@ function LayoutClient() {
         <main className="layout-main">
           <Outlet context={{ setIsChatOpen }} />
         </main>
-     
+        {/* <Footer /> */}
       </div>
     </>
   );

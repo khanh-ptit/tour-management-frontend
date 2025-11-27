@@ -47,6 +47,7 @@ import Error404Client from "../pages/client/Error/error404";
 import Error400Client from "../pages/client/Error/error400";
 import Help from "../pages/client/Help/Help";
 import Locked from "../pages/general/Locked/Locked";
+import ChatPopup from "../pages/client/Chatbot";
 
 export const routes = [
   {
@@ -64,6 +65,10 @@ export const routes = [
           {
             path: "/user/register",
             element: <Register />,
+          },
+          {
+            path: "/chatbot",
+            element: <ChatPopup />,
           },
           {
             path: "/cart",
@@ -99,12 +104,12 @@ export const routes = [
             element: <Destination />,
           },
           {
-  path: "/help",
-  element: <Help />,
-},
-   {
+            path: "/help",
+            element: <Help />,
+          },
+          {
             path: "/locked",
-            element: <Locked/>,
+            element: <Locked />,
           },
           {
             path: "/search",
@@ -249,7 +254,7 @@ export const routes = [
             path: "error/404",
             element: <Error404 />,
           },
-        
+
           {
             path: "error/400",
             element: <Error400 />,

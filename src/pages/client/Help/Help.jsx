@@ -250,7 +250,8 @@ useEffect(() => {
   if (!username || !stompClient || !connected) return;
   const subscription = stompClient.subscribe(`/user/${username}/private`, (mes) => {
     (async () => {
-        const db = await initDB();
+      try{ 
+      const db = await initDB();
         const id=localStorage.getItem("currentConversationId")
         const session = await db.get("sessions",id);
         const msg = JSON.parse(mes.body);
@@ -267,7 +268,10 @@ await backupMsg(plaintext,bkInfor,msg)
        const res=await axios.post( `http://localhost:8080/updateStatusMessage?id=${msg.id}`,{},
            { headers: { Authorization: `Bearer ${localStorage.getItem('jtoken')}` } }
        )
-
+      }
+      catch(error){
+        console.log(error)
+      }
     })();
   });
 

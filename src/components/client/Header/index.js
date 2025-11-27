@@ -208,6 +208,9 @@ function Header() {
       <Menu.Item key="3">
         <Link to="/help">Hỗ Trợ</Link>
       </Menu.Item>
+        <Menu.Item key="4">
+        <Link to="/chatbot">Trợ Lý Ảo</Link>
+      </Menu.Item>
       {isAuthenticated ? (
         <Menu.Item key="6">
           <span style={{ cursor: "pointer" }}>Đăng xuất</span>
@@ -259,6 +262,9 @@ function Header() {
               </li>
                <li>
                 <Link to="/help">Hỗ trợ</Link>
+              </li>
+                 <li key="4">
+                <Link to="/chatbot">Trợ Lý Ảo</Link>
               </li>
               <li>
                 <Dropdown

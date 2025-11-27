@@ -23,6 +23,10 @@ export async function loadEphemeralKey(conversationId) {
 }
 export async function deriveMkToN(session, targetN) {
     const db = await initDB();
+    let localSession = {...session, Nr: 0 };
+
+    console.log(localSession.DHs)
+    let mk;
     while (session.Nr < targetN) {
         mk = await HMAC(hexToBuf(session.ckr), new Uint8Array([0x01]));
         // mkStore[`${dhPub}_${session.Nr + 1}`] = buf2hex(mk);

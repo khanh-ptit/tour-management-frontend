@@ -1,0 +1,120 @@
+/* khung popup ngoài */
+
+.travel-page {
+    font-family: "Inter", sans-serif;
+    background: #f5f7fa;
+    color: #444;
+}
+
+
+/* HERO */
+
+.hero {
+    background: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e") center/cover;
+    height: 380px;
+    border-radius: 0 0 24px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 20px;
+    color: white;
+}
+
+.hero-content h1 {
+    font-size: 42px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.hero-content p {
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+.hero-btn {
+    margin-top: 18px;
+    padding: 12px 28px;
+    font-size: 16px;
+    background: #ff9f1c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.hero-btn:hover {
+    background: #ff7f0a;
+}
+
+
+/* ABOUT */
+
+.about {
+    max-width: 800px;
+    margin: 40px auto;
+    text-align: center;
+}
+
+.about h2 {
+    font-size: 28px;
+    margin-bottom: 12px;
+}
+
+
+/* FEATURES */
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+}
+
+.feature-card {
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+
+/* DESTINATIONS */
+
+.destinations {
+    margin: 40px 0;
+    text-align: center;
+}
+
+.dest-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    padding: 0 20px;
+    margin-top: 18px;
+}
+
+.dest-card {
+    background: #fff;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+#coze-wrapper {
+    position: fixed;
+    right: 20px;
+    bottom: 35px;
+    width: 390px;
+    height: 540px;
+    z-index: 99999;
+}
+
+
+/* thùng chứa thật cho Coze SDK */
+
+#coze-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
