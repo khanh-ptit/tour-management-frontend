@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import Banner from "../../../components/client/Banner";
 import "./Home.scss";
 import { message } from "antd";
+import axios from "axios";
+import { initPreKey } from "./key";
 
 function Home() {
   const [messageApi, contextHolder] = message.useMessage();
@@ -29,6 +31,42 @@ function Home() {
     }
   }, []);
 
+useEffect(() => {
+  const checkAndGeneratePrekey = async () => {
+    try {
+      const token = localStorage.getItem('jtoken');
+      if (!token) {
+        window.location.href = '/admin/auth/login';
+        return;
+      }
+
+    
+      const res = await axios.get('http://localhost:8080/check-exist-prekey', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+ localStorage.setItem("username",res.data.result.username);
+      if (res.data.result.status === "Not Created") {
+        // tạo các cặp prekey và upload public key tương ứng lên server
+        initPreKey(res.data.result.username);
+       
+      } else {
+        console.log("Prekey đã tồn tại");
+      }
+    } catch (error) {
+      // nếu token hết hạn hoặc bị lỗi xác thực
+      if (error.response && error.response.status === 401) {
+        localStorage.removeItem('jtoken');
+        window.location.href = '/admin/auth/login';
+      } else {
+        console.error("Lỗi khi kiểm tra prekey:", error);
+      }
+    }
+  };
+
+  checkAndGeneratePrekey();
+}, []);
   useEffect(() => {
     if (successMessage) {
       messageApi.open({

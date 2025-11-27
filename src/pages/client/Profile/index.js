@@ -35,6 +35,7 @@ import {
   CheckOutlined,
   LoadingOutlined,
   MoreOutlined,
+  DeleteTwoTone,
 } from "@ant-design/icons";
 import moment from "moment";
 import { Line, Pie } from "@ant-design/charts";
@@ -43,6 +44,7 @@ import { uploadToCloudinary } from "../../../services/uploadToCloudinary.service
 import { useDispatch } from "react-redux";
 import { updateInfo } from "../../../actions/userClient";
 import TwoFaSetting from "../../../components/client/TwoFaSetting";
+import { initDB } from "../../../services/e2e/initDB";
 
 const { Title, Text } = Typography;
 
@@ -130,6 +132,10 @@ function Profile() {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+const handleDelete = async () => {
+  const db = await initDB();
+  await db.delete("backup_keys", localStorage.getItem("username"));
+};
 
   const handleInfoCancel = () => {
     setIsModalInfoOpen(false);
@@ -365,6 +371,9 @@ function Profile() {
               </Descriptions.Item>
               <Descriptions.Item label="Cập nhật gần nhất">
                 {moment(profile.updatedAt).format("HH:mm:ss DD/MM/YYYY")}
+              </Descriptions.Item>
+                     <Descriptions.Item label="Xóa bộ nhớ đệm">
+           <Button style={{color:"red",backgroundColor:"pink"}}    onClick={handleDelete} icon={<DeleteTwoTone twoToneColor="#52c41a" />}>Xóa</Button>
               </Descriptions.Item>
               <Descriptions.Item label="Xác thực 2 yếu tố">
                 <TwoFaSetting

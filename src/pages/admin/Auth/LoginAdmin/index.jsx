@@ -7,6 +7,7 @@ import { checkAuth, checkLogin } from "../../../../services/admin/auth.service";
 import { updateAccount } from "../../../../actions/account";
 import { useDispatch } from "react-redux";
 import { getPermissions } from "../../../../actions/role";
+import axios from "axios";
 
 const LoginAdmin = () => {
   const [loading, setLoading] = useState(false);
@@ -48,8 +49,22 @@ const LoginAdmin = () => {
       localStorage.setItem("loginSuccessMessage", result.message);
       dispatch(updateAccount(result.user));
       dispatch(getPermissions(result.role));
+        const response=await axios.post( "http://localhost:8080/login",
+                {email:e.email,
+                  password:e.password,
+                })
+                 
+      const token = response.data.result;
+
+      // Lưu token vào localStorage
+      localStorage.setItem('jtoken', token);
       navigate("/admin/dashboard");
     } catch (error) {
+      if(error?.response?.data?.message=="User Is Locked"){
+                            window.location.href="/locked";
+                          //đăng xuất
+                          }
+                          console.log(error)
       messageApi.error(error.message || "Đăng nhập thất bại!");
     } finally {
       setLoading(false);

@@ -9,6 +9,7 @@ import {
 } from "../../../services/client/user.service";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 function Register() {
   const [messageApi, contextHolder] = message.useMessage();
@@ -66,6 +67,13 @@ function Register() {
     try {
       setEmail(data?.email);
       const response = await register(data);
+
+            await axios.post( "http://localhost:8080/user/register",
+                {username:data?.fullName,
+                  password:data?.password,
+                 email: data?.email
+                },
+              )
       if (response.code === 201) {
         messageApi.open({
           type: "success",

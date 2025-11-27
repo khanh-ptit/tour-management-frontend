@@ -65,18 +65,12 @@
             border-bottom: 1px solid #ddd;
             border-radius: 8px 8px 0 0;
             .chat-header-left {
-                flex: 1; // chiếm không gian còn lại
-                min-width: 0; // quan trọng để text-overflow hoạt động
                 .chat-title {
                     font-size: 18px;
                     font-weight: 600;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis; // nếu quá dài thì ... sẽ hiển thị
                 }
             }
             .chat-header-right {
-                flex-shrink: 0; // không bị co lại
                 .e2ee-badge {
                     display: flex;
                     align-items: center;

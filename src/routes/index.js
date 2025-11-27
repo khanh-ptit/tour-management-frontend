@@ -45,6 +45,8 @@ import Error404 from "../pages/admin/Error/error404";
 import Error400 from "../pages/admin/Error/error400";
 import Error404Client from "../pages/client/Error/error404";
 import Error400Client from "../pages/client/Error/error400";
+import Help from "../pages/client/Help/Help";
+import Locked from "../pages/general/Locked/Locked";
 
 export const routes = [
   {
@@ -95,6 +97,14 @@ export const routes = [
           {
             path: "/destinations/:slug",
             element: <Destination />,
+          },
+          {
+  path: "/help",
+  element: <Help />,
+},
+   {
+            path: "/locked",
+            element: <Locked/>,
           },
           {
             path: "/search",
@@ -239,6 +249,7 @@ export const routes = [
             path: "error/404",
             element: <Error404 />,
           },
+        
           {
             path: "error/400",
             element: <Error400 />,

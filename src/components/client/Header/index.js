@@ -206,7 +206,7 @@ function Header() {
         <Link to="/news">Tin tức</Link>
       </Menu.Item>
       <Menu.Item key="3">
-        <Link to="/contact">Liên hệ</Link>
+        <Link to="/help">Hỗ Trợ</Link>
       </Menu.Item>
       {isAuthenticated ? (
         <Menu.Item key="6">
@@ -256,6 +256,9 @@ function Header() {
               </li>
               <li>
                 <Link to="/news">Tin tức</Link>
+              </li>
+               <li>
+                <Link to="/help">Hỗ trợ</Link>
               </li>
               <li>
                 <Dropdown

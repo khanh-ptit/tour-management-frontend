@@ -51,10 +51,7 @@ function LayoutClient() {
         <main className="layout-main">
           <Outlet context={{ setIsChatOpen }} />
         </main>
-        <Footer />
-        {isAuthenticated && (
-          <ChatPopup isChatOpen={isChatOpen} setIsChatOpen={setIsChatOpen} />
-        )}
+     
       </div>
     </>
   );

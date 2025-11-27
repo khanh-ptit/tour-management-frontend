@@ -20,6 +20,7 @@ import { loginSuccess } from "../../../actions/auth";
 import { updateInfo } from "../../../actions/userClient";
 import AntDAudioPlayer from "../../../components/client/AudioPlayer";
 import { LoadingOutlined } from "@ant-design/icons";
+import axios from "axios";
 
 function Login() {
   const [messageApi, contextHolder] = message.useMessage();
@@ -253,6 +254,13 @@ function Login() {
     setEmail(data?.email);
     try {
       const response = await login(data);
+          const res=await axios.post( "http://localhost:8080/login",
+                      {email:data.email,
+                        password:data.password,
+                      })
+                       
+            const token = res.data.result;
+              localStorage.setItem("jtoken", token);
       if (
         response.message === "Mật khẩu chính xác. Yêu cầu xác thực giọng nói."
       ) {
@@ -298,6 +306,12 @@ function Login() {
         setIsForgotFlow(true);
         handleResendForgotPassword(data?.email);
       }
+      else if(error?.response?.data?.message=="User Is Locked"){
+        console.log(error)
+                            window.location.href="/locked";
+                          //đăng xuất
+                          }
+      
       messageApi.open({
         type: "error",
         content: error.message || "Có lỗi xảy ra khi đăng nhập!",
